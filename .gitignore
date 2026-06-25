@@ -1,0 +1,50 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+backend/venv/
+.temp/
+supabase/.temp/
+
+# Next.js Build
+.next/
+frontend/.next/
+out/
+frontend/out/
+
+# Environment Variables & Secrets (CRITICAL)
+.env
+backend/.env
+.env.local
+frontend/.env.local
+.env.*.local
+
+# Python Cache
+__pycache__/
+backend/app/__pycache__/
+backend/app/services/__pycache__/
+backend/app/models/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+
+# IDE / Editor config
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Media files / temp uploads
+*.m4a
+*.wav
+*.mp3
+*.mp4
+videoplayback.m4a
+
+# OS Files
+.DS_Store
+Thumbs.db
