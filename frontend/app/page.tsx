@@ -16,6 +16,7 @@ import ChatBot from "./components/chat-bot";
 import HeroSection from "./components/hero-section";
 import BentoFeatures from "./components/bento-features";
 import MetricCards from "./components/metric-cards";
+import LanguageMarquee from "./components/language-marquee";
 
 const STATUS_MESSAGES: Record<string, { title: string; subtitle: string }> = {
   uploading: {
@@ -183,6 +184,7 @@ export default function Home() {
             >
               <HeroSection />
               <BentoFeatures />
+              <LanguageMarquee />
 
               {/* Upload */}
               <motion.div
