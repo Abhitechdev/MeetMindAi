@@ -148,6 +148,31 @@ def delete_meeting(meeting_id: str, client: Client = Depends(get_user_supabase))
         raise HTTPException(status_code=403, detail="Forbidden or not found")
     return res.data
 
+@app.get("/meetings/{meeting_id}")
+def get_meeting(meeting_id: str, client: Client = Depends(get_user_supabase)):
+    """Fetch a single meeting with its actions and decisions."""
+    meeting_res = client.table("meetings").select("id, title, transcript, executive_summary, next_steps, language").eq("id", meeting_id).eq("user_id", client.user.id).execute()
+    if not meeting_res.data:
+        raise HTTPException(status_code=404, detail="Meeting not found")
+    
+    meeting = meeting_res.data[0]
+    
+    # ponytail: explicit separate small queries instead of complex RPC joins to keep it simple
+    actions = [a["action_text"] for a in client.table("action_items").select("action_text").eq("meeting_id", meeting_id).execute().data]
+    decisions = [d["decision_text"] for d in client.table("decisions").select("decision_text").eq("meeting_id", meeting_id).execute().data]
+    
+    return {
+        "id": meeting["id"],
+        "title": meeting["title"],
+        "transcript": meeting["transcript"],
+        "segments": [],
+        "executiveSummary": meeting.get("executive_summary", ""),
+        "actionItems": actions,
+        "decisions": decisions,
+        "nextSteps": meeting.get("next_steps", []),
+        "language": meeting.get("language", "English")
+    }
+
 @app.delete("/meetings")
 def delete_all_meetings(client: Client = Depends(get_user_supabase)):
     """Delete all meetings for the user."""

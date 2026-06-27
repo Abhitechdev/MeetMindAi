@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState, useMemo } from "react"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { createClient } from "@/lib/supabase"
@@ -216,10 +217,12 @@ export default function HistoryPage() {
                     )}
                   </div>
                   <div className="flex items-center gap-3 w-full sm:w-auto">
-                    {/* Placeholder for Opening Meeting, can link to a dynamic route like /history/[id] later */}
-                    <button className="flex-1 sm:flex-none px-4 py-2 rounded-md bg-foreground text-background text-sm font-medium hover:bg-foreground/90 transition-colors">
+                    <Link 
+                      href={`/history/${meeting.id}`}
+                      className="flex-1 sm:flex-none px-4 py-2 rounded-md bg-foreground text-background text-sm font-medium hover:bg-foreground/90 transition-colors text-center"
+                    >
                       Open
-                    </button>
+                    </Link>
                     <button
                       onClick={() => deleteMeeting(meeting.id)}
                       className="p-2 rounded-md text-red-400 hover:bg-red-400/10 transition-colors"

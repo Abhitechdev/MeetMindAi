@@ -109,6 +109,19 @@ export async function getMeetings() {
   return response.json();
 }
 
+export async function getMeeting(id: string) {
+  const headers = await getAuthHeaders();
+  const response = await fetch(`${API_BASE}/meetings/${id}?t=${Date.now()}`, { 
+    headers,
+    cache: "no-store" 
+  });
+  if (!response.ok) {
+    if (response.status === 404) throw new Error("Meeting not found");
+    throw new Error("Failed to fetch meeting");
+  }
+  return response.json();
+}
+
 export async function deleteMeetingApi(id: string) {
   const headers = await getAuthHeaders();
   const response = await fetch(`${API_BASE}/meetings/${id}`, { method: "DELETE", headers });
