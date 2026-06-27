@@ -68,17 +68,17 @@ export default function SummaryViewer({
       </SectionCard>
 
       {/* Key Decisions */}
-      {keyDecisions.length > 0 && (
-        <SectionCard
-          title="Key Decisions"
-          index={1}
-          accentColor="#F59E0B"
-          icon={
-            <svg className="h-[16px] w-[16px]" style={{ color: "#F59E0B" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          }
-        >
+      <SectionCard
+        title="Key Decisions"
+        index={1}
+        accentColor="#F59E0B"
+        icon={
+          <svg className="h-[16px] w-[16px]" style={{ color: "#F59E0B" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        }
+      >
+        {keyDecisions && keyDecisions.length > 0 ? (
           <ul className="space-y-1.5">
             {keyDecisions.map((item, i) => (
               <motion.li
@@ -93,21 +93,23 @@ export default function SummaryViewer({
               </motion.li>
             ))}
           </ul>
-        </SectionCard>
-      )}
+        ) : (
+          <p className="text-[13px] text-muted italic">No key decisions recorded.</p>
+        )}
+      </SectionCard>
 
       {/* Action Items */}
-      {actionItems.length > 0 && (
-        <SectionCard
-          title="Action Items"
-          index={2}
-          accentColor="#10B981"
-          icon={
-            <svg className="h-[16px] w-[16px]" style={{ color: "#10B981" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-            </svg>
-          }
-        >
+      <SectionCard
+        title="Action Items"
+        index={2}
+        accentColor="#10B981"
+        icon={
+          <svg className="h-[16px] w-[16px]" style={{ color: "#10B981" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+          </svg>
+        }
+      >
+        {actionItems && actionItems.length > 0 ? (
           <ul className="space-y-1.5">
             {actionItems.map((item, i) => (
               <motion.li
@@ -124,21 +126,23 @@ export default function SummaryViewer({
               </motion.li>
             ))}
           </ul>
-        </SectionCard>
-      )}
+        ) : (
+          <p className="text-[13px] text-muted italic">No action items identified.</p>
+        )}
+      </SectionCard>
 
       {/* Next Steps */}
-      {nextSteps.length > 0 && (
-        <SectionCard
-          title="Next Steps"
-          index={3}
-          accentColor="var(--accent-blue)"
-          icon={
-            <svg className="h-[16px] w-[16px]" style={{ color: "var(--accent-blue)" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3 8.688c0-.864.933-1.405 1.683-.977l7.108 4.062a1.125 1.125 0 010 1.953l-7.108 4.062A1.125 1.125 0 013 16.81V8.688zM12.75 8.688c0-.864.933-1.405 1.683-.977l7.108 4.062a1.125 1.125 0 010 1.953l-7.108 4.062a1.125 1.125 0 01-1.683-.977V8.688z" />
-            </svg>
-          }
-        >
+      <SectionCard
+        title="Next Steps"
+        index={3}
+        accentColor="var(--accent-blue)"
+        icon={
+          <svg className="h-[16px] w-[16px]" style={{ color: "var(--accent-blue)" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3 8.688c0-.864.933-1.405 1.683-.977l7.108 4.062a1.125 1.125 0 010 1.953l-7.108 4.062A1.125 1.125 0 013 16.81V8.688zM12.75 8.688c0-.864.933-1.405 1.683-.977l7.108 4.062a1.125 1.125 0 010 1.953l-7.108 4.062a1.125 1.125 0 01-1.683-.977V8.688z" />
+          </svg>
+        }
+      >
+        {nextSteps && nextSteps.length > 0 ? (
           <ol className="space-y-1.5">
             {nextSteps.map((item, i) => (
               <motion.li
@@ -158,8 +162,10 @@ export default function SummaryViewer({
               </motion.li>
             ))}
           </ol>
-        </SectionCard>
-      )}
+        ) : (
+          <p className="text-[13px] text-muted italic">No next steps determined.</p>
+        )}
+      </SectionCard>
     </div>
   );
 }
