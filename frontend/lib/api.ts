@@ -1,7 +1,7 @@
 import { ProcessingResponse } from "./types";
 import { createClient } from "./supabase";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "/api";
 
 async function getAuthHeaders(): Promise<Record<string, string>> {
   const supabase = createClient();

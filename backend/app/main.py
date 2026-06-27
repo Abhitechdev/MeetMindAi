@@ -12,6 +12,10 @@ from app.services import whisper_service, gemini_service
 from supabase.client import create_client, Client
 import razorpay
 from pydantic import BaseModel
+import asyncio
+
+# ponytail: strict single-concurrency for whisper to avoid OOM
+transcription_semaphore = asyncio.Semaphore(1)
 
 # Configure structured logging
 # ponytail: simple console logging formatted for structured ingestion
@@ -101,7 +105,8 @@ app.add_middleware(
 )
 
 ALLOWED_EXTENSIONS = {".mp3", ".wav", ".m4a", ".mp4"}
-MAX_FILE_SIZE = 100 * 1024 * 1024  # 100MB
+# ponytail: hard limit upload size to save RAM during processing
+MAX_FILE_SIZE = 25 * 1024 * 1024  # 25MB
 
 LANGUAGE_MAP = {
     "te": "Telugu", "hi": "Hindi", "ta": "Tamil", "kn": "Kannada",
@@ -217,7 +222,7 @@ async def process_meeting(
         contents = await file.read()
         if len(contents) > MAX_FILE_SIZE:
             logger.warning(f"Upload rejected: file too large ({len(contents)} bytes) for user {client.user.id}")
-            raise HTTPException(status_code=400, detail="File too large. Max 100MB.")
+            raise HTTPException(status_code=400, detail="File too large. Max 25MB.")
 
         logger.info(f"Processing meeting upload: {file.filename} ({len(contents)} bytes) for user {client.user.id}")
 
@@ -225,8 +230,10 @@ async def process_meeting(
         tmp.write(contents)
         tmp.close()
 
-        # Step 1: Transcribe with Whisper
-        transcription = whisper_service.transcribe(tmp.name)
+        # Step 1: Transcribe with Whisper (Concurrency protected)
+        async with transcription_semaphore:
+            transcription = whisper_service.transcribe(tmp.name)
+            
         lang_code = transcription.get("language", "en")
         detected_language = LANGUAGE_MAP.get(lang_code, "English")
         target_lang = detected_language if output_language == "Original Language" else output_language
@@ -296,8 +303,12 @@ async def process_meeting(
         logger.error(f"AI processing failure: {str(e)} for user {client.user.id}")
         raise HTTPException(status_code=500, detail=str(e))
     finally:
+        # ponytail: aggressively delete temp file to free OS buffer cache
         if tmp and os.path.exists(tmp.name):
-            os.unlink(tmp.name)
+            try:
+                os.remove(tmp.name)
+            except Exception as e:
+                logger.error(f"Failed to delete temp file {tmp.name}: {str(e)}")
 
 
 @app.post("/chat", response_model=ChatResponse)

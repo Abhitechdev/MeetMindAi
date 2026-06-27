@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { useState, useEffect } from "react"
 import { ThemeToggle } from "./theme-toggle"
 import { createClient } from "@/lib/supabase"
@@ -22,6 +22,7 @@ export function Navigation() {
   const [loading, setLoading] = useState(true)
   const [supabase] = useState(() => createClient())
   const [usage, setUsage] = useState<{ plan: string; used: number; limit: number; remaining: number } | null>(null)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -158,6 +159,46 @@ export function Navigation() {
               </Link>
             )}
             <ThemeToggle />
+            
+            {/* Mobile Menu Button */}
+            <div className="md:hidden relative">
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="p-2 text-muted hover:text-foreground transition-colors"
+                aria-label="Toggle menu"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                </svg>
+              </button>
+              
+              <AnimatePresence>
+                {isMobileMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="absolute right-0 top-full mt-2 w-48 rounded-xl border border-white/10 bg-background/95 backdrop-blur-xl p-2 shadow-2xl z-50 flex flex-col gap-1"
+                  >
+                    {links.map((link) => {
+                      const isActive = pathname === link.href
+                      return (
+                        <Link
+                          key={link.href}
+                          href={link.href}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className={`block px-4 py-2 text-sm font-medium transition-colors rounded-md ${
+                            isActive ? "text-foreground bg-foreground/5" : "text-muted hover:text-foreground hover:bg-foreground/5"
+                          }`}
+                        >
+                          {link.label}
+                        </Link>
+                      )
+                    })}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
         </div>
       </div>
