@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "./components/theme-provider";
 import { Navigation } from "./components/nav";
 import CursorEffect from "./components/cursor-effect";
+import PublicAdWrapper from "@/components/PublicAdWrapper";
 
 export const metadata: Metadata = {
   title: "MeetMind AI — Meeting Insights Powered by AI",
@@ -23,7 +24,8 @@ export default function RootLayout({
           <Navigation />
           {children}
           <footer className="mt-auto py-8 text-center text-sm text-muted/60 border-t border-glass-border/30">
-            <p>Developed by <span className="font-semibold text-foreground/80">Abhishek</span></p>
+            <PublicAdWrapper />
+            <p className="mt-4">Developed by <span className="font-semibold text-foreground/80">Abhishek</span></p>
           </footer>
         </ThemeProvider>
       </body>
