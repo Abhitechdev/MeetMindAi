@@ -13,7 +13,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 rounded-full border border-glass-border bg-surface/50 px-4 py-1.5 text-xs font-medium text-muted mb-8"
+          className="inline-flex items-center gap-2 rounded-full border border-card-border bg-surface/30 px-4 py-1.5 text-xs font-medium text-muted mb-8 shadow-sm backdrop-blur-md"
         >
           <span className="h-1.5 w-1.5 rounded-full bg-accent-purple animate-pulse" />
           MeetMind AI 2.0
@@ -23,11 +23,11 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="text-5xl md:text-7xl font-bold tracking-tight mb-6 leading-[1.1]"
+          className="text-5xl md:text-7xl font-bold tracking-tight mb-6 leading-[1.05]"
         >
           Transform Meetings Into
           <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-purple via-accent-indigo to-accent-blue">
+          <span className="gradient-text">
             Actionable Intelligence
           </span>
         </motion.h1>

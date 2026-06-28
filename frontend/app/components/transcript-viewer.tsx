@@ -68,14 +68,13 @@ export default function TranscriptViewer({ transcript, segments, language = "Eng
   };
 
   return (
-    <div className="glass-card p-6">
+    <div className="glass-card glass-card-hover p-6">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
           <div
-            className="flex h-9 w-9 items-center justify-center rounded-lg"
-            style={{ background: "linear-gradient(135deg, rgba(124,58,237,0.15), rgba(59,130,246,0.15))" }}
+            className="flex h-9 w-9 items-center justify-center rounded-lg bg-surface border border-card-border"
           >
-            <svg className="h-[18px] w-[18px] text-accent-purple" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <svg className="h-[18px] w-[18px] text-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
             </svg>
           </div>
@@ -93,14 +92,14 @@ export default function TranscriptViewer({ transcript, segments, language = "Eng
           )}
           <button
             onClick={() => setShowTimestamps(!showTimestamps)}
-            className="rounded-lg px-3 py-1.5 text-xs font-medium text-muted hover:text-foreground hover:bg-white/5 transition-colors"
+            className="rounded-lg px-3 py-1.5 text-xs font-medium text-muted hover:text-foreground hover:bg-surface border border-transparent hover:border-card-border transition-colors"
           >
             {showTimestamps ? "Hide" : "Show"} timestamps
           </button>
           <button
             id="copy-transcript-btn"
             onClick={handleCopy}
-            className="rounded-lg px-3 py-1.5 text-xs font-medium text-muted hover:text-foreground hover:bg-white/5 transition-colors"
+            className="rounded-lg px-3 py-1.5 text-xs font-medium text-muted hover:text-foreground hover:bg-surface border border-transparent hover:border-card-border transition-colors"
           >
             {copied ? "✓ Copied" : "Copy"}
           </button>
@@ -114,7 +113,7 @@ export default function TranscriptViewer({ transcript, segments, language = "Eng
           placeholder="Search transcript..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full rounded-lg bg-surface border border-glass-border px-4 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:outline-none focus:border-accent-purple/50 transition-colors"
+          className="w-full rounded-lg bg-surface border border-card-border px-4 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:outline-none focus:border-foreground/50 focus:ring-1 focus:ring-foreground/50 transition-colors shadow-sm"
         />
       </div>
 
@@ -123,7 +122,7 @@ export default function TranscriptViewer({ transcript, segments, language = "Eng
           ? filteredSegments.map((seg, i) => (
               <motion.div
                 key={i}
-                className="flex gap-3 py-1 group hover:bg-white/[0.03] rounded px-2 -mx-2 transition-colors border-l-2 border-transparent hover:border-accent-purple/50"
+                className="flex gap-3 py-1.5 group hover:bg-surface rounded px-2 -mx-2 transition-colors border-l-2 border-transparent hover:border-foreground/50"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: Math.min(i * 0.02, 0.5) }}

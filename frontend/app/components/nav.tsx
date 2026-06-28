@@ -50,7 +50,7 @@ export function Navigation() {
   }, [user])
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/60 backdrop-blur-xl">
+    <nav className="sticky top-0 z-50 w-full border-b border-card-border bg-background/80 backdrop-blur-lg">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-8">
@@ -91,7 +91,7 @@ export function Navigation() {
               <div className="flex items-center gap-3">
                 {/* Usage Display */}
                 {usage && (
-                  <div className="hidden sm:flex items-center gap-3 px-3 py-1.5 rounded-full bg-foreground/5 border border-white/5 hover:bg-foreground/10 transition-colors relative group cursor-default mr-2">
+                  <div className="hidden sm:flex items-center gap-3 px-3 py-1.5 rounded-full bg-surface border border-card-border hover:bg-muted/10 transition-colors relative group cursor-default mr-2">
                     <div className="flex flex-col items-end">
                       <div className="text-[10px] font-medium uppercase tracking-wider text-muted mb-1">
                         {usage.plan} Plan
@@ -118,7 +118,7 @@ export function Navigation() {
                     </div>
 
                     {/* Hover Dropdown/Tooltip */}
-                    <div className="absolute top-full right-0 mt-3 w-56 rounded-xl border border-white/10 bg-background/95 backdrop-blur-xl p-4 shadow-2xl opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all pointer-events-none z-50">
+                    <div className="absolute top-full right-0 mt-3 w-56 rounded-xl border border-card-border bg-surface/95 backdrop-blur-xl p-4 shadow-2xl opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all pointer-events-none z-50">
                       <h4 className="text-sm font-semibold text-foreground mb-1">Usage Limit</h4>
                       <p className="text-xs text-muted mb-3">You have processed {usage.used} out of {usage.limit} meetings.</p>
                       
@@ -178,7 +178,7 @@ export function Navigation() {
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className="absolute right-0 top-full mt-2 w-48 rounded-xl border border-white/10 bg-background/95 backdrop-blur-xl p-2 shadow-2xl z-50 flex flex-col gap-1"
+                    className="absolute right-0 top-full mt-2 w-48 rounded-xl border border-card-border bg-surface/95 backdrop-blur-xl p-2 shadow-2xl z-50 flex flex-col gap-1"
                   >
                     {links.map((link) => {
                       const isActive = pathname === link.href

@@ -130,16 +130,16 @@ export default function HistoryPage() {
         {/* Dashboard Metrics */}
         {meetings.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-            <div className="glass-card p-5">
-              <p className="text-sm text-muted mb-1">Total Meetings</p>
+            <div className="glass-card glass-card-hover p-6">
+              <p className="text-sm font-medium text-muted mb-1">Total Meetings</p>
               <p className="text-3xl font-bold text-foreground">{metrics.total}</p>
             </div>
-            <div className="glass-card p-5">
-              <p className="text-sm text-muted mb-1">Languages Used</p>
+            <div className="glass-card glass-card-hover p-6">
+              <p className="text-sm font-medium text-muted mb-1">Languages Used</p>
               <p className="text-3xl font-bold text-foreground">{metrics.languagesUsed}</p>
             </div>
-            <div className="glass-card p-5">
-              <p className="text-sm text-muted mb-1">Most Used Language</p>
+            <div className="glass-card glass-card-hover p-6">
+              <p className="text-sm font-medium text-muted mb-1">Most Used Language</p>
               <p className="text-3xl font-bold text-foreground">
                 {FLAG_MAP[metrics.mostUsed] || "🌐"} {metrics.mostUsed}
               </p>
@@ -157,12 +157,12 @@ export default function HistoryPage() {
               placeholder="Search meetings or tags..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-background/50 border border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20"
+              className="w-full bg-surface border border-card-border rounded-lg pl-10 pr-4 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20"
             />
           </div>
           <button
             onClick={() => setSortOrder(prev => prev === "desc" ? "asc" : "desc")}
-            className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-muted hover:text-foreground glass-card glass-card-hover"
+            className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-muted hover:text-foreground bg-surface border border-card-border rounded-lg shadow-sm hover:bg-muted/5 transition-colors"
           >
             Sort by Date: {sortOrder === "desc" ? "Newest" : "Oldest"}
           </button>
@@ -183,12 +183,12 @@ export default function HistoryPage() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  className="glass-card p-6 flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center hover:bg-white/[0.02] transition-colors"
+                  className="glass-card glass-card-hover p-6 flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center transition-colors"
                 >
                   <div className="space-y-2">
                     <div className="flex items-center gap-3">
                       <h3 className="text-lg font-semibold text-foreground">{meeting.title}</h3>
-                      <span className="px-2 py-0.5 rounded-full bg-accent-purple/10 text-accent-purple text-xs font-medium border border-accent-purple/20">
+                      <span className="px-2 py-0.5 rounded-full bg-surface text-foreground text-xs font-medium border border-card-border">
                         {FLAG_MAP[meeting.language || "English"] || "🌐"} {meeting.language || "English"}
                       </span>
                     </div>
@@ -209,7 +209,7 @@ export default function HistoryPage() {
                     {meeting.tags && meeting.tags.length > 0 && (
                       <div className="flex flex-wrap gap-2 pt-1">
                         {meeting.tags.map((tag, i) => (
-                          <span key={i} className="px-2 py-0.5 rounded-full bg-foreground/5 text-xs text-foreground/70">
+                          <span key={i} className="px-2 py-0.5 rounded-full bg-surface border border-card-border text-xs font-medium text-muted">
                             {tag}
                           </span>
                         ))}
@@ -219,7 +219,7 @@ export default function HistoryPage() {
                   <div className="flex items-center gap-3 w-full sm:w-auto">
                     <Link 
                       href={`/history/${meeting.id}`}
-                      className="flex-1 sm:flex-none px-4 py-2 rounded-md bg-foreground text-background text-sm font-medium hover:bg-foreground/90 transition-colors text-center"
+                      className="flex-1 sm:flex-none px-4 py-2 rounded-md bg-foreground text-background text-sm font-medium shadow-sm hover:bg-foreground/90 transition-colors text-center"
                     >
                       Open
                     </Link>

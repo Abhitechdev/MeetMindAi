@@ -32,14 +32,9 @@ export default function ProgressTracker({ status }: { status: string }) {
               <motion.div
                 className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold transition-colors duration-300 ${
                   done || active
-                    ? "text-white"
-                    : "bg-surface border border-glass-border text-muted"
+                    ? "bg-foreground text-background shadow-sm"
+                    : "bg-surface border border-card-border text-muted"
                 }`}
-                style={
-                  done || active
-                    ? { background: "linear-gradient(135deg, #7C3AED, #3B82F6)" }
-                    : undefined
-                }
                 animate={active ? { scale: [1, 1.1, 1] } : {}}
                 transition={
                   active
@@ -60,7 +55,7 @@ export default function ProgressTracker({ status }: { status: string }) {
             {i < STEPS.length - 1 && (
               <div
                 className={`w-8 sm:w-12 h-px mb-5 rounded-full transition-colors duration-500 ${
-                  i < currentStep ? "bg-accent-purple" : "bg-glass-border"
+                  i < currentStep ? "bg-foreground" : "bg-card-border"
                 }`}
               />
             )}

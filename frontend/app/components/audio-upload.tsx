@@ -65,10 +65,10 @@ export default function AudioUpload({ onUpload, disabled, limitReached }: AudioU
         onDragLeave={(e) => { e.preventDefault(); setIsDragging(false); }}
         onClick={() => inputRef.current?.click()}
         className={`
-          relative cursor-pointer glass-card p-12 text-center transition-all duration-300
+          relative cursor-pointer rounded-2xl border-2 border-dashed bg-surface/50 p-12 text-center transition-all duration-300
           ${isDragging
-            ? "border-accent-purple/50 shadow-[0_0_40px_rgba(124,58,237,0.15)]"
-            : "hover:border-accent-purple/30 hover:shadow-[0_0_30px_rgba(124,58,237,0.1)]"
+            ? "border-foreground/50 bg-muted/10 shadow-sm"
+            : "border-card-border hover:border-foreground/30 hover:bg-muted/5"
           }
           ${disabled ? "opacity-50 pointer-events-none" : ""}
         `}
@@ -85,10 +85,9 @@ export default function AudioUpload({ onUpload, disabled, limitReached }: AudioU
         />
 
         <div
-          className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl"
-          style={{ background: "linear-gradient(135deg, rgba(124,58,237,0.15), rgba(59,130,246,0.15))" }}
+          className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-muted/10"
         >
-          <svg className="h-8 w-8 text-accent-purple" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <svg className="h-8 w-8 text-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
           </svg>
         </div>
@@ -123,10 +122,9 @@ export default function AudioUpload({ onUpload, disabled, limitReached }: AudioU
           <div className="flex items-center justify-between glass-card px-5 py-4">
             <div className="flex items-center gap-3 min-w-0">
               <div
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
-                style={{ background: "linear-gradient(135deg, rgba(124,58,237,0.15), rgba(59,130,246,0.15))" }}
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-muted/10"
               >
-                <svg className="h-5 w-5 text-accent-purple" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <svg className="h-5 w-5 text-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 11-.99-3.467l2.31-.66a2.25 2.25 0 001.632-2.163zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 01-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553z" />
                 </svg>
               </div>
@@ -140,7 +138,7 @@ export default function AudioUpload({ onUpload, disabled, limitReached }: AudioU
                 <select
                   value={outputLanguage}
                   onChange={(e) => setOutputLanguage(e.target.value)}
-                  className="bg-background border border-white/10 rounded-lg px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20"
+                  className="bg-surface border border-card-border rounded-lg px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20"
                 >
                   <option value="English">English Output</option>
                   <option value="Original Language">Original Language Output</option>
@@ -150,8 +148,7 @@ export default function AudioUpload({ onUpload, disabled, limitReached }: AudioU
                 id="process-meeting-btn"
                 onClick={() => onUpload(selectedFile, outputLanguage)}
                 disabled={disabled || limitReached}
-                className="flex items-center gap-2 rounded-xl px-6 py-2.5 text-sm font-semibold text-white disabled:opacity-50 disabled:pointer-events-none"
-                style={{ background: "linear-gradient(135deg, #7C3AED, #3B82F6)" }}
+                className="flex items-center gap-2 rounded-xl px-6 py-2.5 text-sm font-semibold bg-foreground text-background shadow-sm hover:bg-foreground/90 transition-colors disabled:opacity-50 disabled:pointer-events-none"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
               >

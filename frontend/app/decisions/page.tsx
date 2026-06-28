@@ -60,7 +60,7 @@ export default function DecisionsPage() {
                   key={decision.id}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="glass-card p-5 flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center hover:bg-white/[0.02] transition-colors"
+                  className="glass-card glass-card-hover p-6 flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center transition-colors"
                 >
                   <div className="space-y-1.5 flex-1">
                     <p className="text-base font-medium text-foreground">
@@ -73,7 +73,7 @@ export default function DecisionsPage() {
                     </div>
                   </div>
                   <div className="flex-shrink-0 pt-2 sm:pt-0">
-                    <span className="px-3 py-1 text-xs font-medium rounded-full bg-foreground/10 text-foreground">
+                    <span className="px-3 py-1 text-xs font-medium rounded-full bg-surface border border-card-border text-foreground shadow-sm">
                       {decision.status}
                     </span>
                   </div>

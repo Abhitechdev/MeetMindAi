@@ -102,11 +102,7 @@ export default function BentoFeatures() {
                 scale: 1.02, 
                 transition: { duration: 0.25, ease: "easeOut" } 
               }}
-              className={`group relative glass-card p-6 border border-glass-border flex flex-col justify-between overflow-hidden transition-all duration-250 ${
-                isAi 
-                  ? "hover:border-accent-purple/50 hover:shadow-[0_0_40px_rgba(124,58,237,0.15)]" 
-                  : "hover:border-glass-border/80 hover:shadow-[0_0_30px_rgba(255,255,255,0.04)] dark:hover:shadow-[0_0_30px_rgba(255,255,255,0.02)]"
-              } ${item.className}`}
+              className={`group relative glass-card glass-card-hover p-8 flex flex-col justify-between overflow-hidden ${item.className}`}
             >
               {/* Dynamic hover backgrounds */}
               {isAi ? (
@@ -118,7 +114,7 @@ export default function BentoFeatures() {
               <div className="relative z-10">
                 {/* Floating Icon */}
                 <motion.div 
-                  className="text-3xl mb-4 bg-foreground/5 w-12 h-12 flex items-center justify-center rounded-xl border border-glass-border shadow-sm"
+                  className="text-3xl mb-4 bg-surface w-12 h-12 flex items-center justify-center rounded-xl border border-card-border shadow-sm"
                   animate={{ y: [-5, 5, -5] }}
                   transition={{ 
                     duration: 4, 

@@ -33,7 +33,7 @@ export default function RootLayout({
           <CursorEffect />
           <Navigation />
           {children}
-          <footer className="mt-auto py-8 text-center text-sm text-muted/60 border-t border-glass-border/30">
+          <footer className="mt-auto py-12 text-center text-sm text-muted border-t border-card-border bg-surface/30">
             <PublicAdWrapper />
             <p className="mt-4">Developed by <span className="font-semibold text-foreground/80">Abhishek</span></p>
           </footer>

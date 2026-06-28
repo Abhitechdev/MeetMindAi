@@ -59,13 +59,13 @@ export default function ActionsPage() {
           </div>
         </div>
 
-        <div className="flex gap-2 mb-8 p-1 glass-card inline-flex rounded-lg">
+        <div className="flex gap-2 mb-8 p-1 bg-surface border border-card-border inline-flex rounded-lg shadow-sm">
           {(["all", "pending", "completed"] as const).map((f) => (
             <button
               key={f}
               onClick={() => setFilter(f)}
               className={`px-4 py-2 rounded-md text-sm font-medium capitalize transition-colors ${
-                filter === f ? "bg-foreground/10 text-foreground" : "text-muted hover:text-foreground"
+                filter === f ? "bg-foreground text-background shadow-sm" : "text-muted hover:text-foreground"
               }`}
             >
               {f}
@@ -88,7 +88,7 @@ export default function ActionsPage() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  className={`glass-card p-4 flex gap-4 items-start transition-opacity ${
+                  className={`glass-card glass-card-hover p-5 flex gap-4 items-start transition-opacity ${
                     action.status === "completed" ? "opacity-60 hover:opacity-100" : ""
                   }`}
                 >
@@ -96,8 +96,8 @@ export default function ActionsPage() {
                     onClick={() => toggleStatus(action.id, action.status)}
                     className={`mt-1 w-5 h-5 flex-shrink-0 rounded border flex items-center justify-center transition-colors ${
                       action.status === "completed" 
-                        ? "bg-foreground border-foreground text-background" 
-                        : "border-muted hover:border-foreground"
+                        ? "bg-foreground border-foreground text-background shadow-sm" 
+                        : "border-card-border bg-surface hover:border-foreground"
                     }`}
                   >
                     {action.status === "completed" && (

@@ -3,34 +3,34 @@
 @import "tailwindcss";
 
 :root, .light {
-  --background: #F8FAFC;
-  --surface: #F1F5F9;
+  --background: #FFFFFF;
+  --surface: #F7F7F8;
   --card: #FFFFFF;
   --card-border: rgba(0, 0, 0, 0.08);
-  --foreground: #0F172A;
-  --muted: #64748B;
-  --accent-purple: #7C3AED;
-  --accent-indigo: #6366F1;
-  --accent-blue: #3B82F6;
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(0, 0, 0, 0.1);
+  --foreground: #111111;
+  --muted: #888888;
+  --accent-purple: #5E6AD2;
+  --accent-indigo: #5E6AD2;
+  --accent-blue: #326CE5;
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(0, 0, 0, 0.08);
   --success: #10B981;
   --danger: #EF4444;
   --warning: #F59E0B;
 }
 
 .dark {
-  --background: #08090D;
-  --surface: #0F1117;
-  --card: #141722;
-  --card-border: rgba(255, 255, 255, 0.08);
-  --foreground: #FFFFFF;
-  --muted: #A1A1AA;
-  --accent-purple: #7C3AED;
-  --accent-indigo: #6366F1;
-  --accent-blue: #3B82F6;
-  --glass-bg: rgba(20, 23, 34, 0.5);
-  --glass-border: rgba(255, 255, 255, 0.08);
+  --background: #000000;
+  --surface: #0A0A0A;
+  --card: #111111;
+  --card-border: rgba(255, 255, 255, 0.1);
+  --foreground: #EDEDED;
+  --muted: #888888;
+  --accent-purple: #6E79D6;
+  --accent-indigo: #6E79D6;
+  --accent-blue: #4078F2;
+  --glass-bg: rgba(10, 10, 10, 0.4);
+  --glass-border: rgba(255, 255, 255, 0.1);
   --success: #10B981;
   --danger: #EF4444;
   --warning: #F59E0B;
@@ -63,6 +63,7 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   cursor: url('/cursor.svg') 4 4, auto;
+  letter-spacing: -0.01em;
 }
 
 *, *::before, *::after {
@@ -70,30 +71,38 @@ html, body {
 }
 
 /* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--foreground) 15%, transparent); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--foreground) 25%, transparent); }
+::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--foreground) 10%, transparent); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--foreground) 20%, transparent); }
 
 /* ponytail: glassmorphism as utility classes — reused everywhere, not per-component */
 .glass-card {
   background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--glass-border);
-  border-radius: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px -1px rgba(0,0,0,0.03);
+}
+.dark .glass-card {
+  box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.03), 0 4px 24px -1px rgba(0,0,0,0.4);
 }
 
 .glass-card-hover {
-  transition: border-color 0.3s, box-shadow 0.3s;
+  transition: all 0.3s ease;
 }
 .glass-card-hover:hover {
-  border-color: rgba(124, 58, 237, 0.3);
-  box-shadow: 0 0 30px rgba(124, 58, 237, 0.1);
+  border-color: color-mix(in srgb, var(--foreground) 15%, transparent);
+  box-shadow: 0 8px 32px -4px rgba(0,0,0,0.05);
+  transform: translateY(-1px);
+}
+.dark .glass-card-hover:hover {
+  box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.03), 0 8px 32px -4px rgba(0,0,0,0.6);
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+  background: linear-gradient(135deg, var(--foreground), var(--muted));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
