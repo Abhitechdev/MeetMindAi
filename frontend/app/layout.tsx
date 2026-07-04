@@ -35,7 +35,15 @@ export default function RootLayout({
           {children}
           <footer className="mt-auto py-12 text-center text-sm text-muted border-t border-card-border bg-surface/30">
             <PublicAdWrapper />
-            <p className="mt-4">Developed by <span className="font-semibold text-foreground/80">Abhishek</span></p>
+            <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-4 mb-4" aria-label="Legal">
+              <a href="/legal/privacy" className="hover:text-foreground transition-colors">Privacy Policy</a>
+              <a href="/legal/terms" className="hover:text-foreground transition-colors">Terms of Service</a>
+              <a href="/legal/ai-transparency" className="hover:text-foreground transition-colors">AI Transparency</a>
+              <a href="/legal/acceptable-use" className="hover:text-foreground transition-colors">Acceptable Use</a>
+              <a href="mailto:meetmindai.help@gmail.com" className="hover:text-foreground transition-colors">Contact</a>
+            </nav>
+            <p className="mb-1">&copy; 2026 MeetMind AI. All rights reserved.</p>
+            <p>Developed by <span className="font-semibold text-foreground/80">Abhishek</span></p>
           </footer>
         </ThemeProvider>
       </body>
