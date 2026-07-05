@@ -24,16 +24,18 @@ export function ThemeToggle() {
 
     if (prevThemeRef.current === undefined) {
       prevThemeRef.current = currentTheme
+      // The Lottie file has Sun at frame 0 and Moon at the end
       if (isDark) {
-        lottie.setFrame(0)
-      } else {
         lottie.setFrame(lottie.totalFrames - 1)
+      } else {
+        lottie.setFrame(0)
       }
       return
     }
 
     prevThemeRef.current = currentTheme
-    lottie.setMode(isDark ? "reverse" : "forward")
+    // Animate to Moon (forward) if switching to dark, animate to Sun (reverse) if switching to light
+    lottie.setMode(isDark ? "forward" : "reverse")
     lottie.play()
   }, [isDark, mounted, currentTheme])
 
