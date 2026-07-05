@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { useTheme } from "next-themes"
-import { motion } from "framer-motion"
 import { DotLottieReact } from "@lottiefiles/dotlottie-react"
 
 export function ThemeToggle() {
@@ -24,7 +23,6 @@ export function ThemeToggle() {
     if (!lottie || !mounted) return
 
     if (prevThemeRef.current === undefined) {
-      // First mount — jump to the correct frame without animating
       prevThemeRef.current = currentTheme
       if (isDark) {
         lottie.setFrame(0)
@@ -44,15 +42,9 @@ export function ThemeToggle() {
   }
 
   return (
-    <motion.button
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="p-1 rounded-md hover:bg-foreground/5 text-foreground/70 hover:text-foreground transition-colors overflow-hidden flex items-center justify-center"
-      aria-label="Toggle theme"
-    >
-      {/* ponytail: pointer-events-none prevents the canvas from stealing clicks */}
-      <div className="w-7 h-7 pointer-events-none">
+    // ponytail: Lottie's Shadow DOM eats clicks — transparent button overlay on top is the only reliable fix
+    <div className="relative w-9 h-9">
+      <div className="absolute inset-0 pointer-events-none">
         <DotLottieReact
           dotLottieRefCallback={(ref: any) => { dotLottieRef.current = ref }}
           src="https://lottie.host/e27d486a-4656-499d-8942-d53b79065f69/0SDRtJ8Ldr.lottie"
@@ -60,9 +52,12 @@ export function ThemeToggle() {
           loop={false}
         />
       </div>
-    </motion.button>
+      <button
+        onClick={() => setTheme(isDark ? "light" : "dark")}
+        className="absolute inset-0 z-10 rounded-md hover:bg-foreground/5 transition-colors cursor-pointer"
+        aria-label="Toggle theme"
+      />
+    </div>
   )
 }
-
-
 
