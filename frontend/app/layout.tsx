@@ -22,6 +22,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="h-full antialiased">
+      <head>
+        <Script
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8627957484050006"
+          crossOrigin="anonymous"
+          strategy="beforeInteractive"
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-background text-foreground transition-colors duration-300">
         <Script src="https://www.googletagmanager.com/gtag/js?id=G-XTH4Y4K2JM" strategy="afterInteractive" />
         <Script id="google-analytics" strategy="afterInteractive">
@@ -32,12 +39,6 @@ export default function RootLayout({
             gtag('config', 'G-XTH4Y4K2JM');
           `}
         </Script>
-        <Script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8627957484050006"
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <CursorEffect />
           <Navigation />
