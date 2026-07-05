@@ -1,8 +1,21 @@
 "use client";
 
-import Script from "next/script";
+import { useEffect, useRef } from "react";
 
 export default function Adsterra() {
+  const adRef = useRef<HTMLDivElement>(null);
+  const pushed = useRef(false);
+
+  useEffect(() => {
+    if (pushed.current) return;
+    try {
+      ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+      pushed.current = true;
+    } catch {
+      // ponytail: adsbygoogle not loaded yet — auto-ads script handles retry
+    }
+  }, []);
+
   return (
     <div className="w-full max-w-[728px] mx-auto my-8 px-4 transition-all duration-300">
       <div className="glass-card flex flex-col items-center justify-center p-4 border border-glass-border/30 bg-glass-bg/10 backdrop-blur-sm rounded-2xl relative overflow-hidden group">
@@ -14,14 +27,19 @@ export default function Adsterra() {
           Advertisement
         </span>
 
-        {/* Ad Container Placeholder */}
-        <div className="w-full flex justify-center items-center min-h-[90px] relative z-10">
-          <Script
-            src="https://pl30099757.effectivecpmnetwork.com/6e/14/09/6e14096a8e5d84260eb5e7fdf3e90ee5.js"
-            strategy="afterInteractive"
+        {/* AdSense Ad Unit */}
+        <div ref={adRef} className="w-full flex justify-center items-center min-h-[90px] relative z-10">
+          <ins
+            className="adsbygoogle"
+            style={{ display: "block" }}
+            data-ad-client="ca-pub-8627957484050006"
+            data-ad-slot="2987197934"
+            data-ad-format="auto"
+            data-full-width-responsive="true"
           />
         </div>
       </div>
     </div>
   );
 }
+
