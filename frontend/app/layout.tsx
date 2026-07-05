@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "MeetMind AI — Meeting Insights Powered by AI",
   description:
     "Upload your meeting recording and instantly get a transcript, executive summary, key decisions, action items, and next steps — all powered by AI.",
+  other: {
+    "google-adsense-account": "ca-pub-8627957484050006",
+  },
 };
 
 export default function RootLayout({
