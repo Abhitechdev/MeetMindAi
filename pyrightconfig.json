@@ -1,10 +1,7 @@
 {
-  "venvPath": "backend",
+  "venvPath": "d:\\MeetingMindAI\\backend",
   "venv": "venv",
-  "executionEnvironments": [
-    {
-      "root": "backend",
-      "extraPaths": ["backend"]
-    }
+  "extraPaths": [
+    "d:\\MeetingMindAI\\backend"
   ]
 }
