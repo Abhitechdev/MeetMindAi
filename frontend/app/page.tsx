@@ -81,15 +81,11 @@ export default function Home() {
     setStatus("uploading");
 
     try {
-      // ponytail: brief delay so user sees the upload step before it jumps to transcribing
-      await new Promise((r) => setTimeout(r, 600));
       setStatus("transcribing");
 
       const data = await processMeeting(file, outputLanguage);
 
-      // ponytail: brief summarizing step so all 4 progress steps are visible
       setStatus("summarizing");
-      await new Promise((r) => setTimeout(r, 800));
 
       setResult(data);
       setStatus("complete");
@@ -179,8 +175,8 @@ export default function Home() {
               key="idle"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.4 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
             >
               <HeroSection />
               <BentoFeatures />
@@ -190,7 +186,7 @@ export default function Home() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
+                transition={{ duration: 0.25, delay: 0.1 }}
               >
                 <AudioUpload onUpload={handleUpload} disabled={false} limitReached={limitReached} />
               </motion.div>
@@ -241,7 +237,7 @@ export default function Home() {
               key="results"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.25 }}
             >
               {/* Header */}
               <div className="flex items-center justify-between mb-8">
@@ -277,7 +273,7 @@ export default function Home() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
+                transition={{ duration: 0.25, delay: 0.1 }}
                 className="mb-5"
               >
                 <TranscriptViewer transcript={result.transcript} segments={result.segments} language={result.language} />
@@ -287,7 +283,7 @@ export default function Home() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
+                transition={{ duration: 0.25, delay: 0.15 }}
                 className="mb-8"
               >
                 <SummaryViewer
@@ -303,7 +299,7 @@ export default function Home() {
                 className="flex flex-wrap gap-3 justify-center"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.5 }}
+                transition={{ duration: 0.25, delay: 0.2 }}
               >
                 <motion.button
                   onClick={handleCopySummary}
