@@ -37,7 +37,8 @@ export async function updateSession(request: NextRequest) {
 
   const isProtectedRoute = request.nextUrl.pathname.startsWith('/history') || 
                            request.nextUrl.pathname.startsWith('/actions') || 
-                           request.nextUrl.pathname.startsWith('/decisions')
+                           request.nextUrl.pathname.startsWith('/decisions') ||
+                           request.nextUrl.pathname.startsWith('/contact')
 
   if (!user && isProtectedRoute) {
     // no user, potentially respond by redirecting the user to the login page
