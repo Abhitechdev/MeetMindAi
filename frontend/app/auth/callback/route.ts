@@ -31,7 +31,20 @@ export async function GET(request: Request) {
       }
     )
 
-    await supabase.auth.exchangeCodeForSession(code)
+    const { data: { session } } = await supabase.auth.exchangeCodeForSession(code)
+    
+    if (session?.user?.email) {
+      const email = session.user.email.toLowerCase();
+      const allowedDomains = ['gmail.com', 'outlook.com', 'hotmail.com'];
+      const isEdu = email.endsWith('.edu') || email.includes('.edu.');
+      const domain = email.split('@')[1];
+      
+      if (!allowedDomains.includes(domain) && !isEdu) {
+        // Not an allowed email provider - sign out and redirect with error
+        await supabase.auth.signOut();
+        return NextResponse.redirect(new URL('/login?error=Only+Gmail,+Outlook,+or+.edu+emails+are+allowed.+Temporary+emails+are+blocked.', request.url))
+      }
+    }
   }
 
   // URL to redirect to after sign in process completes

@@ -1,14 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import { createClient } from "@/lib/supabase";
 import GradientBackground from "../components/gradient-background";
 
-export default function LoginPage() {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+function LoginContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(searchParams.get("error"));
   const [supabase] = useState(() => createClient());
 
   useEffect(() => {
@@ -75,5 +77,17 @@ export default function LoginPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <main className="relative min-h-screen flex items-center justify-center p-4">
+        <GradientBackground />
+      </main>
+    }>
+      <LoginContent />
+    </Suspense>
   );
 }
