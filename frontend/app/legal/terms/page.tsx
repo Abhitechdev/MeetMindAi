@@ -203,10 +203,10 @@ export default function TermsOfServicePage() {
           <p>
             For questions about these Terms, contact us at{" "}
             <a
-              href="mailto:meetmindai.help@gmail.com"
+              href="mailto:meetmindai.help@zohomail.in"
               className="underline underline-offset-2 hover:text-foreground transition-colors"
             >
-              meetmindai.help@gmail.com
+              meetmindai.help@zohomail.in
             </a>
             .
           </p>

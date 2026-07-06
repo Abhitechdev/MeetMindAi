@@ -51,7 +51,7 @@ export default function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
             onClose();
           } catch (err) {
             console.error(err);
-            alert("Payment verification failed. Please contact support.");
+            alert("Payment verification failed. Please contact support at meetmindai.help@zohomail.in");
           }
         },
         prefill: {

@@ -153,10 +153,10 @@ export default function AcceptableUsePolicyPage() {
             If you believe your account was wrongly suspended or terminated,
             you may appeal by emailing{" "}
             <a
-              href="mailto:meetmindai.help@gmail.com"
+              href="mailto:meetmindai.help@zohomail.in"
               className="underline underline-offset-2 hover:text-foreground transition-colors"
             >
-              meetmindai.help@gmail.com
+              meetmindai.help@zohomail.in
             </a>{" "}
             with your account email and a description of the situation. We will
             review appeals within 14 business days.
@@ -181,10 +181,10 @@ export default function AcceptableUsePolicyPage() {
           <p>
             To report a violation or ask questions about this Policy, email{" "}
             <a
-              href="mailto:meetmindai.help@gmail.com"
+              href="mailto:meetmindai.help@zohomail.in"
               className="underline underline-offset-2 hover:text-foreground transition-colors"
             >
-              meetmindai.help@gmail.com
+              meetmindai.help@zohomail.in
             </a>
             .
           </p>

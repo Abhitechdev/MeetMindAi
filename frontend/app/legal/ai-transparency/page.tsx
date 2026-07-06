@@ -150,10 +150,10 @@ export default function AITransparencyPage() {
             If you encounter an incorrect, misleading, or harmful AI output,
             please report it to{" "}
             <a
-              href="mailto:meetmindai.help@gmail.com"
+              href="mailto:meetmindai.help@zohomail.in"
               className="underline underline-offset-2 hover:text-foreground transition-colors"
             >
-              meetmindai.help@gmail.com
+              meetmindai.help@zohomail.in
             </a>
             . Include the meeting ID and a description of the issue so we can
             investigate.

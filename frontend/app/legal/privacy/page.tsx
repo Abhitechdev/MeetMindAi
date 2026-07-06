@@ -212,10 +212,10 @@ export default function PrivacyPolicyPage() {
           <p>
             For privacy-related questions or requests, contact us at{" "}
             <a
-              href="mailto:meetmindai.help@gmail.com"
+              href="mailto:meetmindai.help@zohomail.in"
               className="underline underline-offset-2 hover:text-foreground transition-colors"
             >
-              meetmindai.help@gmail.com
+              meetmindai.help@zohomail.in
             </a>
             .
           </p>

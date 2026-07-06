@@ -50,7 +50,7 @@ export default function RootLayout({
               <a href="/legal/terms" className="hover:text-foreground transition-colors">Terms of Service</a>
               <a href="/legal/ai-transparency" className="hover:text-foreground transition-colors">AI Transparency</a>
               <a href="/legal/acceptable-use" className="hover:text-foreground transition-colors">Acceptable Use</a>
-              <a href="mailto:meetmindai.help@gmail.com" className="hover:text-foreground transition-colors">Contact</a>
+              <a href="/contact" className="hover:text-foreground transition-colors">Contact</a>
             </nav>
             <p className="mb-1">&copy; 2026 MeetMind AI. All rights reserved.</p>
             <p>Developed by <span className="font-semibold text-foreground/80">Abhishek</span></p>
