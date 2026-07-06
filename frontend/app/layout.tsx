@@ -39,6 +39,7 @@ export default function RootLayout({
             gtag('config', 'G-XTH4Y4K2JM');
           `}
         </Script>
+        <Script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.9.14/dist/dotlottie-wc.js" type="module" strategy="afterInteractive" />
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <CursorEffect />
           <Navigation />

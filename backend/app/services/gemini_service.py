@@ -63,13 +63,16 @@ def summarize(transcript: str, detected_language: str = "English", output_langua
 
     text = response.choices[0].message.content.strip()
 
-    # Strip markdown code fences if model adds them despite instructions
-    if text.startswith("```"):
-        lines = text.split("\n")
-        lines = [l for l in lines[1:] if l.strip() != "```"]
-        text = "\n".join(lines)
+    # Robust JSON extraction
+    start_idx = text.find('{')
+    end_idx = text.rfind('}')
+    if start_idx != -1 and end_idx != -1 and end_idx > start_idx:
+        text = text[start_idx:end_idx+1]
 
-    result = json.loads(text)
+    try:
+        result = json.loads(text)
+    except Exception:
+        result = {}
 
     # Validate expected keys exist
     required = ["title", "executiveSummary", "tags", "sentiment", "priority", "decisions", "actionItems", "nextSteps"]
@@ -96,7 +99,7 @@ def chat(question: str, transcript: str, summary: str) -> str:
     # ponytail: stuff transcript+summary into user message, no RAG/embeddings needed at this scale
     context = f"Transcript:\n{transcript}\n\nSummary:\n{summary}"
     response = client.chat.completions.create(
-        model="meta/llama-3.3-70b-instruct",
+        model="meta/llama-3.1-8b-instruct",
         messages=[
             {"role": "system", "content": CHAT_SYSTEM},
             {"role": "user", "content": f"{context}\n\nQuestion: {question}"},

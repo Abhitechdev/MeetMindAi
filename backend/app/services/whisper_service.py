@@ -19,7 +19,7 @@ def _get_model() -> WhisperModel:
             "tiny", 
             device="cpu", 
             compute_type="int8",
-            cpu_threads=2,
+            cpu_threads=4,
             num_workers=1
         )
     return _model
@@ -35,7 +35,7 @@ def transcribe(file_path: str) -> dict:
     logger.info(f"Memory before transcription: {mem_before:.2f} MB")
 
     model = _get_model()
-    segments_iter, info = model.transcribe(file_path, beam_size=5)
+    segments_iter, info = model.transcribe(file_path, beam_size=2)
 
     segments = []
     full_text_parts = []

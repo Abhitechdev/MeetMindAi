@@ -257,7 +257,8 @@ async def process_meeting(
 
         # Step 1: Transcribe with Whisper (Concurrency protected)
         async with transcription_semaphore:
-            transcription = whisper_service.transcribe(tmp.name)
+            loop = asyncio.get_running_loop()
+            transcription = await loop.run_in_executor(None, whisper_service.transcribe, tmp.name)
             
         lang_code = transcription.get("language", "en")
         detected_language = LANGUAGE_MAP.get(lang_code, "English")
