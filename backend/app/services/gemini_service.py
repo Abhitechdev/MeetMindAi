@@ -99,7 +99,7 @@ def chat(question: str, transcript: str, summary: str) -> str:
     # ponytail: stuff transcript+summary into user message, no RAG/embeddings needed at this scale
     context = f"Transcript:\n{transcript}\n\nSummary:\n{summary}"
     response = client.chat.completions.create(
-        model="meta/llama-3.1-8b-instruct",
+        model="meta/llama-3.3-70b-instruct",
         messages=[
             {"role": "system", "content": CHAT_SYSTEM},
             {"role": "user", "content": f"{context}\n\nQuestion: {question}"},
