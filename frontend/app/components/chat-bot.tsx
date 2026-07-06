@@ -165,6 +165,20 @@ export default function ChatBot({ meetingId, transcript, summary }: ChatBotProps
             {/* Messages Area */}
             <div className="flex-1 overflow-y-auto p-5 scroll-smooth">
               <div className="space-y-6">
+                
+                {/* Lottie Animation on open */}
+                {messages.length === 1 && (
+                  <motion.div 
+                    className="flex justify-center mb-2"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.4 }}
+                  >
+                    {/* @ts-ignore */}
+                    <dotlottie-wc src="https://lottie.host/de3c229a-8178-4113-9937-1d2b03ad4444/e9RdggEUwX.lottie" style={{ width: "200px", height: "200px" }} autoplay loop></dotlottie-wc>
+                  </motion.div>
+                )}
+
                 {messages.map((msg) => (
                   <motion.div
                     key={msg.id}

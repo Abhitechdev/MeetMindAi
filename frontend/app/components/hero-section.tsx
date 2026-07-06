@@ -41,16 +41,6 @@ export default function HeroSection() {
           Upload recordings and instantly generate transcripts, summaries, action items, decisions, risks, and follow-ups.
         </motion.p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="flex justify-center mt-4 mb-10"
-        >
-          {/* @ts-ignore */}
-          <dotlottie-wc src="https://lottie.host/de3c229a-8178-4113-9937-1d2b03ad4444/e9RdggEUwX.lottie" style={{ width: "300px", height: "300px" }} autoplay loop></dotlottie-wc>
-        </motion.div>
-
       </div>
     </section>
   );
