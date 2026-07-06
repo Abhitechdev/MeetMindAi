@@ -226,6 +226,7 @@ export default function ContactPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
+          whileHover={{ y: -5, transition: { duration: 0.3 } }}
         >
           <h2 className="text-xl font-semibold text-foreground mb-1">Send us a Message</h2>
           <p className="text-sm text-muted mb-6">
@@ -255,9 +256,15 @@ export default function ContactPage() {
               </button>
             </motion.div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <motion.form 
+              onSubmit={handleSubmit} 
+              className="space-y-5"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+            >
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
+                <motion.div variants={itemVariants}>
                   <label htmlFor="contact-name" className="block text-xs font-medium text-muted mb-1.5 uppercase tracking-wider">
                     Your Name
                   </label>
@@ -270,8 +277,8 @@ export default function ContactPage() {
                     placeholder="John Doe"
                     className="w-full rounded-lg border border-card-border bg-surface/50 px-4 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:border-accent-purple/50 focus:outline-none focus:ring-1 focus:ring-accent-purple/30 transition-colors"
                   />
-                </div>
-                <div>
+                </motion.div>
+                <motion.div variants={itemVariants}>
                   <label htmlFor="contact-email" className="block text-xs font-medium text-muted mb-1.5 uppercase tracking-wider">
                     Your Email
                   </label>
@@ -284,10 +291,10 @@ export default function ContactPage() {
                     placeholder="you@example.com"
                     className="w-full rounded-lg border border-card-border bg-surface/50 px-4 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:border-accent-purple/50 focus:outline-none focus:ring-1 focus:ring-accent-purple/30 transition-colors"
                   />
-                </div>
+                </motion.div>
               </div>
 
-              <div>
+              <motion.div variants={itemVariants}>
                 <label htmlFor="contact-subject" className="block text-xs font-medium text-muted mb-1.5 uppercase tracking-wider">
                   Subject
                 </label>
@@ -306,9 +313,9 @@ export default function ContactPage() {
                   ))}
                   <option value="Other">Other</option>
                 </select>
-              </div>
+              </motion.div>
 
-              <div>
+              <motion.div variants={itemVariants}>
                 <label htmlFor="contact-message" className="block text-xs font-medium text-muted mb-1.5 uppercase tracking-wider">
                   Message
                 </label>
@@ -321,40 +328,42 @@ export default function ContactPage() {
                   placeholder="Tell us more about your question or issue..."
                   className="w-full rounded-lg border border-card-border bg-surface/50 px-4 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:border-accent-purple/50 focus:outline-none focus:ring-1 focus:ring-accent-purple/30 transition-colors resize-none"
               />
-            </div>
+            </motion.div>
 
-            <motion.button
-              type="submit"
-              disabled={sending}
-              className="w-full flex items-center justify-center gap-2 rounded-lg bg-accent-purple px-6 py-3 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-50 transition-all"
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
-            >
-              {sending ? (
-                <>
-                  <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                  </svg>
-                  Sending Message...
-                </>
-              ) : sent ? (
-                <>
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                  </svg>
-                  Message Sent!
-                </>
-              ) : (
-                <>
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
-                  </svg>
-                  Send Message
-                </>
-              )}
-            </motion.button>
-          </form>
+            <motion.div variants={itemVariants}>
+              <motion.button
+                type="submit"
+                disabled={sending}
+                className="w-full flex items-center justify-center gap-2 rounded-lg bg-accent-purple px-6 py-3 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-50 transition-all mt-2"
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.99 }}
+              >
+                {sending ? (
+                  <>
+                    <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Sending Message...
+                  </>
+                ) : sent ? (
+                  <>
+                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                    </svg>
+                    Message Sent!
+                  </>
+                ) : (
+                  <>
+                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                    </svg>
+                    Send Message
+                  </>
+                )}
+              </motion.button>
+            </motion.div>
+          </motion.form>
           )}
         </motion.div>
 
