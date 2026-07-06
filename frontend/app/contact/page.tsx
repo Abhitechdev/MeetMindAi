@@ -128,7 +128,6 @@ export default function ContactPage() {
 
       setSent(true);
       setForm({ name: "", email: "", subject: "", message: "" }); // Reset form
-      setTimeout(() => setSent(false), 4000);
     } catch (error) {
       console.error(error);
       alert("Failed to send message. Please try emailing us directly.");
@@ -230,74 +229,97 @@ export default function ContactPage() {
         >
           <h2 className="text-xl font-semibold text-foreground mb-1">Send us a Message</h2>
           <p className="text-sm text-muted mb-6">
-            Fill in the form below and your email client will open with a pre-filled message.
+            Fill in the form below and we'll get back to you as soon as possible.
           </p>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="contact-name" className="block text-xs font-medium text-muted mb-1.5 uppercase tracking-wider">
-                  Your Name
-                </label>
-                <input
-                  id="contact-name"
-                  type="text"
-                  required
-                  value={form.name}
-                  onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
-                  placeholder="John Doe"
-                  className="w-full rounded-lg border border-card-border bg-surface/50 px-4 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:border-accent-purple/50 focus:outline-none focus:ring-1 focus:ring-accent-purple/30 transition-colors"
-                />
+          {sent ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="flex flex-col items-center justify-center py-12 text-center"
+            >
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-500/20 text-green-500 mb-4">
+                <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
               </div>
-              <div>
-                <label htmlFor="contact-email" className="block text-xs font-medium text-muted mb-1.5 uppercase tracking-wider">
-                  Your Email
-                </label>
-                <input
-                  id="contact-email"
-                  type="email"
-                  required
-                  value={form.email}
-                  onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
-                  placeholder="you@example.com"
-                  className="w-full rounded-lg border border-card-border bg-surface/50 px-4 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:border-accent-purple/50 focus:outline-none focus:ring-1 focus:ring-accent-purple/30 transition-colors"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label htmlFor="contact-subject" className="block text-xs font-medium text-muted mb-1.5 uppercase tracking-wider">
-                Subject
-              </label>
-              <select
-                id="contact-subject"
-                required
-                value={form.subject}
-                onChange={(e) => setForm((p) => ({ ...p, subject: e.target.value }))}
-                className="w-full rounded-lg border border-card-border bg-surface/50 px-4 py-2.5 text-sm text-foreground focus:border-accent-purple/50 focus:outline-none focus:ring-1 focus:ring-accent-purple/30 transition-colors appearance-none"
+              <h3 className="text-xl font-semibold text-foreground mb-2">Message Sent Successfully!</h3>
+              <p className="text-muted mb-8 max-w-md">
+                Thank you for reaching out to us. We have received your message and our team will get back to you shortly.
+              </p>
+              <button
+                onClick={() => setSent(false)}
+                className="text-sm font-medium text-accent-purple hover:text-accent-purple/80 transition-colors"
               >
-                <option value="" disabled>Select a topic...</option>
-                {contactCategories.map((cat) => (
-                  <option key={cat.subject} value={cat.subject}>
-                    {cat.title}
-                  </option>
-                ))}
-                <option value="Other">Other</option>
-              </select>
-            </div>
+                Send another message
+              </button>
+            </motion.div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="contact-name" className="block text-xs font-medium text-muted mb-1.5 uppercase tracking-wider">
+                    Your Name
+                  </label>
+                  <input
+                    id="contact-name"
+                    type="text"
+                    required
+                    value={form.name}
+                    onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
+                    placeholder="John Doe"
+                    className="w-full rounded-lg border border-card-border bg-surface/50 px-4 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:border-accent-purple/50 focus:outline-none focus:ring-1 focus:ring-accent-purple/30 transition-colors"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="contact-email" className="block text-xs font-medium text-muted mb-1.5 uppercase tracking-wider">
+                    Your Email
+                  </label>
+                  <input
+                    id="contact-email"
+                    type="email"
+                    required
+                    value={form.email}
+                    onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
+                    placeholder="you@example.com"
+                    className="w-full rounded-lg border border-card-border bg-surface/50 px-4 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:border-accent-purple/50 focus:outline-none focus:ring-1 focus:ring-accent-purple/30 transition-colors"
+                  />
+                </div>
+              </div>
 
-            <div>
-              <label htmlFor="contact-message" className="block text-xs font-medium text-muted mb-1.5 uppercase tracking-wider">
-                Message
-              </label>
-              <textarea
-                id="contact-message"
-                required
-                rows={5}
-                value={form.message}
-                onChange={(e) => setForm((p) => ({ ...p, message: e.target.value }))}
-                placeholder="Tell us more about your question or issue..."
-                className="w-full rounded-lg border border-card-border bg-surface/50 px-4 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:border-accent-purple/50 focus:outline-none focus:ring-1 focus:ring-accent-purple/30 transition-colors resize-none"
+              <div>
+                <label htmlFor="contact-subject" className="block text-xs font-medium text-muted mb-1.5 uppercase tracking-wider">
+                  Subject
+                </label>
+                <select
+                  id="contact-subject"
+                  required
+                  value={form.subject}
+                  onChange={(e) => setForm((p) => ({ ...p, subject: e.target.value }))}
+                  className="w-full rounded-lg border border-card-border bg-surface/50 px-4 py-2.5 text-sm text-foreground focus:border-accent-purple/50 focus:outline-none focus:ring-1 focus:ring-accent-purple/30 transition-colors appearance-none"
+                >
+                  <option value="" disabled>Select a topic...</option>
+                  {contactCategories.map((cat) => (
+                    <option key={cat.subject} value={cat.subject}>
+                      {cat.title}
+                    </option>
+                  ))}
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="contact-message" className="block text-xs font-medium text-muted mb-1.5 uppercase tracking-wider">
+                  Message
+                </label>
+                <textarea
+                  id="contact-message"
+                  required
+                  rows={5}
+                  value={form.message}
+                  onChange={(e) => setForm((p) => ({ ...p, message: e.target.value }))}
+                  placeholder="Tell us more about your question or issue..."
+                  className="w-full rounded-lg border border-card-border bg-surface/50 px-4 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:border-accent-purple/50 focus:outline-none focus:ring-1 focus:ring-accent-purple/30 transition-colors resize-none"
               />
             </div>
 
@@ -333,6 +355,7 @@ export default function ContactPage() {
               )}
             </motion.button>
           </form>
+          )}
         </motion.div>
 
         {/* FAQ Section */}
