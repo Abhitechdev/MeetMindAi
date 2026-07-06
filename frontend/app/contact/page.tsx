@@ -103,16 +103,26 @@ export default function ContactPage() {
     setSending(true);
 
     try {
-      const response = await fetch('/api/contact', {
+      const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
+      if (!accessKey) throw new Error("Missing Web3Forms Access Key");
+
+      // ponytail: client-side fetch directly to web3forms (free plan requirement)
+      const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(form),
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          access_key: accessKey,
+          name: form.name,
+          email: form.email,
+          subject: `[Contact Form] ${form.subject} from ${form.name}`,
+          message: form.message,
+          from_name: "MeetMind AI Contact Form"
+        }),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to send message');
+      const data = await response.json();
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || 'Failed to send message');
       }
 
       setSent(true);
