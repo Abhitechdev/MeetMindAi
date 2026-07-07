@@ -33,38 +33,42 @@ def transcribe(file_path: str) -> dict:
     """
     groq_api_key = os.getenv("GROQ_API_KEY")
     if groq_api_key:
-        logger.info("Using Groq API for blazing fast audio processing...")
-        client = OpenAI(api_key=groq_api_key, base_url="https://api.groq.com/openai/v1")
-        with open(file_path, "rb") as audio_file:
-            # ponytail: groq gives <1s processing time for whisper-large-v3
-            transcription = client.audio.transcriptions.create(
-                file=(os.path.basename(file_path), audio_file),
-                model="whisper-large-v3",
-                response_format="verbose_json",
-            )
-        
-        # Parse Groq's verbose_json format to match our schema
-        segments = []
-        if hasattr(transcription, "segments") and transcription.segments:
-            for seg in transcription.segments:
+        try:
+            logger.info("Using Groq API for blazing fast audio processing...")
+            client = OpenAI(api_key=groq_api_key, base_url="https://api.groq.com/openai/v1")
+            with open(file_path, "rb") as audio_file:
+                # ponytail: groq gives <1s processing time for whisper-large-v3
+                transcription = client.audio.transcriptions.create(
+                    file=(os.path.basename(file_path), audio_file),
+                    model="whisper-large-v3",
+                    response_format="verbose_json",
+                )
+            
+            # Parse Groq's verbose_json format to match our schema
+            segments = []
+            if hasattr(transcription, "segments") and transcription.segments:
+                for seg in transcription.segments:
+                    segments.append({
+                        "start": round(seg["start"] if isinstance(seg, dict) else getattr(seg, "start"), 2),
+                        "end": round(seg["end"] if isinstance(seg, dict) else getattr(seg, "end"), 2),
+                        "text": (seg["text"] if isinstance(seg, dict) else getattr(seg, "text")).strip(),
+                    })
+            else:
+                # Fallback if segments aren't properly returned by the wrapper
                 segments.append({
-                    "start": round(seg["start"] if isinstance(seg, dict) else getattr(seg, "start"), 2),
-                    "end": round(seg["end"] if isinstance(seg, dict) else getattr(seg, "end"), 2),
-                    "text": (seg["text"] if isinstance(seg, dict) else getattr(seg, "text")).strip(),
+                    "start": 0.0,
+                    "end": 0.0,
+                    "text": transcription.text.strip(),
                 })
-        else:
-            # Fallback if segments aren't properly returned by the wrapper
-            segments.append({
-                "start": 0.0,
-                "end": 0.0,
-                "text": transcription.text.strip(),
-            })
 
-        return {
-            "transcript": transcription.text.strip(),
-            "segments": segments,
-            "language": getattr(transcription, "language", "en"),
-        }
+            return {
+                "transcript": transcription.text.strip(),
+                "segments": segments,
+                "language": getattr(transcription, "language", "en"),
+            }
+        except Exception as e:
+            # ponytail: no complex retry queues needed, if groq rate-limits us, just gracefully fallback to local cpu
+            logger.warning(f"Groq API failed (likely rate limit), falling back to local CPU: {str(e)}")
 
     # Fallback to local CPU processing
     process = psutil.Process(os.getpid())
