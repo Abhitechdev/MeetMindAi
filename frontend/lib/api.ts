@@ -31,7 +31,13 @@ export async function processMeeting(file: File, outputLanguage: string = "Engli
   });
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ detail: "Processing failed" }));
+    let error: any = {};
+    try {
+      error = await response.json();
+    } catch {
+      const rawText = await response.clone().text().catch(() => "");
+      throw new Error(rawText ? `Server Error: ${rawText.substring(0, 100)}` : `Server Error: ${response.status}`);
+    }
     if (error.upgradeRequired) {
       throw new UsageLimitError(error.error || "Free plan limit reached");
     }
