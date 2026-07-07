@@ -181,6 +181,33 @@ export function Navigation() {
                     exit={{ opacity: 0, y: -10 }}
                     className="absolute right-0 top-full mt-2 w-48 rounded-xl border border-card-border bg-surface/95 backdrop-blur-xl p-2 shadow-2xl z-50 flex flex-col gap-1"
                   >
+                    {usage && (
+                      <div className="border-b border-card-border mb-1 pb-2 px-3 pt-2">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs font-semibold text-foreground uppercase tracking-wider">{usage.plan} Plan</span>
+                          <span className={`text-xs font-bold ${usage.used >= usage.limit ? 'text-red-400' : 'text-foreground'}`}>
+                            {usage.used} / {usage.limit} Used
+                          </span>
+                        </div>
+                        <div className="w-full h-1.5 bg-background rounded-full overflow-hidden shadow-inner mb-2">
+                          <div 
+                            className={`h-full rounded-full transition-all duration-500 ${usage.used >= usage.limit ? 'bg-red-500' : usage.used === usage.limit - 1 ? 'bg-amber-500' : 'bg-foreground'}`}
+                            style={{ width: `${Math.min(100, (usage.used / usage.limit) * 100)}%` }}
+                          />
+                        </div>
+                        {usage.plan === "Free" && (
+                          <button
+                            onClick={() => {
+                              setIsMobileMenuOpen(false);
+                              window.dispatchEvent(new Event("open-upgrade-modal"));
+                            }}
+                            className="w-full text-xs font-bold uppercase tracking-wider text-purple-400 hover:text-purple-300 bg-purple-500/10 hover:bg-purple-500/20 px-2 py-1.5 rounded transition-colors"
+                          >
+                            Upgrade Plan
+                          </button>
+                        )}
+                      </div>
+                    )}
                     {links.map((link) => {
                       const isActive = pathname === link.href
                       return (
