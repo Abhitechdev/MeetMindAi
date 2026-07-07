@@ -16,7 +16,8 @@ def _get_client() -> tuple[OpenAI, str]:
     if groq_api_key:
         if _client is None or getattr(_client, "base_url", None) != "https://api.groq.com/openai/v1":
             _client = OpenAI(base_url="https://api.groq.com/openai/v1", api_key=groq_api_key)
-        return _client, "llama3-70b-8192"
+        # using latest llama-3.3-70b-versatile as llama3-70b-8192 is decommissioned
+        return _client, "llama-3.3-70b-versatile"
 
     if _client is None:
         api_key = os.getenv("NVIDIA_API_KEY")
