@@ -32,10 +32,11 @@ export async function processMeeting(file: File, outputLanguage: string = "Engli
 
   if (!response.ok) {
     let error: any = {};
+    const clonedResponse = response.clone();
     try {
       error = await response.json();
     } catch {
-      const rawText = await response.clone().text().catch(() => "");
+      const rawText = await clonedResponse.text().catch(() => "");
       throw new Error(rawText ? `Server Error: ${rawText.substring(0, 100)}` : `Server Error: ${response.status}`);
     }
     if (error.upgradeRequired) {
