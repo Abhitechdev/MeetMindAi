@@ -336,11 +336,16 @@ export default function Home() {
                 </motion.button>
               </motion.div>
               
-              {/* ChatBot */}
               <ChatBot 
                 meetingId={result.id}
                 transcript={result.transcript} 
-                summary={result.executiveSummary} 
+                summary={JSON.stringify({
+                  executiveSummary: result.executiveSummary,
+                  decisions: result.decisions,
+                  actionItems: result.actionItems,
+                  nextSteps: result.nextSteps,
+                  tags: result.tags
+                })} 
               />
             </motion.div>
           )}

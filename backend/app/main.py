@@ -349,13 +349,13 @@ async def chat(req: ChatRequest, client: Client = Depends(get_user_supabase)):
     # Validate meeting ownership by querying supabase under user-scoped client
     # This automatically enforces RLS.
     try:
-        meeting_res = client.table("meetings").select("transcript, executive_summary").eq("id", req.meeting_id).execute()
+        # ponytail: verify ownership by fetching ID only, use frontend context for speed and full data
+        meeting_res = client.table("meetings").select("id").eq("id", req.meeting_id).execute()
         if not meeting_res.data:
             logger.warning(f"Unauthorized chat access attempt: user {client.user.id} requested meeting {req.meeting_id}")
             raise HTTPException(status_code=403, detail="Forbidden or meeting not found")
         
-        meeting = meeting_res.data[0]
-        answer = gemini_service.chat(req.question, meeting["transcript"], meeting["executive_summary"])
+        answer = gemini_service.chat(req.question, req.transcript, req.summary)
         return ChatResponse(answer=answer)
     except HTTPException:
         raise
