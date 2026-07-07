@@ -67,9 +67,9 @@ def transcribe(file_path: str) -> dict:
                 "language": getattr(transcription, "language", "en"),
             }
         except Exception as e:
-            # ponytail: no complex retry queues needed, if groq rate-limits us, just gracefully fallback to local cpu
-            logger.warning(f"Groq API failed (likely rate limit), falling back to local CPU: {str(e)}")
-
+            # ponytail: falling back to local faster_whisper on Railway's 500MB RAM tier causes an OOM crash.
+            # It is better to fail fast and show the user the real Groq error.
+            raise ValueError(f"Groq API Error: {str(e)}")
     # Fallback to local CPU processing
     process = psutil.Process(os.getpid())
     mem_before = process.memory_info().rss / (1024 * 1024)
