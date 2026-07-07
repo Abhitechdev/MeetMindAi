@@ -130,7 +130,10 @@ def get_usage(client: Client = Depends(get_user_supabase)):
     plan_name = sub["plan"] if sub else "Free"
     limit = sub["meeting_limit"] if sub else PLANS["Free"]["meeting_limit"]
     
-    used = sub.get("processed_count", 0) if sub else 0
+    # ponytail: Single source of truth. Count actual meetings instead of managing out-of-sync counters.
+    used_res = client.table("meetings").select("id", count="exact").eq("user_id", client.user.id).execute()
+    used = used_res.count if used_res.count is not None else 0
+    
     return {"plan": plan_name, "used": used, "limit": limit, "remaining": max(0, limit - used)}
 
 
@@ -227,7 +230,8 @@ async def process_meeting(
     limit = sub["meeting_limit"] if sub else PLANS["Free"]["meeting_limit"]
     plan_name = sub["plan"] if sub else "Free"
 
-    used = sub.get("processed_count", 0) if sub else 0
+    used_res = client.table("meetings").select("id", count="exact").eq("user_id", client.user.id).execute()
+    used = used_res.count if used_res.count is not None else 0
     if used >= limit:
         logger.warning(f"Quota exceeded: user {client.user.id} ({plan_name} plan limit {limit})")
         return JSONResponse(status_code=403, content={"success": False, "error": f"{plan_name} plan limit reached", "upgradeRequired": True})
@@ -302,9 +306,6 @@ async def process_meeting(
         if summary.get("decisions"):
             decisions = [{"meeting_id": meeting_id, "decision_text": d} for d in summary["decisions"]]
             client.table("decisions").insert(decisions).execute()
-
-        # Increment usage atomically
-        client.rpc("increment_processed_count", {}).execute()
         
         logger.info(f"Meeting processed successfully: {meeting_id} for user {client.user.id}")
 
