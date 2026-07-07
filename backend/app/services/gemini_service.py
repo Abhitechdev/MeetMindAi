@@ -59,10 +59,15 @@ def summarize(transcript: str, detected_language: str = "English", output_langua
         messages=[{"role": "user", "content": prompt_formatted + transcript}],
         temperature=0.2,
         max_tokens=2048,
-        response_format={"type": "json_object"}
     )
 
     text = response.choices[0].message.content.strip()
+
+    # Robust JSON extraction
+    start_idx = text.find('{')
+    end_idx = text.rfind('}')
+    if start_idx != -1 and end_idx != -1 and end_idx > start_idx:
+        text = text[start_idx:end_idx+1]
 
     try:
         result = json.loads(text)
