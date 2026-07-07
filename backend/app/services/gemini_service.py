@@ -8,19 +8,25 @@ load_dotenv()
 _client = None
 
 
-def _get_client() -> OpenAI:
-    """Lazy-load NVIDIA NIM client (OpenAI-compatible endpoint)."""
+def _get_client() -> tuple[OpenAI, str]:
+    """Lazy-load the best available OpenAI-compatible client and model name."""
     global _client
+    # ponytail: if we have Groq, use it for everything. It's faster and avoids NIM timeouts.
+    groq_api_key = os.getenv("GROQ_API_KEY")
+    if groq_api_key:
+        if _client is None or getattr(_client, "base_url", None) != "https://api.groq.com/openai/v1":
+            _client = OpenAI(base_url="https://api.groq.com/openai/v1", api_key=groq_api_key)
+        return _client, "llama3-70b-8192"
+
     if _client is None:
         api_key = os.getenv("NVIDIA_API_KEY")
         if not api_key:
-            raise ValueError("NVIDIA_API_KEY is not set in backend/.env")
-        # ponytail: NVIDIA NIM is OpenAI-compatible, no nvidia-specific SDK needed
+            raise ValueError("Neither GROQ_API_KEY nor NVIDIA_API_KEY is set in backend/.env")
         _client = OpenAI(
             base_url="https://integrate.api.nvidia.com/v1",
             api_key=api_key,
         )
-    return _client
+    return _client, "meta/llama-3.3-70b-instruct"
 
 
 PROMPT = """You are a meeting analysis assistant. Analyze the following meeting transcript and return a JSON object with exactly these fields:
@@ -43,19 +49,19 @@ Transcript:
 """
 
 
-def summarize(transcript: str, detected_language: str = "English", output_language: str = "English") -> dict:
+def summarize(transcript: str, detected_language: str = "en", output_language: str = "English") -> dict:
     """
     Send transcript to Gemini and return structured summary.
     """
-    client = _get_client()
+    client, model_name = _get_client()
 
     prompt_formatted = PROMPT.format(
         detected_language=detected_language,
         output_language=output_language
     )
-
+    
     response = client.chat.completions.create(
-        model="meta/llama-3.3-70b-instruct",
+        model=model_name,
         messages=[{"role": "user", "content": prompt_formatted + transcript}],
         temperature=0.2,
         max_tokens=2048,
@@ -95,11 +101,11 @@ Rules:
 
 def chat(question: str, transcript: str, summary: str) -> str:
     """Answer a question using only the transcript and summary as context."""
-    client = _get_client()
+    client, model_name = _get_client()
     # ponytail: stuff transcript+summary into user message, no RAG/embeddings needed at this scale
     context = f"Transcript:\n{transcript}\n\nSummary:\n{summary}"
     response = client.chat.completions.create(
-        model="meta/llama-3.3-70b-instruct",
+        model=model_name,
         messages=[
             {"role": "system", "content": CHAT_SYSTEM},
             {"role": "user", "content": f"{context}\n\nQuestion: {question}"},
