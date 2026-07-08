@@ -1,5 +1,9 @@
 import type { NextConfig } from "next";
 
+// ponytail: dynamically grab the backend domain for CSP to avoid blocking our own API
+const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || '';
+const backendDomain = apiBase.startsWith('http') ? apiBase : '';
+
 const cspHeader = `
   default-src 'self';
   script-src 'self' 'unsafe-eval' 'unsafe-inline' https://pagead2.googlesyndication.com https://www.googletagmanager.com https://unpkg.com https://checkout.razorpay.com;
@@ -10,7 +14,7 @@ const cspHeader = `
   base-uri 'self';
   form-action 'self' https://api.web3forms.com;
   frame-src 'self' https://checkout.razorpay.com https://*.google.com https://*.doubleclick.net;
-  connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.razorpay.com https://api.web3forms.com https://*.google-analytics.com https://pagead2.googlesyndication.com https://*.doubleclick.net;
+  connect-src 'self' ${backendDomain} https://*.supabase.co wss://*.supabase.co https://api.razorpay.com https://api.web3forms.com https://*.google-analytics.com https://pagead2.googlesyndication.com https://*.doubleclick.net;
 `.replace(/\s{2,}/g, ' ').trim()
 
 const nextConfig: NextConfig = {
