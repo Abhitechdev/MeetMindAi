@@ -53,7 +53,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: 'Cross-Origin-Opener-Policy',
-            value: 'same-origin-allow-popups', // Allows Supabase OAuth and Razorpay popups
+            value: 'unsafe-none', // Required for Razorpay popup postMessage communication
           },
           {
             key: 'Cross-Origin-Resource-Policy',
