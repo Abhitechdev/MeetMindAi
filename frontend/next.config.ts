@@ -13,8 +13,8 @@ const cspHeader = `
   object-src 'none';
   base-uri 'self';
   form-action 'self' https://api.web3forms.com;
-  frame-src 'self' https://checkout.razorpay.com https://*.google.com https://*.doubleclick.net;
-  connect-src 'self' ${backendDomain} https://*.supabase.co wss://*.supabase.co https://api.razorpay.com https://api.web3forms.com https://*.google-analytics.com https://pagead2.googlesyndication.com https://*.doubleclick.net;
+  frame-src 'self' https://*.razorpay.com https://*.google.com https://*.doubleclick.net;
+  connect-src 'self' ${backendDomain} https://*.supabase.co wss://*.supabase.co https://*.razorpay.com https://api.web3forms.com https://*.google-analytics.com https://pagead2.googlesyndication.com https://*.doubleclick.net;
 `.replace(/\s{2,}/g, ' ').trim()
 
 const nextConfig: NextConfig = {

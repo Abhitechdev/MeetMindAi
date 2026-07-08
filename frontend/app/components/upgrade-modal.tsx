@@ -63,6 +63,11 @@ export default function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
         }
       };
 
+      if (!window.Razorpay) {
+        alert("Payment gateway is still loading. Please wait a second and try again.");
+        return;
+      }
+
       const rzp = new window.Razorpay(options);
       rzp.on("payment.failed", function (response: any) {
         console.error(response.error);
@@ -79,7 +84,7 @@ export default function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
 
   return (
     <>
-      <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
+      <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="afterInteractive" />
       <AnimatePresence>
         {isOpen && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
