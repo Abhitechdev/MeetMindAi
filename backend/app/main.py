@@ -93,6 +93,7 @@ def get_user_supabase(authorization: str = Header(None)) -> Client:
 app = FastAPI(title="MeetMind AI", version="1.0.0")
 
 # CORS configuration supporting multiple origins via ALLOWED_ORIGINS env
+# ponytail: lazy strict origins. Default to localhost for dev, but env var is required for prod.
 allowed_origins_env = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000")
 allowed_origins = [origin.strip() for origin in allowed_origins_env.split(",") if origin.strip()]
 
