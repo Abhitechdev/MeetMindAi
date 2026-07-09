@@ -4,15 +4,11 @@ import "./globals.css";
 import { ThemeProvider } from "./components/theme-provider";
 import { Navigation } from "./components/nav";
 import CursorEffect from "./components/cursor-effect";
-import PublicAdWrapper from "@/components/PublicAdWrapper";
 
 export const metadata: Metadata = {
   title: "MeetMind AI — Meeting Insights Powered by AI",
   description:
     "Upload your meeting recording and instantly get a transcript, executive summary, key decisions, action items, and next steps — all powered by AI.",
-  other: {
-    "google-adsense-account": "ca-pub-8627957484050006",
-  },
 };
 
 export default function RootLayout({
@@ -23,11 +19,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="h-full antialiased">
       <head>
-        <Script
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8627957484050006"
-          crossOrigin="anonymous"
-          strategy="beforeInteractive"
-        />
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground transition-colors duration-300">
         <Script src="https://www.googletagmanager.com/gtag/js?id=G-XTH4Y4K2JM" strategy="afterInteractive" />
@@ -45,7 +36,6 @@ export default function RootLayout({
           <Navigation />
           {children}
           <footer className="mt-auto py-12 text-center text-sm text-muted border-t border-card-border bg-surface/30">
-            <PublicAdWrapper />
             <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-4 mb-4" aria-label="Legal">
               <a href="/legal/privacy" className="hover:text-foreground transition-colors">Privacy Policy</a>
               <a href="/legal/terms" className="hover:text-foreground transition-colors">Terms of Service</a>
