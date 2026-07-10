@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+// Launch prep: ensuring metadata types are imported
 import Script from "next/script";
 import "./globals.css";
 import { ThemeProvider } from "./components/theme-provider";
