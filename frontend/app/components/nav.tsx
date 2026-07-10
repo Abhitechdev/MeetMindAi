@@ -57,7 +57,7 @@ export function Navigation() {
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center hover:opacity-90 transition-opacity">
-              <img src="/logo.jpg" alt="MeetingMind AI" className="h-8 w-auto object-contain rounded" />
+              <img src="/logo.jpg" alt="MeetingMind AI" className="h-8 w-auto object-contain rounded-xl" />
             </Link>
             
             <div className="hidden md:flex items-center gap-1">

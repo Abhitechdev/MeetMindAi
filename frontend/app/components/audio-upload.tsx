@@ -2,6 +2,8 @@
 
 import { useCallback, useState, useRef } from "react";
 import { motion } from "framer-motion";
+import { createClient } from "@/lib/supabase";
+import { useRouter } from "next/navigation";
 
 interface AudioUploadProps {
   onUpload: (file: File, outputLanguage: string) => void;
@@ -23,6 +25,7 @@ export default function AudioUpload({ onUpload, disabled, limitReached }: AudioU
   const [outputLanguage, setOutputLanguage] = useState("English");
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
   const validateFile = useCallback((file: File): boolean => {
     const ext = "." + file.name.split(".").pop()?.toLowerCase();
@@ -39,10 +42,16 @@ export default function AudioUpload({ onUpload, disabled, limitReached }: AudioU
   }, []);
 
   const handleFile = useCallback(
-    (file: File) => {
+    async (file: File) => {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        router.push("/login");
+        return;
+      }
       if (validateFile(file)) setSelectedFile(file);
     },
-    [validateFile]
+    [validateFile, router]
   );
 
   const handleDrop = useCallback(
