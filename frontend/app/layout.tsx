@@ -5,6 +5,7 @@ import { ThemeProvider } from "./components/theme-provider";
 import { Navigation } from "./components/nav";
 import CursorEffect from "./components/cursor-effect";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: "MeetMind AI — Meeting Insights Powered by AI",
@@ -37,6 +38,7 @@ export default function RootLayout({
           <Navigation />
           {children}
           <Analytics />
+          <SpeedInsights />
           <footer className="mt-auto py-12 text-center text-sm text-muted border-t border-card-border bg-surface/30">
             <nav className="flex flex-wrap justify-center gap-x-4 sm:gap-x-6 gap-y-2 mt-4 mb-4 text-xs sm:text-sm tracking-wide" aria-label="Legal">
               <a href="/legal/privacy" className="hover:text-foreground transition-colors">Privacy Policy</a>
