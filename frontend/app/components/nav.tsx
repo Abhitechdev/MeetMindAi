@@ -52,12 +52,12 @@ export function Navigation() {
   }, [user])
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-card-border bg-background/80 backdrop-blur-lg">
-      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+    <nav className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/80 backdrop-blur-md">
+      <div className="mx-auto max-w-5xl px-6 sm:px-8 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center hover:opacity-90 transition-opacity">
-              <img src="/logo.jpg" alt="MeetingMind AI" className="h-8 w-auto object-contain rounded-xl" />
+              <img src="/logo.jpg" alt="MeetingMind AI" className="h-8 w-auto object-contain p-1 rounded-xl" />
             </Link>
             
             <div className="hidden md:flex items-center gap-1">

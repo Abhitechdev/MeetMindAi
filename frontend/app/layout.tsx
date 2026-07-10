@@ -38,7 +38,7 @@ export default function RootLayout({
           {children}
           <Analytics />
           <footer className="mt-auto py-12 text-center text-sm text-muted border-t border-card-border bg-surface/30">
-            <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-4 mb-4" aria-label="Legal">
+            <nav className="flex flex-wrap justify-center gap-x-4 sm:gap-x-6 gap-y-2 mt-4 mb-4 text-xs sm:text-sm tracking-wide" aria-label="Legal">
               <a href="/legal/privacy" className="hover:text-foreground transition-colors">Privacy Policy</a>
               <a href="/legal/terms" className="hover:text-foreground transition-colors">Terms of Service</a>
               <a href="/legal/ai-transparency" className="hover:text-foreground transition-colors">AI Transparency</a>
