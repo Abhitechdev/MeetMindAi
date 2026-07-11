@@ -52,6 +52,11 @@ export default function CursorEffect() {
   // Don't render until client-side hydration is complete to avoid mismatch
   if (!mounted) return null;
 
+  // ponytail: disable on mobile touch devices entirely to save INP / DOM overhead
+  if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) {
+    return null;
+  }
+
   return (
     <>
       {/* Trailing Ring */}

@@ -130,6 +130,12 @@ html, body {
   66% { transform: translate(-30px, -20px) scale(0.95); }
 }
 
+@media (min-width: 768px) {
+  .blob-1 { animation: float-1 20s ease-in-out infinite; }
+  .blob-2 { animation: float-2 25s ease-in-out infinite; }
+  .blob-3 { animation: float-3 22s ease-in-out infinite; }
+}
+
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
