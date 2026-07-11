@@ -97,14 +97,33 @@ Rules:
 - Do not make assumptions.
 - Reply in the same language used by the user.
 - If the answer is not present, respond: "I couldn't find that information in the meeting."
-- Keep answers concise and factual."""
+- Keep answers concise, factual, and conversational.
+- NEVER output raw JSON arrays or objects. Always use natural text and bullet points."""
 
 
 def chat(question: str, transcript: str, summary: str) -> str:
     """Answer a question using only the transcript and summary as context."""
     client, model_name = _get_client()
+    
+    # ponytail: if the frontend sends stringified JSON, format it nicely so the LLM doesn't mimic JSON output
+    try:
+        import json
+        summary_data = json.loads(summary)
+        formatted_summary = []
+        if summary_data.get("executiveSummary"):
+            formatted_summary.append(f"Executive Summary: {summary_data['executiveSummary']}")
+        if summary_data.get("decisions"):
+            formatted_summary.append(f"Decisions: {', '.join(summary_data['decisions'])}")
+        if summary_data.get("actionItems"):
+            formatted_summary.append(f"Action Items: {', '.join(summary_data['actionItems'])}")
+        if summary_data.get("nextSteps"):
+            formatted_summary.append(f"Next Steps: {', '.join(summary_data['nextSteps'])}")
+        summary_text = "\n".join(formatted_summary)
+    except Exception:
+        summary_text = summary
+
     # ponytail: stuff transcript+summary into user message, no RAG/embeddings needed at this scale
-    context = f"Transcript:\n{transcript}\n\nSummary:\n{summary}"
+    context = f"Transcript:\n{transcript}\n\nSummary:\n{summary_text}"
     response = client.chat.completions.create(
         model=model_name,
         messages=[
