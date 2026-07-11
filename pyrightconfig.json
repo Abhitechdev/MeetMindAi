@@ -1,5 +1,6 @@
 {
-  "pythonPath": "d:\\MeetingMindAI\\backend\\venv\\Scripts\\python.exe",
+  "venvPath": "d:\\MeetingMindAI\\backend",
+  "venv": "venv",
   "extraPaths": [
     "d:\\MeetingMindAI\\backend"
   ]
