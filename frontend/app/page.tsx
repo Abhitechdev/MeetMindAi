@@ -1,22 +1,21 @@
 "use client";
 
-import { useState, useCallback, useMemo, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useCallback, useMemo, Suspense, lazy } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ProcessingResponse, ProcessingStatus } from "@/lib/types";
-import { processMeeting, UsageLimitError, getUsage } from "@/lib/api";
 import UpgradeModal from "./components/upgrade-modal";
 import GradientBackground from "./components/gradient-background";
 import ProgressTracker from "./components/progress-tracker";
 import WaveformAnimation from "./components/waveform-animation";
 import AudioUpload from "./components/audio-upload";
-import TranscriptViewer from "./components/transcript-viewer";
-import SummaryViewer from "./components/summary-viewer";
-import ChatBot from "./components/chat-bot";
 import HeroSection from "./components/hero-section";
 import BentoFeatures from "./components/bento-features";
-import MetricCards from "./components/metric-cards";
 import LanguageMarquee from "./components/language-marquee";
+import { useMeetingProcessor } from "./hooks/useMeetingProcessor";
+
+const TranscriptViewer = lazy(() => import("./components/transcript-viewer"));
+const SummaryViewer = lazy(() => import("./components/summary-viewer"));
+const ChatBot = lazy(() => import("./components/chat-bot"));
+const MetricCards = lazy(() => import("./components/metric-cards"));
 
 const STATUS_MESSAGES: Record<string, { title: string; subtitle: string }> = {
   uploading: {
@@ -51,62 +50,18 @@ function downloadFile(content: string, filename: string, type: string) {
 }
 
 export default function Home() {
-  const router = useRouter();
-  const [status, setStatus] = useState<ProcessingStatus>("idle");
-  const [result, setResult] = useState<ProcessingResponse | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const {
+    status,
+    result,
+    error,
+    isUpgradeModalOpen,
+    limitReached,
+    setIsUpgradeModalOpen,
+    handleUpload,
+    handleReset,
+  } = useMeetingProcessor();
+
   const [copiedSummary, setCopiedSummary] = useState(false);
-  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
-  const [limitReached, setLimitReached] = useState(false);
-
-  useEffect(() => {
-    const fetchUsage = () => {
-      getUsage().then(usage => setLimitReached(usage.used >= usage.limit)).catch(console.error);
-    };
-    fetchUsage();
-    window.addEventListener("usage-updated", fetchUsage);
-    
-    const handleOpenModal = () => setIsUpgradeModalOpen(true);
-    window.addEventListener("open-upgrade-modal", handleOpenModal);
-    
-    return () => {
-      window.removeEventListener("usage-updated", fetchUsage);
-      window.removeEventListener("open-upgrade-modal", handleOpenModal);
-    };
-  }, []);
-
-  const handleUpload = useCallback(async (file: File, outputLanguage: string) => {
-    setError(null);
-    setResult(null);
-    setStatus("uploading");
-
-    try {
-      setStatus("transcribing");
-
-      const data = await processMeeting(file, outputLanguage);
-
-      setStatus("summarizing");
-
-      setResult(data);
-      setStatus("complete");
-      window.dispatchEvent(new Event("usage-updated"));
-      router.refresh();
-    } catch (err) {
-      if (err instanceof UsageLimitError) {
-        setIsUpgradeModalOpen(true);
-        setStatus("idle");
-      } else {
-        setError(err instanceof Error ? err.message : "Something went wrong");
-        setStatus("error");
-      }
-    }
-  }, [router]);
-
-  const handleReset = useCallback(() => {
-    setStatus("idle");
-    setResult(null);
-    setError(null);
-  }, []);
 
   // ponytail: computed from existing data, no new API fields needed
   const insights = useMemo(() => {
@@ -261,12 +216,14 @@ export default function Home() {
 
               {/* Insights grid */}
               {insights && (
-                <MetricCards 
-                  duration={formatDuration(insights.duration)}
-                  words={insights.words.toLocaleString()}
-                  actionCount={String(insights.actionCount)}
-                  confidence={`${insights.confidence}%`}
-                />
+                <Suspense fallback={<div className="h-24 w-full animate-pulse bg-surface/50 rounded-xl" />}>
+                  <MetricCards 
+                    duration={formatDuration(insights.duration)}
+                    words={insights.words.toLocaleString()}
+                    actionCount={String(insights.actionCount)}
+                    confidence={`${insights.confidence}%`}
+                  />
+                </Suspense>
               )}
 
               {/* Transcript */}
@@ -276,7 +233,9 @@ export default function Home() {
                 transition={{ duration: 0.25, delay: 0.1 }}
                 className="mb-5"
               >
-                <TranscriptViewer transcript={result.transcript} segments={result.segments} language={result.language} />
+                <Suspense fallback={<div className="h-64 w-full animate-pulse bg-surface/50 rounded-xl" />}>
+                  <TranscriptViewer transcript={result.transcript} segments={result.segments} language={result.language} />
+                </Suspense>
               </motion.div>
 
               {/* Summary */}
@@ -286,12 +245,14 @@ export default function Home() {
                 transition={{ duration: 0.25, delay: 0.15 }}
                 className="mb-8"
               >
-                <SummaryViewer
-                  executiveSummary={result.executiveSummary}
-                  keyDecisions={result.decisions}
-                  actionItems={result.actionItems}
-                  nextSteps={result.nextSteps}
-                />
+                <Suspense fallback={<div className="h-48 w-full animate-pulse bg-surface/50 rounded-xl" />}>
+                  <SummaryViewer
+                    executiveSummary={result.executiveSummary}
+                    keyDecisions={result.decisions}
+                    actionItems={result.actionItems}
+                    nextSteps={result.nextSteps}
+                  />
+                </Suspense>
               </motion.div>
 
               {/* Export actions */}
@@ -336,17 +297,19 @@ export default function Home() {
                 </motion.button>
               </motion.div>
               
-              <ChatBot 
-                meetingId={result.id}
-                transcript={result.transcript} 
-                summary={JSON.stringify({
-                  executiveSummary: result.executiveSummary,
-                  decisions: result.decisions,
-                  actionItems: result.actionItems,
-                  nextSteps: result.nextSteps,
-                  tags: result.tags
-                })} 
-              />
+              <Suspense fallback={<div className="h-48 w-full animate-pulse bg-surface/50 rounded-xl" />}>
+                <ChatBot 
+                  meetingId={result.id}
+                  transcript={result.transcript} 
+                  summary={JSON.stringify({
+                    executiveSummary: result.executiveSummary,
+                    decisions: result.decisions,
+                    actionItems: result.actionItems,
+                    nextSteps: result.nextSteps,
+                    tags: result.tags
+                  })} 
+                />
+              </Suspense>
             </motion.div>
           )}
         </AnimatePresence>

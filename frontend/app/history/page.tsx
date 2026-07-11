@@ -24,28 +24,37 @@ const FLAG_MAP: Record<string, string> = {
   Japanese: "🇯🇵", Korean: "🇰🇷", Chinese: "🇨🇳",
 }
 
+let cachedMeetings: Meeting[] | null = null;
+
 export default function HistoryPage() {
-  const [meetings, setMeetings] = useState<Meeting[]>([])
-  const [loading, setLoading] = useState(true)
+  const [meetings, setMeetings] = useState<Meeting[]>(cachedMeetings || [])
+  const [loading, setLoading] = useState(!cachedMeetings)
   const [search, setSearch] = useState("")
   const [sortOrder, setSortOrder] = useState<"desc" | "asc">("desc")
   const router = useRouter()
   const [supabase] = useState(() => createClient())
 
   useEffect(() => {
-    fetchMeetings()
-  }, [])
+    const controller = new AbortController();
 
-  async function fetchMeetings() {
-    setLoading(true)
-    try {
-      const data = await getMeetings()
-      setMeetings(data)
-    } catch (e) {
-      console.error(e)
+    async function fetchMeetings() {
+      try {
+        const data = await getMeetings(controller.signal);
+        cachedMeetings = data;
+        setMeetings(data);
+      } catch (e: any) {
+        if (e.name !== "AbortError") {
+          console.error(e);
+        }
+      } finally {
+        setLoading(false);
+      }
     }
-    setLoading(false)
-  }
+
+    fetchMeetings();
+
+    return () => controller.abort();
+  }, [])
 
   async function deleteMeeting(id: string) {
     if (!confirm("Are you sure you want to delete this meeting?")) return

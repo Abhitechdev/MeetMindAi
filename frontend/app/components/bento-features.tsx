@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 const BENTO_ITEMS = [
@@ -37,7 +37,7 @@ const BENTO_ITEMS = [
   },
 ];
 
-export default function BentoFeatures() {
+const BentoFeatures = React.memo(function BentoFeatures() {
   const sectionRef = useRef<HTMLElement>(null);
   
   // Parallax scroll effect
@@ -137,4 +137,6 @@ export default function BentoFeatures() {
       </div>
     </section>
   );
-}
+});
+
+export default BentoFeatures;

@@ -92,7 +92,6 @@ export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
-  const [copiedEmail, setCopiedEmail] = useState(false);
 
   const handleCategoryClick = (subject: string) => {
     setForm((prev) => ({ ...prev, subject }));
@@ -230,7 +229,7 @@ export default function ContactPage() {
         >
           <h2 className="text-xl font-semibold text-foreground mb-1">Send us a Message</h2>
           <p className="text-sm text-muted mb-6">
-            Fill in the form below and we'll get back to you as soon as possible.
+            Fill in the form below and we&apos;ll get back to you as soon as possible.
           </p>
 
           {sent ? (

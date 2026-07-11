@@ -14,26 +14,35 @@ type ActionItem = {
   meetings: { title: string }
 }
 
+let cachedActions: ActionItem[] | null = null;
+
 export default function ActionsPage() {
-  const [actions, setActions] = useState<ActionItem[]>([])
-  const [loading, setLoading] = useState(true)
+  const [actions, setActions] = useState<ActionItem[]>(cachedActions || [])
+  const [loading, setLoading] = useState(!cachedActions)
   const [filter, setFilter] = useState<"all" | "pending" | "completed">("all")
   const [supabase] = useState(() => createClient())
 
   useEffect(() => {
-    fetchActions()
-  }, [])
+    const controller = new AbortController();
 
-  async function fetchActions() {
-    setLoading(true)
-    try {
-      const data = await getActions()
-      setActions(data)
-    } catch (e) {
-      console.error(e)
+    async function fetchActions() {
+      try {
+        const data = await getActions(controller.signal);
+        cachedActions = data;
+        setActions(data);
+      } catch (e: any) {
+        if (e.name !== "AbortError") {
+          console.error(e);
+        }
+      } finally {
+        setLoading(false);
+      }
     }
-    setLoading(false)
-  }
+
+    fetchActions();
+
+    return () => controller.abort();
+  }, [])
 
   async function toggleStatus(id: string, currentStatus: string) {
     const newStatus = currentStatus === "pending" ? "completed" : "pending"

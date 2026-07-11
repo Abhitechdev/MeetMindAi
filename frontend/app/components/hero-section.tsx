@@ -1,8 +1,9 @@
 "use client";
 
+import React from "react";
 import { motion } from "framer-motion";
 
-export default function HeroSection() {
+const HeroSection = React.memo(function HeroSection() {
   return (
     <section className="relative pt-24 pb-16 md:pt-32 md:pb-24 overflow-hidden">
       {/* Subtle Aurora Background */}
@@ -44,4 +45,6 @@ export default function HeroSection() {
       </div>
     </section>
   );
-}
+});
+
+export default HeroSection;

@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { createClient } from "@/lib/supabase"
 import { getDecisions } from "@/lib/api"
 import GradientBackground from "../components/gradient-background"
 
@@ -14,26 +13,33 @@ type Decision = {
   meetings: { title: string }
 }
 
+let cachedDecisions: Decision[] | null = null;
+
 export default function DecisionsPage() {
-  const [decisions, setDecisions] = useState<Decision[]>([])
-  const [loading, setLoading] = useState(true)
-  const [search, setSearch] = useState("")
-  const [supabase] = useState(() => createClient())
+  const [decisions, setDecisions] = useState<Decision[]>(cachedDecisions || [])
+  const [loading, setLoading] = useState(!cachedDecisions)
 
   useEffect(() => {
-    fetchDecisions()
-  }, [])
+    const controller = new AbortController();
 
-  async function fetchDecisions() {
-    setLoading(true)
-    try {
-      const data = await getDecisions()
-      setDecisions(data)
-    } catch (e) {
-      console.error(e)
+    async function fetchDecisions() {
+      try {
+        const data = await getDecisions(controller.signal);
+        cachedDecisions = data;
+        setDecisions(data);
+      } catch (e: any) {
+        if (e.name !== "AbortError") {
+          console.error(e);
+        }
+      } finally {
+        setLoading(false);
+      }
     }
-    setLoading(false)
-  }
+
+    fetchDecisions();
+
+    return () => controller.abort();
+  }, [])
 
   return (
     <main className="relative min-h-screen">
