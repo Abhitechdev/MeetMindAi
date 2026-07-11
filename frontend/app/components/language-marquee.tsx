@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { motion } from "framer-motion";
 
 const LANGUAGES = [
@@ -12,7 +13,7 @@ const LANGUAGES = [
 // Double the array for seamless infinite scrolling
 const MARQUEE_ITEMS = [...LANGUAGES, ...LANGUAGES];
 
-export default function LanguageMarquee() {
+const LanguageMarquee = React.memo(function LanguageMarquee() {
   return (
     <div className="w-full overflow-hidden py-10 relative">
       <div className="text-center mb-8 relative z-20">
@@ -50,4 +51,6 @@ export default function LanguageMarquee() {
       </div>
     </div>
   );
-}
+});
+
+export default LanguageMarquee;

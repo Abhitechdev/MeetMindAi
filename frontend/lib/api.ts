@@ -106,11 +106,12 @@ export async function translateTranscript(
   return response.json();
 }
 
-export async function getMeetings() {
+export async function getMeetings(signal?: AbortSignal) {
   const headers = await getAuthHeaders();
   const response = await fetch(`${API_BASE}/meetings?t=${Date.now()}`, { 
     headers,
-    cache: "no-store" 
+    cache: "no-store",
+    signal
   });
   if (!response.ok) throw new Error("Failed to fetch meetings");
   return response.json();
@@ -143,11 +144,12 @@ export async function deleteAllMeetingsApi() {
   return response.json();
 }
 
-export async function getActions() {
+export async function getActions(signal?: AbortSignal) {
   const headers = await getAuthHeaders();
   const response = await fetch(`${API_BASE}/actions?t=${Date.now()}`, { 
     headers,
-    cache: "no-store" 
+    cache: "no-store",
+    signal
   });
   if (!response.ok) throw new Error("Failed to fetch actions");
   return response.json();
@@ -164,11 +166,12 @@ export async function toggleActionStatusApi(id: string, status: string) {
   return response.json();
 }
 
-export async function getDecisions() {
+export async function getDecisions(signal?: AbortSignal) {
   const headers = await getAuthHeaders();
   const response = await fetch(`${API_BASE}/decisions?t=${Date.now()}`, { 
     headers,
-    cache: "no-store" 
+    cache: "no-store",
+    signal
   });
   if (!response.ok) throw new Error("Failed to fetch decisions");
   return response.json();
