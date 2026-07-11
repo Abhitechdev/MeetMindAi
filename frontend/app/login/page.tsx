@@ -17,7 +17,7 @@ function LoginContent() {
     // Use getUser() instead of getSession() to ensure the token is actually valid
     supabase.auth.getUser().then(({ data: { user }, error }) => {
       if (user) {
-        router.push("/history");
+        router.push("/");
       } else if (error) {
         // If there's an error getting the user (e.g., stale session), force sign out locally
         supabase.auth.signOut();
