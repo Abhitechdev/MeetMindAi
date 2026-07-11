@@ -340,6 +340,8 @@ async def process_meeting(
         raise
     except Exception as e:
         logger.error(f"AI processing failure: {str(e)} for user {client.user.id}")
+        with open("error.log", "a") as f:
+            f.write(f"Error: {str(e)}\n")
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         # ponytail: aggressively delete temp file to free OS buffer cache
