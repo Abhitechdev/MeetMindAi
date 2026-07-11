@@ -155,7 +155,7 @@ def delete_meeting(meeting_id: str, client: Client = Depends(get_user_supabase))
 @app.get("/meetings/{meeting_id}")
 def get_meeting(meeting_id: str, client: Client = Depends(get_user_supabase)):
     """Fetch a single meeting with its actions and decisions."""
-    meeting_res = client.table("meetings").select("id, title, transcript, executive_summary, next_steps, language").eq("id", meeting_id).eq("user_id", client.user.id).execute()
+    meeting_res = client.table("meetings").select("id, title, transcript, segments, executive_summary, next_steps, language").eq("id", meeting_id).eq("user_id", client.user.id).execute()
     if not meeting_res.data:
         raise HTTPException(status_code=404, detail="Meeting not found")
     
@@ -169,7 +169,7 @@ def get_meeting(meeting_id: str, client: Client = Depends(get_user_supabase)):
         "id": meeting["id"],
         "title": meeting["title"],
         "transcript": meeting["transcript"],
-        "segments": [],
+        "segments": meeting.get("segments", []),
         "executiveSummary": meeting.get("executive_summary", ""),
         "actionItems": actions,
         "decisions": decisions,
@@ -297,6 +297,7 @@ async def process_meeting(
             "email": client.user.email,
             "title": summary.get("title", "Untitled Meeting"),
             "transcript": transcription["transcript"],
+            "segments": transcription["segments"],
             "executive_summary": summary["executiveSummary"],
             "duration": duration,
             "sentiment": summary.get("sentiment"),
