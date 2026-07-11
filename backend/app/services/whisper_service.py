@@ -31,15 +31,27 @@ def transcribe(file_path: str) -> dict:
     Transcribe an audio file. Uses Groq API if GROQ_API_KEY is set for <1s transcription,
     otherwise falls back to Faster-Whisper on CPU.
     """
+    import subprocess
+    compressed_path = file_path + "_compressed.mp3"
+    # ponytail: one-line ffmpeg to extract and compress audio. 16kbps mono fits ~3.5 hours under 25MB for Groq.
+    try:
+        import imageio_ffmpeg
+        ffmpeg_exe = imageio_ffmpeg.get_ffmpeg_exe()
+        subprocess.run([ffmpeg_exe, "-y", "-i", file_path, "-vn", "-ac", "1", "-b:a", "16k", compressed_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+        file_to_process = compressed_path
+    except Exception as e:
+        logger.error(f"ffmpeg compression failed: {e}")
+        file_to_process = file_path
+
     groq_api_key = os.getenv("GROQ_API_KEY")
     if groq_api_key:
         try:
             logger.info("Using Groq API for blazing fast audio processing...")
             client = OpenAI(api_key=groq_api_key, base_url="https://api.groq.com/openai/v1")
-            with open(file_path, "rb") as audio_file:
+            with open(file_to_process, "rb") as audio_file:
                 # ponytail: groq gives <1s processing time for whisper-large-v3
                 transcription = client.audio.transcriptions.create(
-                    file=(os.path.basename(file_path), audio_file),
+                    file=(os.path.basename(file_to_process), audio_file),
                     model="whisper-large-v3",
                     response_format="verbose_json",
                 )
@@ -77,7 +89,7 @@ def transcribe(file_path: str) -> dict:
 
     model = _get_model()
     # ponytail: beam_size=1 (greedy) + condition_on_previous_text=False is faster and avoids hallucination loops
-    segments_iter, info = model.transcribe(file_path, beam_size=1, condition_on_previous_text=False)
+    segments_iter, info = model.transcribe(file_to_process, beam_size=1, condition_on_previous_text=False)
 
     segments = []
     full_text_parts = []
@@ -100,6 +112,12 @@ def transcribe(file_path: str) -> dict:
     del segments_iter
     del info
     gc.collect()
+
+    if file_to_process != file_path and os.path.exists(file_to_process):
+        try:
+            os.remove(file_to_process)
+        except Exception:
+            pass
 
     mem_after = process.memory_info().rss / (1024 * 1024)
     logger.info(f"Memory after transcription: {mem_after:.2f} MB")
