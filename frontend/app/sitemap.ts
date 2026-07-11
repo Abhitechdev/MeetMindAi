@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next';
+import { getAllArticles } from '../lib/mdx';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // Using an environment variable for the base URL is best practice
@@ -38,9 +39,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/contact`,
-      lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.5,
     },
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.9,
+    },
+    ...getAllArticles().map((article) => ({
+      url: `${baseUrl}/blog/${article.slug}`,
+      lastModified: new Date(article.updatedAt || article.publishedAt),
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    })),
   ];
 }
