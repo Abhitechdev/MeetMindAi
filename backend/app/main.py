@@ -105,9 +105,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-ALLOWED_EXTENSIONS = {".mp3", ".wav", ".m4a", ".mp4"}
+ALLOWED_EXTENSIONS = {".mp3", ".wav", ".m4a", ".mp4", ".webm", ".mov", ".avi"}
 # ponytail: hard limit upload size to save RAM during processing
-MAX_FILE_SIZE = 25 * 1024 * 1024  # 25MB
+MAX_FILE_SIZE = 100 * 1024 * 1024  # 100MB
 
 LANGUAGE_MAP = {
     "te": "Telugu", "hi": "Hindi", "ta": "Tamil", "kn": "Kannada",
@@ -252,7 +252,7 @@ async def process_meeting(
         contents = await file.read()
         if len(contents) > MAX_FILE_SIZE:
             logger.warning(f"Upload rejected: file too large ({len(contents)} bytes) for user {client.user.id}")
-            raise HTTPException(status_code=400, detail="File too large. Max 25MB.")
+            raise HTTPException(status_code=400, detail="File too large. Max 100MB.")
 
         logger.info(f"Processing meeting upload: {file.filename} ({len(contents)} bytes) for user {client.user.id}")
 

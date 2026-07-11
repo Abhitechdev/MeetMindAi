@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { useState, useEffect } from "react"
 import { ThemeToggle } from "./theme-toggle"
+import UpgradeModal from "./upgrade-modal"
 import { createClient } from "@/lib/supabase"
 import type { User } from "@supabase/supabase-js"
 import { getUsage } from "@/lib/api"
@@ -26,6 +27,13 @@ export function Navigation() {
   const [supabase] = useState(() => createClient())
   const [usage, setUsage] = useState<{ plan: string; used: number; limit: number; remaining: number } | null>(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false)
+
+  useEffect(() => {
+    const handleOpenModal = () => setIsUpgradeModalOpen(true)
+    window.addEventListener("open-upgrade-modal", handleOpenModal)
+    return () => window.removeEventListener("open-upgrade-modal", handleOpenModal)
+  }, [])
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -53,7 +61,9 @@ export function Navigation() {
   }, [user])
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/80 backdrop-blur-md">
+    <>
+      <UpgradeModal isOpen={isUpgradeModalOpen} onClose={() => setIsUpgradeModalOpen(false)} />
+      <nav className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/80 backdrop-blur-md">
       <div className="mx-auto max-w-5xl px-6 sm:px-8 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-8">
@@ -233,5 +243,6 @@ export function Navigation() {
         </div>
       </div>
     </nav>
+    </>
   )
 }

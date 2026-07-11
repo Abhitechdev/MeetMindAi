@@ -11,7 +11,7 @@ interface AudioUploadProps {
   limitReached?: boolean;
 }
 
-const ALLOWED_TYPES = [".mp3", ".wav", ".m4a", ".mp4"];
+const ALLOWED_TYPES = [".mp3", ".wav", ".m4a", ".mp4", ".webm", ".mov", ".avi"];
 
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
@@ -87,7 +87,7 @@ export default function AudioUpload({ onUpload, disabled, limitReached }: AudioU
         <input
           ref={inputRef}
           type="file"
-          accept=".mp3,.wav,.m4a,.mp4"
+          accept=".mp3,.wav,.m4a,.mp4,.webm,.mov,.avi"
           onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); }}
           className="hidden"
           id="audio-file-input"
@@ -105,7 +105,7 @@ export default function AudioUpload({ onUpload, disabled, limitReached }: AudioU
           {isDragging ? "Drop your audio/video file" : "Upload meeting audio/video"}
         </p>
         <p className="text-sm text-muted">
-          Drag & drop or click to browse · MP3, WAV, M4A, MP4 · Max 100MB
+          Drag & drop or click to browse · MP3, WAV, M4A, MP4, WEBM, MOV, AVI · Max 100MB
         </p>
       </motion.div>
 

@@ -2,7 +2,6 @@
 
 import { useState, useCallback, useMemo, Suspense, lazy } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import UpgradeModal from "./components/upgrade-modal";
 import GradientBackground from "./components/gradient-background";
 import ProgressTracker from "./components/progress-tracker";
 import WaveformAnimation from "./components/waveform-animation";
@@ -54,9 +53,7 @@ export default function Home() {
     status,
     result,
     error,
-    isUpgradeModalOpen,
     limitReached,
-    setIsUpgradeModalOpen,
     handleUpload,
     handleReset,
   } = useMeetingProcessor();
@@ -120,7 +117,6 @@ export default function Home() {
   return (
     <main className="relative min-h-screen">
       <GradientBackground />
-      <UpgradeModal isOpen={isUpgradeModalOpen} onClose={() => setIsUpgradeModalOpen(false)} />
 
       <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12">
         <AnimatePresence mode="wait">

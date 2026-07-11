@@ -8,7 +8,6 @@ export function useMeetingProcessor() {
   const [status, setStatus] = useState<ProcessingStatus>("idle");
   const [result, setResult] = useState<ProcessingResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
   const [limitReached, setLimitReached] = useState(false);
 
   useEffect(() => {
@@ -27,15 +26,11 @@ export function useMeetingProcessor() {
     fetchUsage();
     
     const handleUsageUpdated = () => fetchUsage();
-    const handleOpenModal = () => setIsUpgradeModalOpen(true);
-    
     window.addEventListener("usage-updated", handleUsageUpdated);
-    window.addEventListener("open-upgrade-modal", handleOpenModal);
     
     return () => {
       mounted = false;
       window.removeEventListener("usage-updated", handleUsageUpdated);
-      window.removeEventListener("open-upgrade-modal", handleOpenModal);
     };
   }, []);
 
@@ -56,7 +51,7 @@ export function useMeetingProcessor() {
       router.refresh();
     } catch (err) {
       if (err instanceof UsageLimitError) {
-        setIsUpgradeModalOpen(true);
+        window.dispatchEvent(new Event("open-upgrade-modal"));
         setStatus("idle");
       } else {
         setError(err instanceof Error ? err.message : "Something went wrong");
@@ -75,9 +70,7 @@ export function useMeetingProcessor() {
     status,
     result,
     error,
-    isUpgradeModalOpen,
     limitReached,
-    setIsUpgradeModalOpen,
     handleUpload,
     handleReset,
   };
