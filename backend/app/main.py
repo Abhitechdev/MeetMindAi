@@ -249,16 +249,27 @@ async def process_meeting(
     # Save to temp file
     tmp = None
     try:
-        contents = await file.read()
-        if len(contents) > MAX_FILE_SIZE:
-            logger.warning(f"Upload rejected: file too large ({len(contents)} bytes) for user {client.user.id}")
+        # ponytail: Stream the file to disk in chunks to prevent OOM on 100MB files
+        if getattr(file, "size", 0) > MAX_FILE_SIZE:
+            logger.warning(f"Upload rejected: header size too large for user {client.user.id}")
             raise HTTPException(status_code=400, detail="File too large. Max 100MB.")
 
-        logger.info(f"Processing meeting upload: {file.filename} ({len(contents)} bytes) for user {client.user.id}")
-
         tmp = tempfile.NamedTemporaryFile(delete=False, suffix=ext)
-        tmp.write(contents)
+        total_size = 0
+        while True:
+            chunk = await file.read(1024 * 1024)
+            if not chunk:
+                break
+            total_size += len(chunk)
+            if total_size > MAX_FILE_SIZE:
+                tmp.close()
+                os.remove(tmp.name)
+                logger.warning(f"Upload rejected: actual size exceeded limit for user {client.user.id}")
+                raise HTTPException(status_code=400, detail="File too large. Max 100MB.")
+            tmp.write(chunk)
+            
         tmp.close()
+        logger.info(f"Processing meeting upload: {file.filename} ({total_size} bytes) for user {client.user.id}")
 
         # Step 1: Transcribe with Whisper (Concurrency protected)
         async with transcription_semaphore:
