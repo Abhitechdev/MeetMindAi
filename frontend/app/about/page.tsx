@@ -95,6 +95,8 @@ export default function AboutPage() {
               <p className="text-sm text-muted">We don't just give you a wall of text. Our AI separates the crucial decisions from the casual chatter.</p>
             </div>
           </div>
+        </motion.div>
+        
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
