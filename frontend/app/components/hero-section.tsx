@@ -74,22 +74,6 @@ const HeroSection = React.memo(function HeroSection() {
               View Sample Summary
             </button>
           </div>
-          
-          <div className="flex items-center gap-3 text-xs sm:text-sm text-muted mt-2 sm:mt-0 px-4">
-            <div className="flex -space-x-2">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full border-2 border-background bg-surface flex items-center justify-center text-[8px] sm:text-[10px] font-bold z-${5-i}`}>
-                  {i === 4 ? "+2k" : "👤"}
-                </div>
-              ))}
-            </div>
-            <div className="flex flex-col items-start">
-              <div className="flex text-yellow-400 text-[10px] sm:text-xs">
-                ★★★★★
-              </div>
-              <span className="whitespace-nowrap">Loved by teams</span>
-            </div>
-          </div>
         </motion.div>
 
         {/* Dashboard Mockup - Above the Fold Visualizer */}
