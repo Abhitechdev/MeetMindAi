@@ -12,7 +12,7 @@ const HeroSection = React.memo(function HeroSection() {
   };
 
   return (
-    <section className="relative pt-24 pb-16 md:pt-32 md:pb-24 overflow-hidden">
+    <section className="relative pt-16 md:pt-32 pb-16 md:pb-24 overflow-hidden">
       {/* Subtle Aurora Background */}
       <div className="hidden sm:block absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-[400px] bg-gradient-to-b from-accent-purple/20 via-accent-blue/10 to-transparent blur-[100px] -z-10 pointer-events-none rounded-full opacity-50" />
       
@@ -21,7 +21,7 @@ const HeroSection = React.memo(function HeroSection() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 rounded-full border border-card-border bg-surface/30 px-4 py-1.5 text-xs font-medium text-muted mb-8 shadow-sm backdrop-blur-md"
+          className="inline-flex items-center gap-2 rounded-full border border-card-border bg-surface/30 px-4 py-1.5 text-xs font-medium text-muted mb-6 md:mb-8 shadow-sm backdrop-blur-md"
         >
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-purple opacity-75"></span>
@@ -34,7 +34,7 @@ const HeroSection = React.memo(function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-5xl md:text-7xl font-bold tracking-tight mb-6 leading-[1.05]"
+          className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight mb-4 md:mb-6 leading-[1.1] md:leading-[1.05]"
         >
           Never Take <br className="hidden sm:block" />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">
@@ -46,7 +46,7 @@ const HeroSection = React.memo(function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-lg md:text-xl text-muted max-w-2xl mx-auto mb-10 leading-relaxed"
+          className="text-base sm:text-lg md:text-xl text-muted max-w-2xl mx-auto mb-8 md:mb-10 leading-relaxed px-2"
         >
           Upload your recordings and let our AI instantly generate flawless transcripts, executive summaries, and trackable action items. Stop typing, start engaging.
         </motion.p>
@@ -55,31 +55,94 @@ const HeroSection = React.memo(function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
         >
-          <button 
-            onClick={scrollToUpload}
-            className="w-full sm:w-auto px-8 py-4 rounded-xl bg-foreground text-background font-semibold text-sm hover:scale-105 active:scale-95 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]"
-          >
-            Start Analyzing for Free
-          </button>
+          <div className="flex flex-col sm:flex-row w-full sm:w-auto gap-3">
+            <button 
+              onClick={scrollToUpload}
+              className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-foreground text-background font-semibold text-sm hover:scale-105 active:scale-95 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]"
+            >
+              Start Analyzing for Free
+            </button>
+            <button 
+              onClick={() => {
+                // Scroll to a sample or trigger a demo modal
+                window.location.href = "/history"; // For now, direct to history/dashboard
+              }}
+              className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-surface border border-card-border text-foreground font-semibold text-sm hover:bg-surface/60 transition-colors"
+            >
+              View Sample Summary
+            </button>
+          </div>
           
-          <div className="flex items-center gap-3 text-sm text-muted mt-4 sm:mt-0 px-4">
+          <div className="flex items-center gap-3 text-xs sm:text-sm text-muted mt-2 sm:mt-0 px-4">
             <div className="flex -space-x-2">
               {[1, 2, 3, 4].map((i) => (
-                <div key={i} className={`w-8 h-8 rounded-full border-2 border-background bg-surface flex items-center justify-center text-[10px] font-bold z-${5-i}`}>
+                <div key={i} className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full border-2 border-background bg-surface flex items-center justify-center text-[8px] sm:text-[10px] font-bold z-${5-i}`}>
                   {i === 4 ? "+2k" : "👤"}
                 </div>
               ))}
             </div>
-            <div className="flex flex-col items-start text-xs">
-              <div className="flex text-yellow-400">
+            <div className="flex flex-col items-start">
+              <div className="flex text-yellow-400 text-[10px] sm:text-xs">
                 ★★★★★
               </div>
-              <span>Loved by teams</span>
+              <span className="whitespace-nowrap">Loved by teams</span>
             </div>
           </div>
         </motion.div>
+
+        {/* Dashboard Mockup - Above the Fold Visualizer */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="relative mx-auto w-full max-w-4xl rounded-xl sm:rounded-2xl border border-card-border bg-background/50 backdrop-blur-xl p-2 sm:p-4 shadow-2xl overflow-hidden"
+        >
+          {/* Mockup Header */}
+          <div className="flex items-center gap-2 px-2 sm:px-4 pb-2 sm:pb-4 border-b border-card-border">
+            <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-red-500/80" />
+            <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-yellow-500/80" />
+            <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-green-500/80" />
+            <div className="mx-auto h-4 sm:h-5 w-32 sm:w-48 rounded bg-surface/80" />
+          </div>
+          
+          {/* Mockup Body */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 text-left">
+            <div className="col-span-1 sm:col-span-2 space-y-4">
+              <div className="h-4 sm:h-6 w-3/4 sm:w-1/2 bg-surface rounded-md animate-pulse" />
+              <div className="space-y-2">
+                <div className="h-2 sm:h-3 w-full bg-surface/60 rounded" />
+                <div className="h-2 sm:h-3 w-[90%] bg-surface/60 rounded" />
+                <div className="h-2 sm:h-3 w-[95%] bg-surface/60 rounded" />
+                <div className="h-2 sm:h-3 w-[80%] bg-surface/60 rounded" />
+              </div>
+              <div className="inline-flex gap-2 mt-2">
+                <span className="px-2 py-1 bg-accent-blue/10 text-accent-blue text-[10px] sm:text-xs rounded-full">Marketing</span>
+                <span className="px-2 py-1 bg-accent-purple/10 text-accent-purple text-[10px] sm:text-xs rounded-full">Q3 Planning</span>
+              </div>
+            </div>
+            <div className="space-y-3">
+              <div className="h-4 sm:h-5 w-1/2 bg-surface rounded-md" />
+              <div className="flex items-center gap-2">
+                <input type="checkbox" checked readOnly className="rounded border-card-border bg-transparent text-accent-blue" />
+                <div className="h-2 sm:h-3 w-[80%] bg-surface/80 rounded" />
+              </div>
+              <div className="flex items-center gap-2">
+                <input type="checkbox" readOnly className="rounded border-card-border bg-transparent" />
+                <div className="h-2 sm:h-3 w-[90%] bg-surface/80 rounded" />
+              </div>
+              <div className="flex items-center gap-2">
+                <input type="checkbox" readOnly className="rounded border-card-border bg-transparent" />
+                <div className="h-2 sm:h-3 w-[70%] bg-surface/80 rounded" />
+              </div>
+            </div>
+          </div>
+          
+          {/* Floating Gradient to make it look active */}
+          <div className="absolute -inset-1 bg-gradient-to-r from-accent-blue/0 via-accent-purple/10 to-accent-blue/0 -z-10 blur-xl animate-pulse" />
+        </motion.div>
+
       </div>
     </section>
   );

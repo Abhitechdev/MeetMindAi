@@ -218,6 +218,23 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
           />
         </div>
 
+        {/* INLINE CTA to trap traffic */}
+        <div className="my-12 glass-card p-6 md:p-8 rounded-2xl bg-gradient-to-r from-accent-blue/10 via-surface to-accent-purple/10 border-accent-blue/20 flex flex-col md:flex-row items-center justify-between gap-6 shadow-[0_0_40px_rgba(59,130,246,0.1)]">
+          <div className="text-center md:text-left">
+            <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">Stop taking manual notes.</h3>
+            <p className="text-muted text-sm md:text-base">Try MeetMind AI for your next meeting and get flawless transcripts and action items instantly.</p>
+          </div>
+          <Link 
+            href="/login" 
+            className="shrink-0 inline-flex items-center justify-center gap-2 rounded-xl bg-foreground text-background px-8 py-3.5 text-sm font-semibold hover:scale-105 transition-all shadow-lg hover:shadow-xl active:scale-95"
+          >
+            Start Analyzing
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </Link>
+        </div>
+
         <AdUnit className="my-16" slotId="BOTTOM_ARTICLE_SLOT" />
 
         {/* Related Articles */}
@@ -244,7 +261,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         )}
 
         {/* Previous / Next Navigation */}
-        <nav className="flex flex-col sm:flex-row justify-between gap-4 pt-8 border-t border-card-border mb-16">
+        <nav className="flex flex-col sm:flex-row justify-between gap-4 pt-8 border-t border-card-border mb-8">
           {prev ? (
             <Link href={`/blog/${prev.slug}`} className="flex-1 glass-card p-4 hover:bg-surface/60 transition-colors">
               <span className="text-xs text-muted uppercase tracking-wider block mb-1">Previous</span>
@@ -259,20 +276,6 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             </Link>
           ) : <div className="flex-1" />}
         </nav>
-
-        {/* CTA */}
-        <div className="glass-card p-8 text-center rounded-2xl bg-gradient-to-br from-surface/50 to-accent-blue/5 border-accent-blue/20">
-          <h3 className="text-2xl font-bold text-foreground mb-3">Ready to optimize your meetings?</h3>
-          <p className="text-muted mb-6 max-w-md mx-auto">
-            Stop taking manual notes. Let MeetMind AI transcribe, summarize, and extract actionable insights from your next meeting automatically.
-          </p>
-          <Link 
-            href="/login" 
-            className="inline-flex items-center justify-center rounded-lg bg-foreground text-background px-6 py-3 text-sm font-medium hover:bg-foreground/90 transition-colors shadow-sm"
-          >
-            Start Free Today
-          </Link>
-        </div>
         
       </article>
     </main>
