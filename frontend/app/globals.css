@@ -4,14 +4,14 @@
 
 :root, .light {
   --background: #FFFFFF;
-  --surface: #F7F7F8;
+  --surface: #F9FAFB;
   --card: #FFFFFF;
   --card-border: rgba(0, 0, 0, 0.08);
-  --foreground: #111111;
-  --muted: #888888;
-  --accent-purple: #5E6AD2;
-  --accent-indigo: #5E6AD2;
-  --accent-blue: #326CE5;
+  --foreground: #09090B;
+  --muted: #71717A;
+  --accent-purple: #2563EB; /* Re-mapped to electric blue */
+  --accent-indigo: #2563EB;
+  --accent-blue: #2563EB;
   --glass-bg: rgba(255, 255, 255, 0.6);
   --glass-border: rgba(0, 0, 0, 0.08);
   --success: #10B981;
@@ -22,14 +22,14 @@
 .dark {
   --background: #000000;
   --surface: #0A0A0A;
-  --card: #111111;
+  --card: #09090B;
   --card-border: rgba(255, 255, 255, 0.1);
-  --foreground: #EDEDED;
-  --muted: #888888;
-  --accent-purple: #6E79D6;
-  --accent-indigo: #6E79D6;
-  --accent-blue: #4078F2;
-  --glass-bg: rgba(10, 10, 10, 0.4);
+  --foreground: #FAFAFA;
+  --muted: #A1A1AA;
+  --accent-purple: #3B82F6; /* Re-mapped to electric blue */
+  --accent-indigo: #3B82F6;
+  --accent-blue: #3B82F6;
+  --glass-bg: rgba(0, 0, 0, 0.5);
   --glass-border: rgba(255, 255, 255, 0.1);
   --success: #10B981;
   --danger: #EF4444;

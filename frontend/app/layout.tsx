@@ -2,12 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 // Launch prep: ensuring metadata types are imported
 import Script from "next/script";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./components/theme-provider";
 import { Navigation } from "./components/nav";
 import CursorEffect from "./components/cursor-effect";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: "MeetMind AI — Meeting Insights Powered by AI",
@@ -21,10 +24,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className="h-full antialiased">
+    <html lang="en" suppressHydrationWarning className={`h-full antialiased ${inter.variable}`}>
       <head>
       </head>
-      <body className="min-h-full flex flex-col bg-background text-foreground transition-colors duration-300">
+      <body className="min-h-full flex flex-col bg-background text-foreground transition-colors duration-300 font-sans tracking-tight">
         <Script src="https://www.googletagmanager.com/gtag/js?id=G-XTH4Y4K2JM" strategy="afterInteractive" />
         <Script id="google-analytics" strategy="afterInteractive">
           {`

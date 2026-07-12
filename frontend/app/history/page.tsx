@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { createClient } from "@/lib/supabase"
 import { getMeetings } from "@/lib/api"
 import GradientBackground from "../components/gradient-background"
+import { Search, Calendar, Clock, Trash2, ArrowUpDown } from "lucide-react"
 
 type Meeting = {
   id: string
@@ -66,12 +67,7 @@ export default function HistoryPage() {
   async function deleteAllMeetings() {
     if (!confirm("Are you sure you want to delete ALL meeting history? This cannot be undone.")) return
     setLoading(true)
-    
-    // Note: To delete all rows, Supabase requires a filter. We can use .neq('id', '00000000-0000-0000-0000-000000000000') 
-    // or since we have the list, we can delete them by IDs if RLS blocks bulk delete without filter.
-    // The simplest bulk delete is to delete where id is not null.
     await supabase.from("meetings").delete().not("id", "is", null)
-    
     setMeetings([])
     setLoading(false)
     router.refresh()
@@ -118,18 +114,18 @@ export default function HistoryPage() {
   }, [meetings])
 
   return (
-    <main className="relative min-h-screen">
+    <main className="relative min-h-screen pt-24 pb-16">
       <GradientBackground />
-      <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="flex items-center justify-between mb-8">
+      <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight text-foreground">Meeting History</h1>
-            <p className="text-muted mt-2">All your AI-analyzed conversations in one place</p>
+            <h1 className="text-4xl font-semibold tracking-tighter text-foreground">Meeting History</h1>
+            <p className="text-lg text-muted mt-2">All your AI-analyzed conversations in one place.</p>
           </div>
           {meetings.length > 0 && (
             <button
               onClick={deleteAllMeetings}
-              className="px-4 py-2 bg-red-500/10 text-red-400 rounded-md hover:bg-red-500/20 text-sm font-medium transition-colors border border-red-500/20"
+              className="px-5 py-2.5 bg-red-500/10 text-red-500 rounded-lg hover:bg-red-500/20 text-sm font-semibold transition-colors border border-red-500/20"
             >
               Delete All History
             </button>
@@ -138,50 +134,49 @@ export default function HistoryPage() {
 
         {/* Dashboard Metrics */}
         {meetings.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-            <div className="glass-card glass-card-hover p-6">
-              <p className="text-sm font-medium text-muted mb-1">Total Meetings</p>
-              <p className="text-3xl font-bold text-foreground">{metrics.total}</p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
+            <div className="glass-card glass-card-hover p-6 rounded-2xl">
+              <p className="text-sm font-medium text-muted mb-2">Total Meetings</p>
+              <p className="text-4xl font-bold tracking-tight text-foreground">{metrics.total}</p>
             </div>
-            <div className="glass-card glass-card-hover p-6">
-              <p className="text-sm font-medium text-muted mb-1">Languages Used</p>
-              <p className="text-3xl font-bold text-foreground">{metrics.languagesUsed}</p>
+            <div className="glass-card glass-card-hover p-6 rounded-2xl">
+              <p className="text-sm font-medium text-muted mb-2">Languages Used</p>
+              <p className="text-4xl font-bold tracking-tight text-foreground">{metrics.languagesUsed}</p>
             </div>
-            <div className="glass-card glass-card-hover p-6">
-              <p className="text-sm font-medium text-muted mb-1">Most Used Language</p>
-              <p className="text-3xl font-bold text-foreground">
+            <div className="glass-card glass-card-hover p-6 rounded-2xl">
+              <p className="text-sm font-medium text-muted mb-2">Most Used Language</p>
+              <p className="text-4xl font-bold tracking-tight text-foreground">
                 {FLAG_MAP[metrics.mostUsed] || "🌐"} {metrics.mostUsed}
               </p>
             </div>
           </div>
         )}
 
-        <div className="glass-card p-6 mb-8 flex flex-col sm:flex-row gap-4 justify-between items-center">
+        <div className="glass-card p-4 rounded-2xl mb-10 flex flex-col sm:flex-row gap-4 justify-between items-center">
           <div className="relative w-full sm:max-w-md">
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted" />
             <input
               type="text"
               placeholder="Search meetings or tags..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-surface border border-card-border rounded-lg pl-10 pr-4 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20"
+              className="w-full bg-surface border border-card-border rounded-xl pl-10 pr-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20 transition-all"
             />
           </div>
           <button
             onClick={() => setSortOrder(prev => prev === "desc" ? "asc" : "desc")}
-            className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-muted hover:text-foreground bg-surface border border-card-border rounded-lg shadow-sm hover:bg-muted/5 transition-colors"
+            className="flex items-center gap-2 px-5 py-3 text-sm font-medium text-muted hover:text-foreground bg-surface border border-card-border rounded-xl shadow-sm hover:bg-muted/5 transition-colors"
           >
+            <ArrowUpDown className="w-4 h-4" />
             Sort by Date: {sortOrder === "desc" ? "Newest" : "Oldest"}
           </button>
         </div>
 
         {loading ? (
-          <div className="text-center py-12 text-muted animate-pulse">Loading meetings...</div>
+          <div className="text-center py-20 text-muted animate-pulse font-medium">Loading history...</div>
         ) : filteredMeetings.length === 0 ? (
-          <div className="text-center py-12 glass-card">
-            <p className="text-muted">No meetings found.</p>
+          <div className="text-center py-24 glass-card rounded-2xl">
+            <p className="text-muted text-lg">No meetings found.</p>
           </div>
         ) : (
           <div className="grid gap-4">
@@ -192,33 +187,29 @@ export default function HistoryPage() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  className="glass-card glass-card-hover p-6 flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center transition-colors"
+                  className="glass-card glass-card-hover p-5 sm:p-6 rounded-2xl flex flex-col sm:flex-row gap-6 justify-between items-start sm:items-center transition-all"
                 >
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <div className="flex items-center gap-3">
-                      <h3 className="text-lg font-semibold text-foreground">{meeting.title}</h3>
-                      <span className="px-2 py-0.5 rounded-full bg-surface text-foreground text-xs font-medium border border-card-border">
+                      <h3 className="text-xl font-semibold tracking-tight text-foreground">{meeting.title}</h3>
+                      <span className="px-2.5 py-1 rounded-md bg-surface text-foreground text-xs font-semibold border border-card-border">
                         {FLAG_MAP[meeting.language || "English"] || "🌐"} {meeting.language || "English"}
                       </span>
                     </div>
-                    <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-muted">
-                      <span className="flex items-center gap-1">
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        {new Date(meeting.created_at).toLocaleDateString()}
+                    <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted">
+                      <span className="flex items-center gap-1.5">
+                        <Calendar className="w-4 h-4" />
+                        {new Date(meeting.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
                       </span>
-                      <span className="flex items-center gap-1">
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+                      <span className="flex items-center gap-1.5">
+                        <Clock className="w-4 h-4" />
                         {formatDuration(meeting.duration)}
                       </span>
                     </div>
                     {meeting.tags && meeting.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-2 pt-1">
+                      <div className="flex flex-wrap gap-2 pt-2">
                         {meeting.tags.map((tag, i) => (
-                          <span key={i} className="px-2 py-0.5 rounded-full bg-surface border border-card-border text-xs font-medium text-muted">
+                          <span key={i} className="px-2.5 py-1 rounded-md bg-surface border border-card-border text-xs font-medium text-muted">
                             {tag}
                           </span>
                         ))}
@@ -228,18 +219,16 @@ export default function HistoryPage() {
                   <div className="flex items-center gap-3 w-full sm:w-auto">
                     <Link 
                       href={`/history/${meeting.id}`}
-                      className="flex-1 sm:flex-none px-4 py-2 rounded-md bg-foreground text-background text-sm font-medium shadow-sm hover:bg-foreground/90 transition-colors text-center"
+                      className="flex-1 sm:flex-none px-6 py-2.5 rounded-lg bg-foreground text-background text-sm font-semibold shadow-sm hover:bg-foreground/90 transition-colors text-center"
                     >
-                      Open
+                      Open Summary
                     </Link>
                     <button
                       onClick={() => deleteMeeting(meeting.id)}
-                      className="p-2 rounded-md text-red-400 hover:bg-red-400/10 transition-colors"
+                      className="p-2.5 rounded-lg text-muted hover:text-red-500 hover:bg-red-500/10 transition-colors border border-transparent hover:border-red-500/20"
                       aria-label="Delete"
                     >
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                      </svg>
+                      <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
                 </motion.div>
