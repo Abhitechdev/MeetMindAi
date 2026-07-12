@@ -96,7 +96,11 @@ app = FastAPI(title="MeetMind AI", version="1.0.0")
 # ponytail: lazy strict origins. Default to localhost for dev, but env var is required for prod.
 allowed_origins_env = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000")
 allowed_origins = [origin.strip() for origin in allowed_origins_env.split(",") if origin.strip()]
-
+# Ensure production domains are always allowed to prevent 400 Bad Request on OPTIONS
+default_prod_origins = ["https://meetmindai.co.in", "https://www.meetmindai.co.in"]
+for origin in default_prod_origins:
+    if origin not in allowed_origins:
+        allowed_origins.append(origin)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
