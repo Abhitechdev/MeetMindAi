@@ -108,35 +108,16 @@ const HeroSection = React.memo(function HeroSection() {
           </div>
           
           {/* Mockup Body */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 text-left">
-            <div className="col-span-1 sm:col-span-2 space-y-4">
-              <div className="h-4 sm:h-6 w-3/4 sm:w-1/2 bg-surface rounded-md animate-pulse" />
-              <div className="space-y-2">
-                <div className="h-2 sm:h-3 w-full bg-surface/60 rounded" />
-                <div className="h-2 sm:h-3 w-[90%] bg-surface/60 rounded" />
-                <div className="h-2 sm:h-3 w-[95%] bg-surface/60 rounded" />
-                <div className="h-2 sm:h-3 w-[80%] bg-surface/60 rounded" />
-              </div>
-              <div className="inline-flex gap-2 mt-2">
-                <span className="px-2 py-1 bg-accent-blue/10 text-accent-blue text-[10px] sm:text-xs rounded-full">Marketing</span>
-                <span className="px-2 py-1 bg-accent-purple/10 text-accent-purple text-[10px] sm:text-xs rounded-full">Q3 Planning</span>
-              </div>
-            </div>
-            <div className="space-y-3">
-              <div className="h-4 sm:h-5 w-1/2 bg-surface rounded-md" />
-              <div className="flex items-center gap-2">
-                <input type="checkbox" checked readOnly className="rounded border-card-border bg-transparent text-accent-blue" />
-                <div className="h-2 sm:h-3 w-[80%] bg-surface/80 rounded" />
-              </div>
-              <div className="flex items-center gap-2">
-                <input type="checkbox" readOnly className="rounded border-card-border bg-transparent" />
-                <div className="h-2 sm:h-3 w-[90%] bg-surface/80 rounded" />
-              </div>
-              <div className="flex items-center gap-2">
-                <input type="checkbox" readOnly className="rounded border-card-border bg-transparent" />
-                <div className="h-2 sm:h-3 w-[70%] bg-surface/80 rounded" />
-              </div>
-            </div>
+          <div className="w-full aspect-video bg-black/40 relative">
+            {/* ponytail: lazy embed, native video tag beats custom players */}
+            <video 
+              src="/smpallre.mp4" 
+              autoPlay 
+              loop 
+              muted 
+              playsInline 
+              className="w-full h-full object-cover"
+            />
           </div>
           
           {/* Floating Gradient to make it look active */}
