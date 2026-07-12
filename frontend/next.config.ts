@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 // ponytail: dynamically grab the backend domain for CSP to avoid blocking our own API
 const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || '';
-const backendDomain = apiBase.startsWith('http') ? apiBase : '';
+const backendDomain = apiBase ? (apiBase.startsWith('http') ? apiBase : `https://${apiBase}`) : '';
 
 const cspHeader = `
   default-src 'self';
@@ -18,14 +18,7 @@ const cspHeader = `
 `.replace(/\s{2,}/g, ' ').trim()
 
 const nextConfig: NextConfig = {
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: 'http://127.0.0.1:8000/:path*',
-      },
-    ];
-  },
+
   async headers() {
     return [
       {
