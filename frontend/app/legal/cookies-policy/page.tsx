@@ -68,7 +68,7 @@ export default function CookiesPolicyPage() {
 
           <h2 className="text-2xl font-semibold text-foreground mt-10 mb-4">How We Use Cookies</h2>
           <p className="text-muted leading-relaxed mb-6">
-            MeetMind AI uses cookies for four specific purposes: ensuring our app functions securely, remembering your sessions, analyzing site traffic, and serving relevant advertisements on our public blog.
+            MeetMind AI currently uses cookies for three specific purposes: ensuring our app functions securely, remembering your sessions, and analyzing site traffic. We may use cookies for advertising in the future, as detailed below.
           </p>
 
           <div className="space-y-6">
@@ -105,10 +105,10 @@ export default function CookiesPolicyPage() {
             <div className="rounded-xl border border-card-border bg-surface p-6">
               <h3 className="text-xl font-medium text-foreground flex items-center gap-2 mb-3">
                 <span className="h-2 w-2 rounded-full bg-purple-500"></span>
-                Google AdSense (Targeting)
+                Advertising (Future)
               </h3>
               <p className="text-sm text-muted">
-                To support the free resources on our blog, we utilize Google AdSense. AdSense uses cookies to serve ads based on a user's prior visits to our website or other websites. You can opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" className="text-accent-blue hover:underline" target="_blank" rel="noreferrer">Google Ads Settings</a>.
+                MeetMind AI may use advertising services such as Google AdSense in the future to support free educational content on our blog. If advertising is enabled, this Cookies Policy will be updated to explain what cookies are used and how users can manage their preferences. At present, MeetMind AI does not use advertising cookies.
               </p>
             </div>
           </div>
