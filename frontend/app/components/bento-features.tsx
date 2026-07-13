@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import React from "react";
+import { motion } from "framer-motion";
 
 const BENTO_ITEMS = [
   {
@@ -37,39 +37,12 @@ const BENTO_ITEMS = [
   },
 ];
 
+// ponytail: removed useScroll/useTransform parallax (fires every scroll frame on mobile = INP tax)
+// ponytail: removed whileHover (touch devices don't hover, wasted listeners)
+// ponytail: replaced framer-motion animate={{ y: [-5,5,-5] }} with CSS @keyframes icon-float
 const BentoFeatures = React.memo(function BentoFeatures() {
-  const sectionRef = useRef<HTMLElement>(null);
-  
-  // Parallax scroll effect
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-
-  const yBackground = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
-
   return (
-    <section ref={sectionRef} className="relative max-w-4xl mx-auto px-4 sm:px-6 pb-20">
-      
-      {/* Subtle Animated Gradient Background Parallax Effect */}
-      <motion.div 
-        className="absolute inset-0 -z-10 pointer-events-none flex items-center justify-center overflow-visible"
-        style={{ y: yBackground }}
-      >
-        <motion.div 
-          className="w-full max-w-3xl h-[400px] bg-gradient-to-tr from-accent-purple/10 to-accent-blue/10 blur-[100px] rounded-[100%]"
-          animate={{ 
-            scale: [1, 1.05, 1],
-            opacity: [0.6, 0.8, 0.6] 
-          }}
-          transition={{ 
-            duration: 15, 
-            repeat: Infinity, 
-            ease: "easeInOut" 
-          }}
-        />
-      </motion.div>
-
+    <section className="relative max-w-4xl mx-auto px-4 sm:px-6 pb-20">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 relative z-10">
         {BENTO_ITEMS.map((item, i) => {
           const isAi = item.isAiAssistant;
@@ -87,7 +60,7 @@ const BentoFeatures = React.memo(function BentoFeatures() {
                   y: 40, 
                   scale: isAi ? 0.98 : 1 
                 },
-                visible: (idx) => ({
+                visible: (idx: number) => ({
                   opacity: 1,
                   y: 0,
                   scale: 1,
@@ -97,10 +70,6 @@ const BentoFeatures = React.memo(function BentoFeatures() {
                     ease: "easeOut",
                   },
                 }),
-              }}
-              whileHover={{ 
-                scale: 1.02, 
-                transition: { duration: 0.25, ease: "easeOut" } 
               }}
               className={`group relative glass-card glass-card-hover p-8 flex flex-col justify-between overflow-hidden ${item.className}`}
             >
@@ -112,19 +81,13 @@ const BentoFeatures = React.memo(function BentoFeatures() {
               )}
 
               <div className="relative z-10">
-                {/* Floating Icon */}
-                <motion.div 
+                {/* ponytail: CSS icon-float instead of framer-motion JS loop — compositor thread */}
+                <div 
                   className="text-3xl mb-4 bg-surface w-12 h-12 flex items-center justify-center rounded-xl border border-card-border shadow-sm"
-                  animate={{ y: [-5, 5, -5] }}
-                  transition={{ 
-                    duration: 4, 
-                    repeat: Infinity, 
-                    ease: "easeInOut", 
-                    delay: i * 0.3 
-                  }}
+                  style={{ animation: `icon-float 4s ease-in-out ${i * 0.3}s infinite` }}
                 >
                   {item.icon}
-                </motion.div>
+                </div>
                 
                 <div>
                   <h3 className="text-lg font-semibold text-foreground mb-1">{item.title}</h3>

@@ -1,7 +1,5 @@
-"use client";
-
+// ponytail: no "use client", no framer-motion — CSS marquee runs on compositor thread, zero INP
 import React from "react";
-import { motion } from "framer-motion";
 
 const LANGUAGES = [
   "English", "Spanish", "French", "German", "Portuguese", "Italian",
@@ -10,7 +8,6 @@ const LANGUAGES = [
   "Punjabi", "Urdu", "Arabic", "Russian", "Turkish", "Polish"
 ];
 
-// Double the array for seamless infinite scrolling
 const MARQUEE_ITEMS = [...LANGUAGES, ...LANGUAGES];
 
 const LanguageMarquee = React.memo(function LanguageMarquee() {
@@ -28,15 +25,10 @@ const LanguageMarquee = React.memo(function LanguageMarquee() {
         <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none"></div>
         <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none"></div>
 
-        <div className="flex">
-          <motion.div
+        <div className="flex overflow-hidden">
+          <div
             className="flex gap-4 whitespace-nowrap"
-            animate={{ x: ["0%", "-50%"] }}
-            transition={{
-              repeat: Infinity,
-              ease: "linear",
-              duration: 35, // Adjust speed here
-            }}
+            style={{ animation: "marquee 35s linear infinite" }}
           >
             {MARQUEE_ITEMS.map((lang, idx) => (
               <div
@@ -46,7 +38,7 @@ const LanguageMarquee = React.memo(function LanguageMarquee() {
                 {lang}
               </div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </div>
     </div>

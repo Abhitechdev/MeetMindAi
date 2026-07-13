@@ -1,7 +1,6 @@
-"use client";
-
+// ponytail: no "use client", no framer-motion — hero <h1> is the LCP element,
+// must be server-rendered HTML so it arrives in the first response
 import React from "react";
-import { motion } from "framer-motion";
 
 const HeroSection = React.memo(function HeroSection() {
   return (

@@ -3,9 +3,10 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import { useState, useEffect } from "react"
+import { useState, useEffect, lazy, Suspense } from "react"
 import { ThemeToggle } from "./theme-toggle"
-import UpgradeModal from "./upgrade-modal"
+// ponytail: lazy-load modal — Razorpay + modal UI not needed until user clicks Upgrade
+const UpgradeModal = lazy(() => import("./upgrade-modal"))
 import { createClient } from "@/lib/supabase"
 import type { User } from "@supabase/supabase-js"
 import { getUsage } from "@/lib/api"
@@ -62,7 +63,11 @@ export function Navigation() {
 
   return (
     <>
-      <UpgradeModal isOpen={isUpgradeModalOpen} onClose={() => setIsUpgradeModalOpen(false)} />
+      {isUpgradeModalOpen && (
+        <Suspense fallback={null}>
+          <UpgradeModal isOpen={isUpgradeModalOpen} onClose={() => setIsUpgradeModalOpen(false)} />
+        </Suspense>
+      )}
       <nav className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/80 backdrop-blur-md">
       <div className="mx-auto max-w-5xl px-6 sm:px-8 lg:px-8">
         <div className="flex h-16 items-center justify-between">
