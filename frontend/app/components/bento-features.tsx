@@ -42,7 +42,7 @@ const BENTO_ITEMS = [
 // ponytail: replaced framer-motion animate={{ y: [-5,5,-5] }} with CSS @keyframes icon-float
 const BentoFeatures = React.memo(function BentoFeatures() {
   return (
-    <section className="relative max-w-4xl mx-auto px-4 sm:px-6 pb-20">
+    <section id="features" className="relative max-w-4xl mx-auto px-4 sm:px-6 pb-20">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 relative z-10">
         {BENTO_ITEMS.map((item, i) => {
           const isAi = item.isAiAssistant;

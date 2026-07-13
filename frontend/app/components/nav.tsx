@@ -11,14 +11,20 @@ import { createClient } from "@/lib/supabase"
 import type { User } from "@supabase/supabase-js"
 import { getUsage } from "@/lib/api"
 
-const links = [
-  { href: "/", label: "New Meeting" },
-  { href: "/history", label: "History" },
-  { href: "/actions", label: "Actions" },
-  { href: "/decisions", label: "Decisions" },
+// ponytail: single nav component, zero extra state, ternary inline for auth/public split. lazy, effective.
+const publicLinks = [
+  { href: "/#features", label: "Features" },
+  { href: "/#how-it-works", label: "How it Works" },
   { href: "/blog", label: "Blog" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
+]
+
+const authLinks = [
+  { href: "/", label: "+ New Meeting" },
+  { href: "/history", label: "History" },
+  { href: "/actions", label: "Actions" },
+  { href: "/decisions", label: "Decisions" },
 ]
 
 export function Navigation() {
@@ -77,7 +83,7 @@ export function Navigation() {
             </Link>
             
             <div className="hidden md:flex items-center gap-1">
-              {links.map((link) => {
+              {(user ? authLinks : publicLinks).map((link) => {
                 const isActive = pathname === link.href
                 return (
                   <Link
@@ -172,8 +178,8 @@ export function Navigation() {
                 </button>
               </div>
             ) : (
-              <Link href="/login" className="text-sm font-medium text-foreground hover:opacity-80 transition-opacity">
-                Log in
+              <Link href="/login" className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-accent-purple to-accent-blue px-4 py-2 text-sm font-semibold text-white shadow-sm hover:scale-[1.03] transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-purple">
+                Log in / Sign Up
               </Link>
             )}
             <ThemeToggle />
@@ -225,7 +231,7 @@ export function Navigation() {
                         )}
                       </div>
                     )}
-                    {links.map((link) => {
+                    {(user ? authLinks : publicLinks).map((link) => {
                       const isActive = pathname === link.href
                       return (
                         <Link
