@@ -6,6 +6,12 @@ type AdUnitProps = {
 };
 
 export default function AdUnit({ className = '', slotId }: AdUnitProps) {
+  const isApproved = process.env.NEXT_PUBLIC_ADSENSE_APPROVED === 'true';
+
+  if (!isApproved) {
+    return null;
+  }
+
   // A responsive placeholder for Google AdSense. 
   // In production, this would load the adsbygoogle script and ins element.
   const adClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT || 'ca-pub-XXXXXXXXXXXXXXXX';
