@@ -29,10 +29,13 @@ const HeroSection = React.memo(function HeroSection() {
         <div className="flex justify-center animate-fade-in-up animation-delay-300">
           <a
             href="#upload-section"
-            className="inline-flex items-center gap-2 rounded-xl bg-accent-purple px-8 py-3.5 text-sm font-semibold text-white shadow-sm hover:bg-accent-purple/90 transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-purple"
+            className="group relative inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-accent-purple to-accent-blue px-10 py-4 text-base font-semibold text-white shadow-lg shadow-accent-purple/30 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-accent-purple/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-purple overflow-hidden"
           >
-            Try it Free
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            {/* Shimmer effect on hover */}
+            <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 ease-in-out group-hover:translate-x-full" />
+            
+            <span className="relative">Try it Free</span>
+            <svg className="relative h-5 w-5 transition-transform duration-300 group-hover:translate-y-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
             </svg>
           </a>
