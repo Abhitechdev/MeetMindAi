@@ -135,6 +135,7 @@ export default function Home() {
 
               {/* Upload */}
               <motion.div
+                id="upload-section"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.25, delay: 0.1 }}

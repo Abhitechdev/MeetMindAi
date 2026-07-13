@@ -26,6 +26,18 @@ const HeroSection = React.memo(function HeroSection() {
           Upload recordings and instantly generate transcripts, summaries, action items, decisions, risks, and follow-ups.
         </p>
 
+        <div className="flex justify-center animate-fade-in-up animation-delay-300">
+          <a
+            href="#upload-section"
+            className="inline-flex items-center gap-2 rounded-xl bg-accent-purple px-8 py-3.5 text-sm font-semibold text-white shadow-sm hover:bg-accent-purple/90 transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-purple"
+          >
+            Try it Free
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
+          </a>
+        </div>
+
       </div>
     </section>
   );
