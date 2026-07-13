@@ -5,7 +5,7 @@ import { Check } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Pricing | MeetMind AI",
-  description: "Simple, transparent pricing for MeetMind AI. Start for free and upgrade when you need unlimited meeting transcription and AI summaries.",
+  description: "Simple, transparent pricing for MeetMind AI. Start for free and upgrade when you need more meetings and premium AI features.",
   openGraph: {
     title: "Pricing | MeetMind AI",
     description: "Simple, transparent pricing for MeetMind AI.",
@@ -24,7 +24,7 @@ export default function PricingPage() {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": "MeetMind AI Pro Plan",
-    "description": "Unlimited AI meeting transcriptions, summaries, and action item extraction.",
+    "description": "100 AI meeting transcriptions, summaries, and action item extraction.",
     "brand": {
       "@type": "Brand",
       "name": "MeetMind AI"
@@ -32,8 +32,8 @@ export default function PricingPage() {
     "offers": {
       "@type": "Offer",
       "url": "https://meetmind.ai/pricing",
-      "priceCurrency": "USD",
-      "price": "19.00",
+      "priceCurrency": "INR",
+      "price": "299.00",
       "priceValidUntil": "2027-12-31",
       "availability": "https://schema.org/InStock"
     }
@@ -68,7 +68,7 @@ export default function PricingPage() {
             Simple, Transparent Pricing
           </h1>
           <p className="text-lg text-muted max-w-2xl mx-auto">
-            Stop taking manual notes and start participating. Upgrade whenever you're ready.
+            Stop taking manual notes and start participating. Upgrade with a simple one-time payment.
           </p>
         </div>
 
@@ -80,8 +80,7 @@ export default function PricingPage() {
               <p className="text-muted mt-2">Perfect for individuals just getting started.</p>
             </div>
             <div className="mb-6">
-              <span className="text-5xl font-bold tracking-tight text-foreground">$0</span>
-              <span className="text-muted">/month</span>
+              <span className="text-5xl font-bold tracking-tight text-foreground">₹0</span>
             </div>
             <Link
               href="/login"
@@ -92,15 +91,19 @@ export default function PricingPage() {
             <ul className="space-y-4 flex-1">
               <li className="flex gap-3 text-sm text-muted">
                 <Check className="h-5 w-5 flex-shrink-0 text-foreground" />
-                <span>3 Meetings per month</span>
+                <span>3 Meetings limit</span>
               </li>
               <li className="flex gap-3 text-sm text-muted">
                 <Check className="h-5 w-5 flex-shrink-0 text-foreground" />
-                <span>Standard Transcription</span>
+                <span>Meeting History</span>
               </li>
               <li className="flex gap-3 text-sm text-muted">
                 <Check className="h-5 w-5 flex-shrink-0 text-foreground" />
-                <span>Basic AI Summaries</span>
+                <span>AI Summary</span>
+              </li>
+              <li className="flex gap-3 text-sm text-muted">
+                <Check className="h-5 w-5 flex-shrink-0 text-foreground" />
+                <span>Action Items</span>
               </li>
             </ul>
           </div>
@@ -112,11 +115,11 @@ export default function PricingPage() {
             </div>
             <div className="mb-6">
               <h3 className="text-2xl font-bold text-foreground">Pro</h3>
-              <p className="text-muted mt-2">For professionals who live in meetings.</p>
+              <p className="text-muted mt-2">Unlock the full potential of MeetMind AI.</p>
             </div>
             <div className="mb-6">
-              <span className="text-5xl font-bold tracking-tight text-foreground">$19</span>
-              <span className="text-muted">/month</span>
+              <span className="text-5xl font-bold tracking-tight text-foreground">₹299</span>
+              <span className="text-muted block mt-1">one-time payment</span>
             </div>
             <Link
               href="/login"
@@ -127,19 +130,19 @@ export default function PricingPage() {
             <ul className="space-y-4 flex-1">
               <li className="flex gap-3 text-sm text-foreground">
                 <Check className="h-5 w-5 flex-shrink-0 text-accent-purple" />
-                <span><strong>Unlimited</strong> Meetings</span>
+                <span><strong>100</strong> Meetings</span>
               </li>
               <li className="flex gap-3 text-sm text-foreground">
                 <Check className="h-5 w-5 flex-shrink-0 text-accent-purple" />
-                <span>Priority Transcription Speed</span>
+                <span>Unlimited AI Chat</span>
               </li>
               <li className="flex gap-3 text-sm text-foreground">
                 <Check className="h-5 w-5 flex-shrink-0 text-accent-purple" />
-                <span>Advanced AI Summaries & Action Items</span>
+                <span>Priority Processing</span>
               </li>
               <li className="flex gap-3 text-sm text-foreground">
                 <Check className="h-5 w-5 flex-shrink-0 text-accent-purple" />
-                <span>Export to Notion, PDF, Markdown</span>
+                <span>Future Premium Features</span>
               </li>
             </ul>
           </div>
