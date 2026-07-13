@@ -33,6 +33,11 @@ export default function HistoryPage() {
   const [sortOrder, setSortOrder] = useState<"desc" | "asc">("desc")
   const router = useRouter()
   const [supabase] = useState(() => createClient())
+  
+  // Custom confirmation modal state
+  const [meetingToDelete, setMeetingToDelete] = useState<string | null>(null)
+  const [showDeleteAll, setShowDeleteAll] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   useEffect(() => {
     const controller = new AbortController();
@@ -56,24 +61,30 @@ export default function HistoryPage() {
     return () => controller.abort();
   }, [])
 
-  async function deleteMeeting(id: string) {
-    if (!confirm("Are you sure you want to delete this meeting?")) return
-    await supabase.from("meetings").delete().eq("id", id)
-    setMeetings(meetings.filter(m => m.id !== id))
+  function deleteMeeting(id: string) {
+    setMeetingToDelete(id)
+  }
+
+  async function confirmDeleteMeeting() {
+    if (!meetingToDelete) return
+    setIsDeleting(true)
+    await supabase.from("meetings").delete().eq("id", meetingToDelete)
+    setMeetings(meetings.filter(m => m.id !== meetingToDelete))
+    setIsDeleting(false)
+    setMeetingToDelete(null)
     router.refresh()
   }
 
-  async function deleteAllMeetings() {
-    if (!confirm("Are you sure you want to delete ALL meeting history? This cannot be undone.")) return
-    setLoading(true)
-    
-    // Note: To delete all rows, Supabase requires a filter. We can use .neq('id', '00000000-0000-0000-0000-000000000000') 
-    // or since we have the list, we can delete them by IDs if RLS blocks bulk delete without filter.
-    // The simplest bulk delete is to delete where id is not null.
+  function deleteAllMeetings() {
+    setShowDeleteAll(true)
+  }
+
+  async function confirmDeleteAll() {
+    setIsDeleting(true)
     await supabase.from("meetings").delete().not("id", "is", null)
-    
     setMeetings([])
-    setLoading(false)
+    setIsDeleting(false)
+    setShowDeleteAll(false)
     router.refresh()
   }
 
@@ -248,6 +259,86 @@ export default function HistoryPage() {
           </div>
         )}
       </div>
+
+      {/* Delete Single Meeting Modal */}
+      <AnimatePresence>
+        {meetingToDelete && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-background/80 backdrop-blur-sm"
+              onClick={() => !isDeleting && setMeetingToDelete(null)}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              className="relative w-full max-w-sm rounded-2xl border border-white/10 bg-surface/80 p-6 shadow-2xl backdrop-blur-xl"
+            >
+              <h3 className="text-lg font-bold text-foreground mb-2">Delete Meeting</h3>
+              <p className="text-sm text-muted mb-6">Are you sure you want to delete this meeting? This action cannot be undone.</p>
+              <div className="flex gap-3 justify-end">
+                <button 
+                  disabled={isDeleting}
+                  onClick={() => setMeetingToDelete(null)}
+                  className="px-4 py-2 text-sm font-medium text-muted hover:text-foreground transition-colors disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+                <button 
+                  disabled={isDeleting}
+                  onClick={confirmDeleteMeeting}
+                  className="px-4 py-2 text-sm font-medium bg-red-500/10 text-red-500 rounded-lg hover:bg-red-500/20 transition-colors disabled:opacity-50 border border-red-500/20"
+                >
+                  {isDeleting ? "Deleting..." : "Delete"}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Delete All Meetings Modal */}
+      <AnimatePresence>
+        {showDeleteAll && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-background/80 backdrop-blur-sm"
+              onClick={() => !isDeleting && setShowDeleteAll(false)}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              className="relative w-full max-w-sm rounded-2xl border border-white/10 bg-surface/80 p-6 shadow-2xl backdrop-blur-xl"
+            >
+              <h3 className="text-lg font-bold text-red-500 mb-2">Delete All History</h3>
+              <p className="text-sm text-muted mb-6">Are you sure you want to delete ALL meeting history? This action cannot be undone and you will lose all transcripts and summaries.</p>
+              <div className="flex gap-3 justify-end">
+                <button 
+                  disabled={isDeleting}
+                  onClick={() => setShowDeleteAll(false)}
+                  className="px-4 py-2 text-sm font-medium text-muted hover:text-foreground transition-colors disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+                <button 
+                  disabled={isDeleting}
+                  onClick={confirmDeleteAll}
+                  className="px-4 py-2 text-sm font-medium bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors disabled:opacity-50 shadow-sm"
+                >
+                  {isDeleting ? "Deleting..." : "Delete All"}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </main>
   )
 }
