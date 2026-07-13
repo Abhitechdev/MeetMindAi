@@ -96,42 +96,6 @@ export default function AboutPage() {
             </div>
           </div>
         </motion.div>
-        
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-24 glass-card p-8 md:p-12 text-center relative overflow-hidden"
-        >
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" />
-          <h2 className="text-3xl font-bold text-foreground mb-6">Our Mission</h2>
-          <p className="text-lg text-muted max-w-3xl mx-auto leading-relaxed mb-12">
-            MeetMind AI's mission is to eliminate the friction of knowledge transfer in modern teams. We believe that AI shouldn't just summarize conversations; it should act as an intelligent, perfectly-retained memory that empowers people to focus entirely on human connection rather than taking notes.
-          </p>
-          
-          <div className="grid md:grid-cols-2 gap-8 text-left border-t border-card-border pt-12 mt-4">
-            <div>
-              <h3 className="text-xl font-bold text-foreground mb-3">Who Built It</h3>
-              <p className="text-muted leading-relaxed">
-                MeetMind AI was developed by <span className="font-semibold text-foreground/80">Abhishek</span>, an independent developer passionate about leveraging artificial intelligence to solve real-world productivity bottlenecks. Built with a focus on deep technical integration, privacy, and frictionless user experience.
-              </p>
-            </div>
-            
-            <div>
-              <h3 className="text-xl font-bold text-foreground mb-3">Get in Touch</h3>
-              <p className="text-muted leading-relaxed mb-4">
-                Whether you have a feature request, need support, or just want to chat about the future of AI in productivity, I'd love to hear from you.
-              </p>
-              <a href="mailto:support@meetmindai.co.in" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-foreground text-background font-medium hover:bg-foreground/90 transition-all shadow-lg hover:shadow-xl active:scale-95">
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                support@meetmindai.co.in
-              </a>
-            </div>
-          </div>
-        </motion.div>
       </div>
     </main>
   );

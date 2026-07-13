@@ -65,7 +65,7 @@ export default function AudioUpload({ onUpload, disabled, limitReached }: AudioU
   );
 
   return (
-    <div id="audio-uploader">
+    <div>
       {/* Drop zone */}
       <motion.div
         id="audio-drop-zone"
