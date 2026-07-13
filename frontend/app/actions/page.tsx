@@ -21,6 +21,7 @@ export default function ActionsPage() {
   const [loading, setLoading] = useState(!cachedActions)
   const [filter, setFilter] = useState<"all" | "pending" | "completed">("all")
   const [supabase] = useState(() => createClient())
+  const [toast, setToast] = useState<string | null>(null)
 
   useEffect(() => {
     const controller = new AbortController();
@@ -48,6 +49,10 @@ export default function ActionsPage() {
     const newStatus = currentStatus === "pending" ? "completed" : "pending"
     // Optimistic update
     setActions(actions.map(a => a.id === id ? { ...a, status: newStatus as any } : a))
+    
+    // ponytail: zero-dependency toast, no new libraries
+    setToast(newStatus === "completed" ? "Task marked as completed" : "Task moved to pending")
+    setTimeout(() => setToast(null), 3000)
     
     await supabase.from("action_items").update({ status: newStatus }).eq("id", id)
   }
@@ -97,9 +102,7 @@ export default function ActionsPage() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  className={`glass-card glass-card-hover p-5 flex gap-4 items-start transition-opacity ${
-                    action.status === "completed" ? "opacity-60 hover:opacity-100" : ""
-                  }`}
+                  className="glass-card glass-card-hover p-5 flex gap-4 items-start transition-opacity"
                 >
                   <button
                     onClick={() => toggleStatus(action.id, action.status)}
@@ -116,7 +119,7 @@ export default function ActionsPage() {
                     )}
                   </button>
                   <div className="space-y-1">
-                    <p className={`text-base font-medium ${action.status === "completed" ? "line-through text-muted" : "text-foreground"}`}>
+                    <p className="text-base font-medium text-foreground">
                       {action.action_text}
                     </p>
                     <p className="text-xs text-muted">
@@ -129,6 +132,20 @@ export default function ActionsPage() {
           </div>
         )}
       </div>
+
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, x: "-50%" }}
+            animate={{ opacity: 1, y: 0, x: "-50%" }}
+            exit={{ opacity: 0, y: 50, x: "-50%" }}
+            className="fixed bottom-8 left-1/2 z-50 glass-card px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 border border-accent-purple/30 bg-surface/90 backdrop-blur-xl"
+          >
+            <div className="w-2 h-2 rounded-full bg-accent-purple animate-pulse" />
+            <span className="text-sm font-medium text-foreground">{toast}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </main>
   )
 }
