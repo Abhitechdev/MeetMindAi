@@ -70,8 +70,6 @@ export default function RootLayout({
                   <ul className="space-y-3 text-sm text-muted">
                     <li><Link href="/blog" className="hover:text-foreground transition-colors">Blog</Link></li>
                     <li><Link href="/faq" className="hover:text-foreground transition-colors">FAQ</Link></li>
-                    <li><Link href="/api-docs" className="hover:text-foreground transition-colors">API Docs</Link></li>
-                    <li><Link href="/help-center" className="hover:text-foreground transition-colors">Help Center</Link></li>
                   </ul>
                 </div>
                 <div>
