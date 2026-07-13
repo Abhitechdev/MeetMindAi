@@ -55,17 +55,52 @@ export default function RootLayout({
           {children}
           <Analytics />
           <SpeedInsights />
-          <footer className="mt-auto py-12 text-center text-sm text-muted border-t border-card-border bg-surface/30">
-            <nav className="flex flex-wrap justify-center gap-x-4 sm:gap-x-6 gap-y-2 mt-4 mb-4 text-xs sm:text-sm tracking-wide" aria-label="Legal">
-              <Link href="/legal/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link>
-              <Link href="/legal/terms" className="hover:text-foreground transition-colors">Terms of Service</Link>
-              <Link href="/legal/ai-transparency" className="hover:text-foreground transition-colors">AI Transparency</Link>
-              <Link href="/legal/acceptable-use" className="hover:text-foreground transition-colors">Acceptable Use</Link>
-              <Link href="/blog" className="hover:text-foreground transition-colors">Blog</Link>
-              <Link href="/contact" className="hover:text-foreground transition-colors">Contact</Link>
-            </nav>
-            <p className="mb-1">&copy; 2026 MeetMind AI. All rights reserved.</p>
-            <p>Developed by <span className="font-semibold text-foreground/80">Abhishek</span></p>
+          <footer className="mt-auto border-t border-card-border bg-surface/30 pt-16 pb-8">
+            <div className="mx-auto max-w-5xl px-6 sm:px-8 lg:px-8">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+                <div>
+                  <h3 className="font-semibold text-foreground mb-4 text-sm tracking-wider uppercase">Product</h3>
+                  <ul className="space-y-3 text-sm text-muted">
+                    <li><Link href="/#features" className="hover:text-foreground transition-colors">Features</Link></li>
+                    <li><Link href="/pricing" className="hover:text-foreground transition-colors">Pricing</Link></li>
+                    <li><Link href="/integrations" className="hover:text-foreground transition-colors">Integrations</Link></li>
+                    <li><Link href="/changelog" className="hover:text-foreground transition-colors">Changelog</Link></li>
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground mb-4 text-sm tracking-wider uppercase">Resources</h3>
+                  <ul className="space-y-3 text-sm text-muted">
+                    <li><Link href="/blog" className="hover:text-foreground transition-colors">Blog</Link></li>
+                    <li><Link href="/faq" className="hover:text-foreground transition-colors">FAQ</Link></li>
+                    {/* ponytail: disabled per requirement for future */}
+                    <li className="opacity-50 cursor-not-allowed">API Docs</li>
+                    <li className="opacity-50 cursor-not-allowed">Help Center</li>
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground mb-4 text-sm tracking-wider uppercase">Company</h3>
+                  <ul className="space-y-3 text-sm text-muted">
+                    <li><Link href="/about" className="hover:text-foreground transition-colors">About</Link></li>
+                    <li><Link href="/contact" className="hover:text-foreground transition-colors">Contact</Link></li>
+                    <li><Link href="/legal/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link></li>
+                    <li><Link href="/legal/terms" className="hover:text-foreground transition-colors">Terms of Service</Link></li>
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground mb-4 text-sm tracking-wider uppercase">Trust</h3>
+                  <ul className="space-y-3 text-sm text-muted">
+                    <li><Link href="/security" className="hover:text-foreground transition-colors">Security</Link></li>
+                    <li><Link href="/legal/ai-transparency" className="hover:text-foreground transition-colors">AI Transparency</Link></li>
+                    <li><Link href="/legal/cookies-policy" className="hover:text-foreground transition-colors">Cookies Policy</Link></li>
+                    <li><Link href="/legal/acceptable-use" className="hover:text-foreground transition-colors">Acceptable Use</Link></li>
+                  </ul>
+                </div>
+              </div>
+              <div className="border-t border-card-border pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted">
+                <p>&copy; 2026 MeetMind AI. All rights reserved.</p>
+                <p>Developed by <span className="font-semibold text-foreground/80">Abhishek</span></p>
+              </div>
+            </div>
           </footer>
         </ThemeProvider>
       </body>

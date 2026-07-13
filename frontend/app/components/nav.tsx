@@ -15,6 +15,7 @@ import { getUsage } from "@/lib/api"
 const publicLinks = [
   { href: "/#features", label: "Features" },
   { href: "/#how-it-works", label: "How it Works" },
+  { href: "/pricing", label: "Pricing" },
   { href: "/blog", label: "Blog" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
