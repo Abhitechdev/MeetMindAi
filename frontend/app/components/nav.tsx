@@ -13,8 +13,8 @@ import { getUsage } from "@/lib/api"
 
 // ponytail: single nav component, zero extra state, ternary inline for auth/public split. lazy, effective.
 const publicLinks = [
-  { href: "/#features", label: "Features" },
-  { href: "/#how-it-works", label: "How it Works" },
+  { href: "/features", label: "Features" },
+  { href: "/how-it-works", label: "How it Works" },
   { href: "/pricing", label: "Pricing" },
   { href: "/blog", label: "Blog" },
   { href: "/about", label: "About" },

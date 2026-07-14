@@ -61,7 +61,7 @@ export default function RootLayout({
                 <div>
                   <h3 className="font-semibold text-foreground mb-4 text-sm tracking-wider uppercase">Product</h3>
                   <ul className="space-y-3 text-sm text-muted">
-                    <li><Link href="/#features" className="hover:text-foreground transition-colors">Features</Link></li>
+                    <li><Link href="/features" className="hover:text-foreground transition-colors">Features</Link></li>
                     <li><Link href="/pricing" className="hover:text-foreground transition-colors">Pricing</Link></li>
                   </ul>
                 </div>
