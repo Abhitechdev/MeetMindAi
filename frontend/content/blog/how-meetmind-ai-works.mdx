@@ -1,15 +1,204 @@
 ---
-title: "How Meetmind Ai Works"
-description: "A comprehensive guide on how meetmind ai works and how it impacts your workflow."
+title: "How MeetMind AI Works: From Raw Audio to Actionable Intelligence"
+seoTitle: "How MeetMind AI Works — Architecture, Pipeline & Privacy (2026)"
+description: "A transparent look at the engineering pipeline behind MeetMind AI — from audio compression and Whisper transcription to LLM extraction and zero-retention privacy."
+seoDescription: "Learn exactly how MeetMind AI converts raw meeting recordings into structured summaries, action items, and decisions using Whisper, Llama 3.3, and a zero-retention architecture."
 slug: "how-meetmind-ai-works"
-author: "MeetMind Editorial Team"
-publishedAt: "2026-07-01T00:00:00Z"
-updatedAt: "2026-07-01T00:00:00Z"
-tags: ["Productivity", "AI"]
-category: "Tutorials"
-coverImage: "/images/blog/default.jpg"
-featured: false
-draft: true
+author: "MeetMind Engineering"
+publishedAt: "2026-07-15T00:00:00Z"
+updatedAt: "2026-07-15T00:00:00Z"
+tags: ["Product", "Architecture", "AI Models", "Privacy"]
+category: "Technology"
+coverImage: "/images/blog/how-meetmind-works.jpg"
+featured: true
+draft: false
+canonical: ""
 ---
 
-This article is currently being written by our expert editorial team. Check back soon for the complete guide on **How Meetmind Ai Works**.
+Most AI meeting tools won't tell you what happens to your audio after you click "Upload." We will.
+
+MeetMind AI is not a thin wrapper around a single API. It is a multi-stage processing pipeline that compresses your audio, transcribes it with a production-grade ASR engine, routes the transcript through a large language model for structured extraction, and stores the results in a privacy-first database — all without a single bot joining your call.
+
+This article is a transparent technical walkthrough of every step. If you've read our deep dive on [how AI meeting summaries work under the hood](/blog/how-ai-meeting-summaries-work), consider this the MeetMind-specific companion piece. We're going to show you the exact architecture, explain the engineering trade-offs we made, and be honest about the limitations.
+
+## The Core Design Decision: No Bots
+
+Before diving into the pipeline, it's worth understanding the foundational architectural choice that differentiates MeetMind AI from almost every competitor on the market.
+
+We do not inject a bot into your live meetings.
+
+If you've used tools like Fireflies or Otter, you know the drill. A "participant" with a generic avatar silently joins your Zoom call. Your client sees it in the participant list. Your team lead has to awkwardly explain it. On sensitive calls — legal strategy sessions, healthcare discussions, executive compensation reviews — that visible bot is a non-starter.
+
+MeetMind AI works asynchronously. You record your meeting natively using Zoom, Google Meet, Microsoft Teams, or any other platform. Then you upload the audio or video file. That's it.
+
+This design choice has a profound engineering consequence: because we are not constrained by live-call latency, we can run a significantly heavier and more accurate processing pipeline than any tool that needs to keep pace with a real-time audio stream. We don't have to cut corners on model size or skip chunking steps to avoid lag.
+
+## Step 1: Audio Compression
+
+The moment your file hits our backend, it enters the first optimization gate.
+
+Meeting recordings are large. A 60-minute Zoom recording exported as `.m4a` can easily hit 40–80 MB. A `.wav` file from a professional recording setup can exceed 200 MB. Pushing that raw bulk directly to a transcription API is wasteful, slow, and expensive.
+
+Our backend immediately compresses the uploaded file using FFmpeg. We extract only the audio track (discarding the video), downsample to mono, and compress to 16 kbps MP3. This reduces a typical one-hour recording from 60 MB down to roughly 7 MB — a reduction of nearly 90% — while preserving all speech-relevant frequencies.
+
+Why does this matter? Transcription APIs charge by file size or audio duration. Faster uploads mean lower latency for the user. And critically, the Groq Whisper API enforces a 25 MB file limit. Our 16 kbps compression allows us to fit approximately 3.5 hours of meeting audio under that ceiling, which covers virtually every real-world use case.
+
+### What We Accept
+
+We support the file formats that teams actually use:
+
+| Format | Typical Source |
+| :--- | :--- |
+| `.mp3` | Exported recordings, podcast-style calls |
+| `.m4a` | Zoom native exports, iPhone recordings |
+| `.wav` | Professional audio setups, lossless captures |
+| `.mp4` | Screen recordings, Teams exports |
+| `.webm` | Google Meet browser recordings |
+| `.mov` | QuickTime, macOS screen recordings |
+| `.avi` | Legacy video conference exports |
+
+The hard upload limit is **100 MB**. Files are streamed to disk in 1 MB chunks to prevent memory exhaustion on our processing servers — we never load the entire file into RAM at once.
+
+## Step 2: Transcription via Whisper
+
+Once compressed, the audio is sent to OpenAI's Whisper Large v3 model, hosted on Groq's inference infrastructure.
+
+Why Groq? Because Groq's LPU (Language Processing Unit) hardware delivers Whisper transcription in under one second for most files. A standard GPU-based deployment of Whisper Large would take 2–5 minutes for a 60-minute recording. Groq does it in roughly 800 milliseconds. That difference is not a minor optimization; it is the reason our users see results in seconds instead of minutes.
+
+### What Whisper Returns
+
+The Whisper model doesn't just return a flat string of text. It returns structured `verbose_json` output containing:
+
+- **Full transcript text** — the complete, concatenated transcription.
+- **Timestamped segments** — each segment includes a `start` time, `end` time, and the corresponding text. This is what powers the segment-by-segment view in your dashboard.
+- **Detected language code** — Whisper automatically identifies the spoken language (English, Hindi, Telugu, Spanish, French, and 15+ others). This code drives our downstream translation and output-language routing.
+
+### Automatic Language Detection
+
+MeetMind AI supports 20 languages natively. When Whisper detects the spoken language, we map it to a human-readable label and pass it to the summarization stage. If a user uploads a meeting conducted in Telugu, the system detects `te`, maps it to "Telugu," and instructs the LLM to generate the summary in Telugu — unless the user explicitly requested English output.
+
+This means a team in Hyderabad can record a meeting in Telugu, upload it, and receive a structured English summary with action items. No manual configuration required.
+
+## Step 3: Structured Extraction via LLM
+
+Raw transcription is a commodity. The value is in extraction.
+
+A 10,000-word transcript is not useful if the user has to read all of it to find the three decisions that were made. This is where the Large Language Model takes over.
+
+We route the transcript to **Llama 3.3 70B** — a 70-billion parameter model — running on Groq's inference platform. The model receives a carefully engineered system prompt that forces it to return a strictly structured JSON object containing exactly eight fields:
+
+| Field | Description |
+| :--- | :--- |
+| `title` | A short, smart title for the meeting |
+| `executiveSummary` | A 2–3 sentence summary of the discussion |
+| `tags` | 2–4 topic tags |
+| `sentiment` | Positive, Neutral, or Negative |
+| `priority` | High, Medium, or Low |
+| `decisions` | Key decisions made during the meeting |
+| `actionItems` | Tasks assigned to specific people |
+| `nextSteps` | Follow-up actions discussed |
+
+### Why Structured JSON Matters
+
+Most AI tools generate a paragraph of prose. Prose is nice for reading. It's useless for automation.
+
+Because MeetMind AI outputs machine-readable structured data, every field can be independently consumed by downstream systems. Your action items can be ported to Jira. Your decisions can be logged in Notion. Your executive summary can be pushed to a Slack channel. The structured format is what makes MeetMind AI a workflow integration, not just a note-taking app.
+
+### Prompt Engineering: Forcing Accountability
+
+Our production prompt explicitly forbids passive voice and vague language. If a developer says during a standup, "Someone should probably look at the staging deployment," a naive summarizer would output exactly that — a vague observation. Our prompt forces the LLM to bind every commitment to a speaker and extract a concrete deadline if one was mentioned.
+
+We also enforce output-language control at the prompt level. If the user requests their summary in Hindi but the meeting was conducted in English, the prompt instructs the LLM to translate the structured output while preserving technical terminology, proper names, and action item specificity.
+
+## Step 4: Storage and Row-Level Security
+
+Once the LLM returns the structured extraction, our backend persists everything to a PostgreSQL database managed by Supabase.
+
+A single processing run creates entries across three tables:
+
+1. **`meetings`** — The core record: title, transcript, segments, executive summary, sentiment, priority, tags, detected language, duration, and word count.
+2. **`action_items`** — Each action item is stored as a separate row linked to the meeting, with its own status field (`pending`, `in_progress`, `done`).
+3. **`decisions`** — Each decision is stored as a separate row linked to the meeting.
+
+### Why This Architecture Matters for Privacy
+
+Every query to MeetMind AI's database is scoped by Row-Level Security (RLS). This means that even if our backend code contained a bug that accidentally queried all meetings, the database itself would refuse to return data belonging to another user. Security is enforced at the database layer, not just the application layer.
+
+Your meeting data is never shared across accounts. There is no global search index. There is no recommendation engine training on your transcripts. Your audio file is processed, the structured data is stored under your user ID, and the temporary audio file is aggressively deleted from the server immediately after processing.
+
+## Step 5: The Conversational Layer
+
+After processing, your meeting isn't a static document. It becomes an interactive knowledge base.
+
+MeetMind AI includes a chat interface where you can ask natural-language questions about any processed meeting. "What was the budget number Sarah mentioned?" "Who committed to the API migration?" "What was the overall sentiment of the client call?"
+
+Under the hood, the chat system uses the same Llama 3.3 70B model. We feed it the full transcript and the structured summary as context, along with a strict system prompt that prevents hallucination:
+
+- The model is instructed to answer **only** using the provided transcript and summary.
+- If the answer is not present in the data, it must respond with: *"I couldn't find that information in the meeting."*
+- It never invents facts, never speculates, and never outputs raw JSON to the user.
+
+This makes the chat interface safe for enterprise use. You can trust it to find information that exists, and you can trust it to admit when information doesn't exist.
+
+## The Translation Pipeline
+
+MeetMind AI supports real-time transcript translation across all 20 supported languages.
+
+When a user requests a translation, the transcript is sent to the LLM with a translation-specific system prompt that preserves meaning, speaker context, technical terminology, and proper names. It translates the content — it does not summarize it. The full fidelity of the original conversation is maintained in the target language.
+
+This is particularly valuable for multinational teams. A product manager in Berlin can upload a German-language user interview and instantly share a faithful English translation with their engineering team in Bangalore.
+
+## Rate Limiting and Fair Usage
+
+Every endpoint in MeetMind AI is rate-limited to prevent abuse and ensure consistent performance for all users:
+
+| Endpoint | Limit |
+| :--- | :--- |
+| Meeting processing | 5 requests per minute |
+| Chat questions | 30 requests per minute |
+| Payment operations | 5 requests per minute |
+
+These limits are generous enough for any reasonable workflow but strict enough to prevent a runaway script from monopolizing backend resources.
+
+## What We Don't Do
+
+Transparency requires being explicit about what we don't offer:
+
+- **No live bot.** We do not join your calls in real-time. You must upload a recording.
+- **No speaker diarization (yet).** Our current pipeline does not identify individual speakers by name within the transcript. We process the audio as a single stream. This is a known limitation, and it is on our roadmap. For a deeper discussion of why diarization is hard, see our [technical deep dive](/blog/how-ai-meeting-summaries-work#the-hardest-problem-in-audio-speaker-diarization).
+- **No video analysis.** We extract the audio track and discard the video. We do not perform visual sentiment analysis or facial recognition.
+- **No on-device processing.** All processing happens on our cloud infrastructure. We do not offer an on-premise deployment option at this time.
+
+Being honest about these limitations matters. If your primary requirement is real-time, in-call transcription with a visible bot, a tool like [Fathom or Fireflies](/blog/best-ai-note-taking-apps-2026) may be a better fit. MeetMind AI is purpose-built for teams that prioritize privacy, extraction accuracy, and post-meeting workflow integration over live automation.
+
+## Frequently Asked Questions
+
+### How long does processing take?
+
+For a typical 60-minute meeting, end-to-end processing — compression, transcription, and LLM extraction — takes approximately **15–30 seconds**. The Groq-hosted Whisper model handles transcription in under a second; the majority of the remaining time is spent on audio compression and LLM inference.
+
+### Is my audio stored permanently?
+
+No. Your uploaded audio file is written to a temporary location on our processing server, used for transcription, and then **immediately deleted**. Only the structured output (transcript, summary, action items, decisions) is stored in your database under your user account.
+
+### What model do you use for summaries?
+
+We use **Llama 3.3 70B Versatile**, a 70-billion parameter open-weight model hosted on Groq's LPU inference platform. It is accessed via a zero-retention enterprise API, meaning your transcript data is not used to train the model.
+
+### Can I use MeetMind AI for meetings in languages other than English?
+
+Yes. We support **20 languages** including Hindi, Telugu, Tamil, Kannada, Malayalam, Marathi, Bengali, Gujarati, Punjabi, Urdu, Spanish, French, German, Portuguese, Italian, Dutch, Japanese, Korean, and Chinese. Whisper automatically detects the spoken language, and the summary is generated in the detected language unless you specify a different output language.
+
+### Is there a file size limit?
+
+Yes. The maximum upload size is **100 MB**. With our internal compression, this comfortably covers recordings of up to 3.5 hours.
+
+## Conclusion
+
+MeetMind AI is a pipeline, not a feature. Every architectural decision — from the asynchronous upload model that eliminates bots, to the FFmpeg compression that enables sub-second transcription, to the strict JSON extraction prompts that force accountability — was made to solve a specific engineering problem.
+
+We built MeetMind AI because we believe that the value of a meeting should be measured by the clarity of the decisions it produces, not by the hours spent documenting them afterward.
+
+If your team is spending more time writing about meetings than actually having them, we built this for you.
+
+[Start processing your meetings with MeetMind AI today](/login) and see the difference a transparent, production-grade pipeline makes.
