@@ -85,12 +85,14 @@ const BentoFeatures = React.memo(function BentoFeatures() {
                 <div 
                   className="text-3xl mb-4 bg-surface w-12 h-12 flex items-center justify-center rounded-xl border border-card-border shadow-sm"
                   style={{ animation: `icon-float 4s ease-in-out ${i * 0.3}s infinite` }}
+                  role="img"
+                  aria-label={item.title}
                 >
                   {item.icon}
                 </div>
                 
                 <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-1">{item.title}</h3>
+                  <h2 className="text-lg font-semibold text-foreground mb-1">{item.title}</h2>
                   <p className="text-sm text-muted">{item.desc}</p>
                 </div>
               </div>

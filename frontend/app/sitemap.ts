@@ -4,7 +4,7 @@ import { getAllArticles } from '../lib/mdx';
 export default function sitemap(): MetadataRoute.Sitemap {
   // Using an environment variable for the base URL is best practice
   // Provide a fallback for the production domain if the env var isn't set
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://meet-mind-ai-three.vercel.app';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://meetmindai.co.in';
 
   return [
     {

@@ -24,9 +24,24 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "MeetMind AI — Meeting Insights Powered by AI",
+  title: "MeetMind AI | Free AI Meeting Summaries & Audio Transcription",
   description:
-    "Upload your meeting recording and instantly get a transcript, executive summary, key decisions, action items, and next steps — all powered by AI.",
+    "Upload meeting audio or video to instantly generate transcripts, action items, and summaries in 99+ languages. Try MeetMind AI 2.0 free today.",
+  openGraph: {
+    title: "MeetMind AI | Free AI Meeting Summaries & Audio Transcription",
+    description: "Upload meeting audio or video to instantly generate transcripts, action items, and summaries in 99+ languages. Try MeetMind AI 2.0 free today.",
+    url: "https://meetmindai.co.in",
+    siteName: "MeetMind AI",
+    images: [{ url: "/images/og-card.png", width: 1200, height: 630, alt: "MeetMind AI dashboard showing meeting transcript and AI summary" }],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "MeetMind AI | Free AI Meeting Summaries & Audio Transcription",
+    description: "Upload meeting audio or video to instantly generate transcripts, action items, and summaries in 99+ languages.",
+    images: ["/images/og-card.png"],
+  },
 };
 
 export default function RootLayout({
@@ -37,6 +52,35 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={`h-full antialiased scroll-smooth ${inter.variable} ${poppins.variable}`}>
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "SoftwareApplication",
+              name: "MeetMind AI",
+              url: "https://meetmindai.co.in",
+              applicationCategory: "BusinessApplication",
+              operatingSystem: "Web",
+              description: "AI-powered meeting transcription, summarization, and action item extraction supporting 99+ languages.",
+              offers: {
+                "@type": "Offer",
+                price: "0",
+                priceCurrency: "INR",
+                name: "Free Plan",
+                description: "3 meetings free, includes transcription and AI summaries",
+              },
+              featureList: [
+                "AI Meeting Transcription",
+                "Executive Summary Generation",
+                "Action Item Extraction",
+                "Decision Tracking",
+                "99+ Language Support",
+                "AI Meeting Chat Assistant",
+              ],
+            }),
+          }}
+        />
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground transition-colors duration-300">
         <Script src="https://www.googletagmanager.com/gtag/js?id=G-XTH4Y4K2JM" strategy="afterInteractive" />

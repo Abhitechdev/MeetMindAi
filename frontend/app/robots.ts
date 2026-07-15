@@ -1,5 +1,8 @@
 import { MetadataRoute } from 'next';
 
+// ponytail: use env var so staging/prod resolve correctly, fallback to production domain
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://meetmindai.co.in';
+
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
@@ -7,6 +10,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/', '/admin/'],
     },
-    sitemap: 'https://meet-mind-ai-three.vercel.app/sitemap.xml',
+    sitemap: `${baseUrl}/sitemap.xml`,
   };
 }
