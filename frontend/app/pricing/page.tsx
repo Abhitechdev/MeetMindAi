@@ -22,11 +22,14 @@ export const metadata: Metadata = {
 export default function PricingPage() {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Product",
+    "@type": "WebApplication",
     "name": "MeetMind AI Pro Plan",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
     "description": "100 AI meeting transcriptions, summaries, and action item extraction.",
-    "brand": {
-      "@type": "Brand",
+    "url": "https://meetmind.ai/pricing",
+    "publisher": {
+      "@type": "Organization",
       "name": "MeetMind AI"
     },
     "offers": {
