@@ -38,12 +38,12 @@ export default async function BlogIndex() {
               "@context": "https://schema.org",
               "@type": "Blog",
               "name": "MeetMind AI Blog",
-              "url": "https://meet-mind-ai-three.vercel.app/blog",
+              "url": "https://meetmindai.co.in/blog",
               "description": metadata.description,
               "blogPost": articles.map(article => ({
                 "@type": "BlogPosting",
                 "headline": article.title,
-                "url": `https://meet-mind-ai-three.vercel.app/blog/${article.slug}`,
+                "url": `https://meetmindai.co.in/blog/${article.slug}`,
                 "datePublished": article.publishedAt
               }))
             })

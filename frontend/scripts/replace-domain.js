@@ -20,8 +20,8 @@ dirs.forEach(dir => {
   walkDir(dir, (filePath) => {
     if (filePath.endsWith('.tsx') || filePath.endsWith('.ts') || filePath.endsWith('.mdx')) {
       const content = fs.readFileSync(filePath, 'utf8');
-      if (content.includes('meetmind.ai')) {
-        const newContent = content.replace(/meetmind\.ai/g, 'meetmindai.co.in');
+      if (content.includes('meet-mind-ai-three.vercel.app')) {
+        const newContent = content.replace(/meet-mind-ai-three\.vercel\.app/g, 'meetmindai.co.in');
         fs.writeFileSync(filePath, newContent, 'utf8');
         filesChanged++;
         console.log(`Updated ${filePath}`);

@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       description: article.metadata.description,
     },
     alternates: {
-      canonical: `https://meet-mind-ai-three.vercel.app/blog/${article.metadata.slug}`,
+      canonical: `https://meetmindai.co.in/blog/${article.metadata.slug}`,
     }
   };
 }
@@ -107,9 +107,9 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://meet-mind-ai-three.vercel.app/" },
-      { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://meet-mind-ai-three.vercel.app/blog" },
-      { "@type": "ListItem", "position": 3, "name": article.metadata.title, "item": `https://meet-mind-ai-three.vercel.app/blog/${article.metadata.slug}` }
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://meetmindai.co.in/" },
+      { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://meetmindai.co.in/blog" },
+      { "@type": "ListItem", "position": 3, "name": article.metadata.title, "item": `https://meetmindai.co.in/blog/${article.metadata.slug}` }
     ]
   };
 
