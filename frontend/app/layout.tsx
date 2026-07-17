@@ -24,6 +24,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://meetmindai.co.in"),
   title: "MeetMind AI | Free AI Meeting Summaries & Audio Transcription",
   description:
     "Upload meeting audio or video to instantly generate transcripts, action items, and summaries in 99+ languages. Try MeetMind AI 2.0 free today.",
