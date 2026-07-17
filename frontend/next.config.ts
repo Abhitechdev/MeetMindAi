@@ -18,6 +18,15 @@ const cspHeader = `
 `.replace(/\s{2,}/g, ' ').trim()
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      {
+        source: '/blog/how-to-improve-meeting-productivity-with-ai',
+        destination: '/blog/ai-productivity-tips',
+        permanent: true,
+      },
+    ];
+  },
 
   async headers() {
     return [
