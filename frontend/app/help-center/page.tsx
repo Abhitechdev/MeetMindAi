@@ -8,13 +8,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Help Center | MeetMind AI",
     description: "Get help with MeetMind AI. Browse tutorials and troubleshooting guides.",
-    url: "https://meetmind.ai/help-center",
+    url: "https://meetmindai.co.in/help-center",
     siteName: "MeetMind AI",
     locale: "en_US",
     type: "website",
   },
   alternates: {
-    canonical: "https://meetmind.ai/help-center",
+    canonical: "https://meetmindai.co.in/help-center",
   },
 };
 

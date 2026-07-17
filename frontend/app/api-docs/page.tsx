@@ -8,13 +8,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: "API Documentation | MeetMind AI",
     description: "Integrate MeetMind AI's powerful capabilities into your applications.",
-    url: "https://meetmind.ai/api-docs",
+    url: "https://meetmindai.co.in/api-docs",
     siteName: "MeetMind AI",
     locale: "en_US",
     type: "website",
   },
   alternates: {
-    canonical: "https://meetmind.ai/api-docs",
+    canonical: "https://meetmindai.co.in/api-docs",
   },
 };
 
@@ -73,7 +73,7 @@ export default function ApiDocsPage() {
             <span className="text-xs font-mono text-muted">POST /v1/meetings/upload</span>
           </div>
           <div className="p-6 overflow-x-auto text-sm font-mono text-green-400">
-            <pre>{`curl -X POST https://api.meetmind.ai/v1/meetings/upload \\
+            <pre>{`curl -X POST https://api.meetmindai.co.in/v1/meetings/upload \\
   -H "Authorization: Bearer YOUR_API_KEY" \\
   -F "file=@/path/to/meeting.mp4" \\
   -F "language=en"`}</pre>

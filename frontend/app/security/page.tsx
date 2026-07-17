@@ -8,11 +8,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Security | MeetMind AI",
     description: "Learn about MeetMind AI's privacy-first architecture, data retention policies, and encryption.",
-    url: "https://meetmind.ai/security",
+    url: "https://meetmindai.co.in/security",
     siteName: "MeetMind AI",
     images: [
       {
-        url: "https://meetmind.ai/images/og/security.jpg",
+        url: "https://meetmindai.co.in/images/og/security.jpg",
         width: 1200,
         height: 630,
         alt: "MeetMind AI Security",
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     type: "website",
   },
   alternates: {
-    canonical: "https://meetmind.ai/security",
+    canonical: "https://meetmindai.co.in/security",
   },
 };
 
