@@ -24,6 +24,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   
   if (!article) return { title: "Article Not Found" };
 
+  const baseUrl = "https://meetmind.ai";
+  const imageUrl = article.metadata.coverImage ? `${baseUrl}${article.metadata.coverImage}` : undefined;
+
   return {
     title: article.metadata.seoTitle || `${article.metadata.title} | MeetMind AI`,
     description: article.metadata.seoDescription || article.metadata.description,
@@ -33,17 +36,27 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: article.metadata.title,
       description: article.metadata.description,
       type: "article",
+      url: `${baseUrl}/blog/${article.metadata.slug}`,
       publishedTime: article.metadata.publishedAt,
       modifiedTime: article.metadata.updatedAt,
       tags: article.metadata.tags,
+      images: imageUrl ? [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: article.metadata.title,
+        }
+      ] : undefined,
     },
     twitter: {
       card: "summary_large_image",
       title: article.metadata.title,
       description: article.metadata.description,
+      images: imageUrl ? [imageUrl] : undefined,
     },
     alternates: {
-      canonical: `https://meetmindai.co.in/blog/${article.metadata.slug}`,
+      canonical: `${baseUrl}/blog/${article.metadata.slug}`,
     }
   };
 }
@@ -103,13 +116,17 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     }
   }
 
+  const baseUrl = "https://meetmind.ai";
+  const articleUrl = `${baseUrl}/blog/${article.metadata.slug}`;
+  const imageUrl = article.metadata.coverImage ? `${baseUrl}${article.metadata.coverImage}` : undefined;
+
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://meetmindai.co.in/" },
-      { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://meetmindai.co.in/blog" },
-      { "@type": "ListItem", "position": 3, "name": article.metadata.title, "item": `https://meetmindai.co.in/blog/${article.metadata.slug}` }
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": `${baseUrl}/` },
+      { "@type": "ListItem", "position": 2, "name": "Blog", "item": `${baseUrl}/blog` },
+      { "@type": "ListItem", "position": 3, "name": article.metadata.title, "item": articleUrl }
     ]
   };
 
@@ -118,12 +135,27 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     "@type": "Article",
     "headline": article.metadata.title,
     "description": article.metadata.description,
+    "image": imageUrl ? [imageUrl] : undefined,
     "author": {
       "@type": "Person",
       "name": article.metadata.author
     },
+    "publisher": {
+      "@type": "Organization",
+      "name": "MeetMind AI",
+      "logo": {
+        "@type": "ImageObject",
+        "url": `${baseUrl}/logo.png`
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": articleUrl
+    },
     "datePublished": article.metadata.publishedAt,
     "dateModified": article.metadata.updatedAt || article.metadata.publishedAt,
+    "keywords": article.metadata.tags,
+    "wordCount": article.content.split(/\s+/).length.toString(),
   };
 
   const jsonLd = [articleSchema, breadcrumbSchema, ...(faqSchema ? [faqSchema] : [])];
