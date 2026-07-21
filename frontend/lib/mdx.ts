@@ -79,26 +79,27 @@ export function getAllArticles(): ArticleMetadata[] {
   return articles;
 }
 
-export function getRelatedArticles(currentSlug: string, tags: string[], limit: number = 3): ArticleMetadata[] {
+export function getRelatedArticles(currentSlug: string, currentCategory: string, tags: string[], limit: number = 4): ArticleMetadata[] {
   const allArticles = getAllArticles();
   
   const related = allArticles
     .filter((article) => article.slug !== currentSlug)
     .map((article) => {
-      // Calculate relevance score based on matching tags
+      let score = 0;
+      // 1. Priority: Same category
+      if (article.category === currentCategory) {
+        score += 10;
+      }
+      // 2. Priority: Shared tags
       const matchCount = article.tags.filter((tag) => tags.includes(tag)).length;
-      return { article, matchCount };
+      score += matchCount;
+      return { article, score };
     })
-    .filter((item) => item.matchCount > 0)
-    .sort((a, b) => b.matchCount - a.matchCount || (new Date(a.article.publishedAt) > new Date(b.article.publishedAt) ? -1 : 1))
+    // 3. Priority: Latest posts (handled by the fallback date sort if scores tie)
+    .sort((a, b) => b.score - a.score || (new Date(a.article.publishedAt) > new Date(b.article.publishedAt) ? -1 : 1))
     .map((item) => item.article)
     .slice(0, limit);
     
-  // Fallback to recent articles if no related tags found
-  if (related.length === 0) {
-    return allArticles.filter(a => a.slug !== currentSlug).slice(0, limit);
-  }
-  
   return related;
 }
 

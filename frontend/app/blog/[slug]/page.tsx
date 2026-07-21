@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
@@ -9,7 +10,6 @@ import { getArticleBySlug, getArticleSlugs, getRelatedArticles, getAdjacentArtic
 import AdUnit from "../../components/ad-unit";
 import GradientBackground from "../../components/gradient-background";
 
-// Generate static parameters for all blog posts at build time
 export async function generateStaticParams() {
   const slugs = getArticleSlugs();
   return slugs.map((slug) => ({
@@ -17,7 +17,6 @@ export async function generateStaticParams() {
   }));
 }
 
-// Generate dynamic SEO metadata
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const article = getArticleBySlug(slug);
@@ -69,31 +68,27 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     notFound();
   }
 
-  const relatedArticles = getRelatedArticles(slug, article.metadata.tags);
+  const relatedArticles = getRelatedArticles(slug, article.metadata.category, article.metadata.tags, 4);
   const { prev, next } = getAdjacentArticles(slug);
 
-  // Extract headings for Table of Contents
   const headings = Array.from(article.content.matchAll(/^(#{2,3})\s+(.+)$/gm)).map(match => {
     const level = match[1].length;
-    // Strip manual anchor links like <a id="foo"></a> that might be in the text
     const rawText = match[2].replace(/<a[^>]*><\/a>/g, '').trim();
-    // Basic slugification to match rehype-slug
     const id = rawText.toLowerCase().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '');
     return { level, text: rawText, id };
   });
 
-  // Custom components for MDX
   const components = {
-    h1: (props: any) => <h1 className="text-3xl font-bold text-foreground mt-8 mb-4" {...props} />,
+    h1: (props: any) => <h1 className="text-3xl font-bold text-foreground mt-12 mb-6" {...props} />,
     h2: (props: any) => <h2 className="text-2xl font-bold text-foreground mt-12 mb-6" {...props} />,
     h3: (props: any) => <h3 className="text-xl font-semibold text-foreground mt-8 mb-4" {...props} />,
-    p: (props: any) => <p className="text-lg text-muted mb-6 leading-relaxed" {...props} />,
-    ul: (props: any) => <ul className="list-disc pl-6 space-y-3 text-muted mb-8" {...props} />,
-    ol: (props: any) => <ol className="list-decimal pl-6 space-y-3 text-muted mb-8" {...props} />,
+    p: (props: any) => <p className="text-lg text-muted mb-6 leading-relaxed max-w-[75ch]" {...props} />,
+    ul: (props: any) => <ul className="list-disc pl-6 space-y-3 text-muted mb-8 max-w-[75ch]" {...props} />,
+    ol: (props: any) => <ol className="list-decimal pl-6 space-y-3 text-muted mb-8 max-w-[75ch]" {...props} />,
     li: (props: any) => <li className="text-muted" {...props} />,
     a: (props: any) => <a className="text-accent-blue hover:underline" {...props} />,
     strong: (props: any) => <strong className="text-foreground font-semibold" {...props} />,
-    blockquote: (props: any) => <blockquote className="border-l-4 border-accent-purple pl-4 italic text-muted my-6" {...props} />,
+    blockquote: (props: any) => <blockquote className="border-l-4 border-accent-purple pl-4 italic text-muted my-6 max-w-[75ch]" {...props} />,
   };
 
   let faqSchema = null;
@@ -126,7 +121,8 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "Home", "item": `${baseUrl}/` },
       { "@type": "ListItem", "position": 2, "name": "Blog", "item": `${baseUrl}/blog` },
-      { "@type": "ListItem", "position": 3, "name": article.metadata.title, "item": articleUrl }
+      { "@type": "ListItem", "position": 3, "name": article.metadata.category, "item": `${baseUrl}/blog/category/${article.metadata.category.toLowerCase().replace(/\s+/g, '-')}` },
+      { "@type": "ListItem", "position": 4, "name": article.metadata.title, "item": articleUrl }
     ]
   };
 
@@ -160,152 +156,232 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
   const jsonLd = [articleSchema, breadcrumbSchema, ...(faqSchema ? [faqSchema] : [])];
 
+  const publishedDate = new Date(article.metadata.publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  const updatedDate = article.metadata.updatedAt ? new Date(article.metadata.updatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : null;
+
   return (
     <main className="relative min-h-screen pb-24">
       <GradientBackground />
       
+      {/* Skip to Content */}
+      <a href="#article-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-accent-blue text-white p-2 rounded z-50">
+        Skip to main content
+      </a>
+
       {/* JSON-LD Schema */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <article className="relative z-10 mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+      <article className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 md:py-20">
         
-        {/* Breadcrumbs */}
-        <nav className="flex text-sm text-muted mb-8" aria-label="Breadcrumb">
-          <ol className="inline-flex items-center space-x-2">
-            <li>
-              <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
-            </li>
-            <li><span className="mx-2">/</span></li>
-            <li>
-              <Link href="/blog" className="hover:text-foreground transition-colors">Blog</Link>
-            </li>
-            <li><span className="mx-2">/</span></li>
-            <li className="text-foreground font-medium" aria-current="page">
-              {article.metadata.category}
-            </li>
-          </ol>
-        </nav>
+        {/* Header Section (Re-ordered) */}
+        <header className="max-w-[75ch] mx-auto mb-12">
+          {/* Breadcrumbs */}
+          <nav className="flex text-sm text-muted mb-6" aria-label="Breadcrumb">
+            <ol className="inline-flex items-center space-x-2">
+              <li><Link href="/" className="hover:text-foreground transition-colors focus:ring-2 focus:ring-accent-blue outline-none rounded">Home</Link></li>
+              <li><span className="mx-2">/</span></li>
+              <li><Link href="/blog" className="hover:text-foreground transition-colors focus:ring-2 focus:ring-accent-blue outline-none rounded">Blog</Link></li>
+              <li><span className="mx-2">/</span></li>
+              <li><span className="text-foreground font-medium" aria-current="page">{article.metadata.category}</span></li>
+            </ol>
+          </nav>
 
-        {/* Header */}
-        <header className="mb-12">
-          <div className="flex flex-wrap items-center gap-4 text-sm text-muted mb-6">
-            <time dateTime={article.metadata.publishedAt}>
-              {new Date(article.metadata.publishedAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
-            </time>
-            <span>•</span>
-            <span>{article.metadata.readingTime}</span>
-            <span>•</span>
-            <span className="text-accent-blue font-medium">{article.metadata.category}</span>
-          </div>
-          
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-foreground mb-6 leading-tight">
+          {/* Title and Description */}
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground mb-6 leading-tight">
             {article.metadata.title}
           </h1>
-          
-          <p className="text-xl text-muted leading-relaxed">
+          <p className="text-xl text-muted leading-relaxed mb-6">
             {article.metadata.description}
           </p>
+
+          {/* Metadata Line */}
+          <div className="flex flex-wrap items-center gap-2 text-sm text-muted mb-8">
+            <span className="font-medium text-foreground">{article.metadata.author}</span>
+            <span>•</span>
+            {updatedDate && updatedDate !== publishedDate ? (
+              <span>Published {publishedDate} • Updated {updatedDate}</span>
+            ) : (
+              <span>{publishedDate}</span>
+            )}
+            <span>•</span>
+            <span>{article.metadata.readingTime}</span>
+          </div>
           
-          <AdUnit className="mt-12" slotId="TOP_ARTICLE_SLOT" />
+          <AdUnit className="mb-12" slotId="TOP_ARTICLE_SLOT" />
+
+          {/* Hero Image */}
+          {article.metadata.coverImage && (
+            <div className="relative w-full aspect-video rounded-3xl overflow-hidden shadow-lg mb-12">
+              <Image 
+                src={article.metadata.coverImage} 
+                alt={article.metadata.title}
+                fill
+                priority
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 1200px"
+              />
+            </div>
+          )}
         </header>
 
-        {/* Table of Contents */}
-        {headings.length > 0 && (
-          <div className="mb-12 p-6 glass-card rounded-2xl bg-surface/30">
-            <h2 className="text-xl font-bold text-foreground mb-4">Table of Contents</h2>
-            <nav>
-              <ul className="space-y-2">
-                {headings.map((heading, index) => (
-                  <li key={index} className={`${heading.level === 3 ? 'ml-4' : ''}`}>
-                    <a 
-                      href={`#${heading.id}`} 
-                      className="text-muted hover:text-accent-blue transition-colors text-sm font-medium"
-                    >
-                      {heading.text}
-                    </a>
-                  </li>
-                ))}
+        {/* Content & Sidebar Layout */}
+        <div className="flex flex-col lg:flex-row gap-12 max-w-6xl mx-auto">
+          
+          {/* Left Column (Content & CTA) */}
+          <div className="lg:w-3/4 max-w-[75ch] mx-auto lg:mx-0 w-full" id="article-content">
+            
+            {/* Mobile TOC (Accordion) */}
+            {headings.length > 0 && (
+              <details className="lg:hidden mb-12 p-6 glass-card rounded-2xl bg-surface/30 group">
+                <summary className="text-xl font-bold text-foreground cursor-pointer focus:ring-2 focus:ring-accent-blue outline-none rounded">
+                  Table of Contents
+                </summary>
+                <nav className="mt-4" aria-label="Table of Contents">
+                  <ul className="space-y-3">
+                    {headings.map((heading, index) => (
+                      <li key={index} className={`${heading.level === 3 ? 'ml-4' : ''}`}>
+                        <a 
+                          href={`#${heading.id}`} 
+                          className="text-muted hover:text-accent-blue transition-colors text-sm font-medium focus:ring-2 focus:ring-accent-blue outline-none rounded inline-block"
+                        >
+                          {heading.text}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </nav>
+              </details>
+            )}
+
+            {/* Rendered MDX */}
+            <div className="article-body">
+              <MDXRemote 
+                source={article.content} 
+                components={components} 
+                options={{
+                  mdxOptions: {
+                    remarkPlugins: [remarkGfm],
+                    rehypePlugins: [
+                      rehypeSlug,
+                      [rehypeAutolinkHeadings, { behavior: "wrap" }]
+                    ],
+                  }
+                }}
+              />
+            </div>
+
+            {/* Feature CTA Component */}
+            <div className="mt-16 bg-surface/40 border border-card-border p-8 sm:p-10 rounded-3xl text-center shadow-sm">
+              <div className="mx-auto w-12 h-12 bg-accent-blue/10 rounded-full flex items-center justify-center mb-6">
+                <svg className="w-6 h-6 text-accent-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">Ready to eliminate manual meeting notes?</h3>
+              
+              <ul className="text-muted mb-8 space-y-3 text-left inline-block mx-auto">
+                <li className="flex items-center gap-3">
+                  <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  AI Meeting Notes & Summaries
+                </li>
+                <li className="flex items-center gap-3">
+                  <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  Automated Action Item Tracking
+                </li>
+                <li className="flex items-center gap-3">
+                  <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  Search Across Every Meeting
+                </li>
               </ul>
-            </nav>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <Link 
+                  href="/login" 
+                  className="w-full sm:w-auto inline-flex items-center justify-center rounded-lg bg-accent-blue text-white px-8 py-3 font-semibold hover:bg-accent-blue/90 transition-colors shadow-sm focus:ring-4 focus:ring-accent-blue/20 outline-none"
+                >
+                  Start Free
+                </Link>
+                <Link 
+                  href="/features" 
+                  className="w-full sm:w-auto inline-flex items-center justify-center rounded-lg border border-card-border bg-transparent text-foreground px-8 py-3 font-semibold hover:bg-surface/60 transition-colors focus:ring-4 focus:ring-surface outline-none"
+                >
+                  Learn More
+                </Link>
+              </div>
+            </div>
+
+            <AdUnit className="mt-16" slotId="BOTTOM_ARTICLE_SLOT" />
           </div>
-        )}
 
-        {/* Content Body rendered from MDX */}
-        <div className="article-content">
-          <MDXRemote 
-            source={article.content} 
-            components={components} 
-            options={{
-              mdxOptions: {
-                remarkPlugins: [remarkGfm],
-                rehypePlugins: [
-                  rehypeSlug,
-                  [rehypeAutolinkHeadings, { behavior: "wrap" }]
-                ],
-              }
-            }}
-          />
+          {/* Right Column (Sticky TOC) */}
+          <aside className="hidden lg:block lg:w-1/4">
+            <div className="sticky top-32 max-h-[calc(100vh-120px)] overflow-y-auto pr-4 scrollbar-thin">
+              {headings.length > 0 && (
+                <div className="p-6 glass-card rounded-2xl bg-surface/30">
+                  <h2 className="text-sm font-bold uppercase tracking-wider text-muted mb-4">Table of Contents</h2>
+                  <nav aria-label="Desktop Table of Contents">
+                    <ul className="space-y-3">
+                      {headings.map((heading, index) => (
+                        <li key={index} className={`${heading.level === 3 ? 'ml-4' : ''}`}>
+                          <a 
+                            href={`#${heading.id}`} 
+                            className="text-muted hover:text-accent-blue transition-colors text-sm font-medium focus:ring-2 focus:ring-accent-blue outline-none rounded inline-block"
+                          >
+                            {heading.text}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </nav>
+                </div>
+              )}
+            </div>
+          </aside>
         </div>
-
-        <AdUnit className="my-16" slotId="BOTTOM_ARTICLE_SLOT" />
 
         {/* Related Articles */}
         {relatedArticles.length > 0 && (
-          <section className="mb-16 pt-8 border-t border-card-border">
-            <h2 className="text-2xl font-bold text-foreground mb-6">Related Articles</h2>
-            <div className="grid sm:grid-cols-2 gap-6">
-              {relatedArticles.slice(0, 2).map((related) => (
+          <section className="mt-24 pt-12 border-t border-card-border max-w-6xl mx-auto">
+            <h2 className="text-3xl font-bold text-foreground mb-8">Related Articles</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {relatedArticles.map((related) => (
                 <Link 
                   key={related.slug} 
                   href={`/blog/${related.slug}`}
-                  className="glass-card glass-card-hover p-5 block group"
+                  className="glass-card glass-card-hover flex flex-col group rounded-2xl overflow-hidden focus:ring-2 focus:ring-accent-blue outline-none h-full"
                 >
-                  <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-accent-blue transition-colors">
-                    {related.title}
-                  </h3>
-                  <p className="text-sm text-muted line-clamp-2">
-                    {related.description}
-                  </p>
+                  {related.coverImage && (
+                    <div className="relative w-full h-40 overflow-hidden">
+                      <Image 
+                        src={related.coverImage}
+                        alt={related.title}
+                        fill
+                        loading="lazy"
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      />
+                    </div>
+                  )}
+                  <div className="p-5 flex flex-col flex-grow">
+                    <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-accent-blue transition-colors line-clamp-2">
+                      {related.title}
+                    </h3>
+                    <p className="text-sm text-muted mb-4 line-clamp-2 flex-grow">
+                      {related.description}
+                    </p>
+                    <div className="text-xs text-muted font-medium mt-auto">
+                      {related.readingTime}
+                    </div>
+                  </div>
                 </Link>
               ))}
             </div>
           </section>
         )}
 
-        {/* Previous / Next Navigation */}
-        <nav className="flex flex-col sm:flex-row justify-between gap-4 pt-8 border-t border-card-border mb-16">
-          {prev ? (
-            <Link href={`/blog/${prev.slug}`} className="flex-1 glass-card p-4 hover:bg-surface/60 transition-colors">
-              <span className="text-xs text-muted uppercase tracking-wider block mb-1">Previous</span>
-              <span className="font-medium text-accent-blue">{prev.title}</span>
-            </Link>
-          ) : <div className="flex-1" />}
-          
-          {next ? (
-            <Link href={`/blog/${next.slug}`} className="flex-1 glass-card p-4 hover:bg-surface/60 transition-colors text-right">
-              <span className="text-xs text-muted uppercase tracking-wider block mb-1">Next</span>
-              <span className="font-medium text-accent-blue">{next.title}</span>
-            </Link>
-          ) : <div className="flex-1" />}
-        </nav>
-
-        {/* CTA */}
-        <div className="glass-card p-8 text-center rounded-2xl bg-gradient-to-br from-surface/50 to-accent-blue/5 border-accent-blue/20">
-          <h3 className="text-2xl font-bold text-foreground mb-3">Ready to optimize your meetings?</h3>
-          <p className="text-muted mb-6 max-w-md mx-auto">
-            Stop taking manual notes. Let MeetMind AI transcribe, summarize, and extract actionable insights from your next meeting automatically.
-          </p>
-          <Link 
-            href="/login" 
-            className="inline-flex items-center justify-center rounded-lg bg-foreground text-background px-6 py-3 text-sm font-medium hover:bg-foreground/90 transition-colors shadow-sm"
-          >
-            Start Free Today
-          </Link>
-        </div>
-        
       </article>
     </main>
   );
