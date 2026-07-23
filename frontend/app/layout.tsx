@@ -56,30 +56,55 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "SoftwareApplication",
-              name: "MeetMind AI",
-              url: "https://meetmindai.co.in",
-              applicationCategory: "BusinessApplication",
-              operatingSystem: "Web",
-              description: "AI-powered meeting transcription, summarization, and action item extraction supporting 99+ languages.",
-              offers: {
-                "@type": "Offer",
-                price: "0",
-                priceCurrency: "INR",
-                name: "Free Plan",
-                description: "3 meetings free, includes transcription and AI summaries",
+            __html: JSON.stringify([
+              {
+                "@context": "https://schema.org",
+                "@type": "SoftwareApplication",
+                name: "MeetMind AI",
+                url: "https://meetmindai.co.in",
+                applicationCategory: "BusinessApplication",
+                operatingSystem: "Web",
+                description: "AI-powered meeting transcription, summarization, and action item extraction supporting 99+ languages.",
+                offers: {
+                  "@type": "Offer",
+                  price: "0",
+                  priceCurrency: "INR",
+                  name: "Free Plan",
+                  description: "3 meetings free, includes transcription and AI summaries",
+                },
+                featureList: [
+                  "AI Meeting Transcription",
+                  "Executive Summary Generation",
+                  "Action Item Extraction",
+                  "Decision Tracking",
+                  "99+ Language Support",
+                  "AI Meeting Chat Assistant",
+                ],
               },
-              featureList: [
-                "AI Meeting Transcription",
-                "Executive Summary Generation",
-                "Action Item Extraction",
-                "Decision Tracking",
-                "99+ Language Support",
-                "AI Meeting Chat Assistant",
-              ],
-            }),
+              {
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                name: "MeetMind AI",
+                url: "https://meetmindai.co.in",
+                logo: "https://meetmindai.co.in/images/og-card.png",
+                contactPoint: {
+                  "@type": "ContactPoint",
+                  email: "meetmindai.help@zohomail.in",
+                  contactType: "customer support"
+                }
+              },
+              {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                name: "MeetMind AI",
+                url: "https://meetmindai.co.in",
+                potentialAction: {
+                  "@type": "SearchAction",
+                  target: "https://meetmindai.co.in/blog?q={search_term_string}",
+                  "query-input": "required name=search_term_string"
+                }
+              }
+            ]),
           }}
         />
       </head>

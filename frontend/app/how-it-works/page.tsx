@@ -7,26 +7,38 @@ import GradientBackground from "../components/gradient-background";
 const STEPS = [
   {
     number: "01",
-    title: "Upload Your Meeting",
-    desc: "Simply upload your audio or video file. We support all major formats including MP3, MP4, WAV, and M4A.",
+    title: "Record Meeting",
+    desc: "Record your meeting locally or to the cloud via Zoom, Teams, or Meet. Upload the raw audio or video file directly to MeetMind AI.",
     icon: "📤",
   },
   {
     number: "02",
     title: "AI Transcription",
-    desc: "Our system uses advanced Whisper AI models to convert speech to text with near-human accuracy, even with multiple speakers.",
+    desc: "Our secure system utilizes Faster Whisper to convert your speech into a highly accurate, timestamped text transcript across 99+ languages.",
     icon: "🎙️",
   },
   {
     number: "03",
-    title: "Extract Insights",
-    desc: "Gemini AI analyzes the transcript to generate an executive summary, identify key decisions, and extract action items.",
+    title: "Meeting Summary",
+    desc: "Advanced AI models (Gemini) process the full transcript to extract the core conversation, creating an executive-level summary in seconds.",
     icon: "🧠",
   },
   {
     number: "04",
-    title: "Chat & Export",
-    desc: "Ask the AI assistant questions about the meeting, or export your notes to Markdown, TXT, or copy them directly.",
+    title: "Action Items",
+    desc: "The AI automatically detects promises, tasks, and follow-ups mentioned during the meeting and compiles them into a structured checklist.",
+    icon: "✅",
+  },
+  {
+    number: "05",
+    title: "Knowledge Search",
+    desc: "Ask the AI Chat Assistant specific questions about the meeting. It searches the semantic context to instantly answer questions like 'What was the budget decision?'.",
+    icon: "🔍",
+  },
+  {
+    number: "06",
+    title: "Export & Share",
+    desc: "Instantly copy the results or export your perfectly formatted notes to Markdown or TXT to share with your team via Slack or Email.",
     icon: "✨",
   },
 ];

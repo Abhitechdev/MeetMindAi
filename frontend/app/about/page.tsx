@@ -64,7 +64,7 @@ export default function AboutPage() {
         >
           <h2 className="text-3xl font-bold text-foreground mb-12">Core Principles</h2>
           
-          <div className="grid sm:grid-cols-3 gap-6 text-left">
+          <div className="grid sm:grid-cols-3 gap-6 text-left mb-24">
             <div className="glass-card p-6">
               <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center mb-4 text-blue-400">
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -95,6 +95,20 @@ export default function AboutPage() {
               <p className="text-sm text-muted">We don't just give you a wall of text. Our AI separates the crucial decisions from the casual chatter.</p>
             </div>
           </div>
+
+          <h2 className="text-3xl font-bold text-foreground mb-8">Editorial Transparency & Human Review</h2>
+          <div className="glass-card p-8 md:p-10 text-left mb-16 border-blue-500/20 bg-blue-500/5">
+            <h3 className="text-xl font-semibold text-foreground mb-4">How We Create Content</h3>
+            <p className="text-muted leading-relaxed mb-4">
+              At MeetMind AI, we believe in radical transparency regarding our use of Artificial Intelligence. While we build AI tools for productivity, we maintain strict editorial standards for our public content, blog posts, and educational resources.
+            </p>
+            <ul className="list-disc pl-6 space-y-4 text-muted leading-relaxed">
+              <li><strong>AI Assistance:</strong> We utilize Large Language Models to help brainstorm topics, generate outlines, and draft initial content blocks. We also use AI for creating article illustrations and diagrams.</li>
+              <li><strong>Human Editorial Review:</strong> No article is published without rigorous human review. Our founding engineering team and product managers fact-check all technical claims, rewrite sections for clarity and accuracy, and ensure the content aligns with our mission.</li>
+              <li><strong>Who Reviews:</strong> All content is reviewed by our lead developers who actively write the software powering MeetMind AI. If an article discusses a technical concept like "Faster Whisper" or "Row-Level Security," it is vetted by the engineer who implemented it.</li>
+            </ul>
+          </div>
+
         </motion.div>
       </div>
     </main>

@@ -60,7 +60,7 @@ Another massive edge case is overlapping speech. When a manager talks over a dir
 
 ## The LLM Bottleneck: Context Windows and Chunking
 
-Once the audio is transcribed and diarized, you finally have a text document. Now, you need to summarize it using a Large Language Model (LLM) like Anthropic's Claude or Google's Gemini.
+Once the audio is transcribed and diarized, you finally have a text document. Now, you need to summarize it using a Large Language Model (LLM) like Anthropic's Claude or Google's [Gemini](/blog/gemini-vs-[ChatGPT](/blog/gemini-vs-chatgpt-for-meeting-notes)-for-meeting-notes).
 
 The immediate technical limitation here is the "context window"—the maximum amount of text the model can process at once. 
 
@@ -91,7 +91,7 @@ Production-grade prompts are massive, deeply engineered instruction sets. They e
 
 A real prompt forces the model to bind every action item to a diarization tag. It commands the AI: *"You must extract all future commitments. Every commitment must be assigned to a specific speaker. If the speaker's name is not explicitly stated in the text, you must use their diarization tag (e.g., Speaker 2).*
 
-This is how an AI meeting assistant turns conversational clutter into a highly structured project management update. It doesn't just read the text; it enforces operational accountability.
+This is how an [AI meeting assistant](/blog/what-is-an-ai-meeting-assistant) turns conversational clutter into a highly structured project management update. It doesn't just read the text; it enforces operational accountability.
 
 ## Where the Pipeline Breaks (And How to Fix It)
 
