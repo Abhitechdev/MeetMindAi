@@ -5,7 +5,7 @@ import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./components/theme-provider";
 import { Navigation } from "./components/nav";
-import CursorEffect from "./components/cursor-effect";
+
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -120,7 +120,7 @@ export default function RootLayout({
         </Script>
         <Script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.9.14/dist/dotlottie-wc.js" type="module" strategy="afterInteractive" />
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <CursorEffect />
+
           <Navigation />
           {children}
           <Analytics />
