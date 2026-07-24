@@ -1,7 +1,4 @@
-"use client";
-
 import React from "react";
-import { motion } from "framer-motion";
 
 const BENTO_ITEMS = [
   {
@@ -37,9 +34,6 @@ const BENTO_ITEMS = [
   },
 ];
 
-// ponytail: removed useScroll/useTransform parallax (fires every scroll frame on mobile = INP tax)
-// ponytail: removed whileHover (touch devices don't hover, wasted listeners)
-// ponytail: replaced framer-motion animate={{ y: [-5,5,-5] }} with CSS @keyframes icon-float
 const BentoFeatures = React.memo(function BentoFeatures() {
   return (
     <section id="features" className="relative max-w-4xl mx-auto px-4 sm:px-6 pb-20">
@@ -48,30 +42,10 @@ const BentoFeatures = React.memo(function BentoFeatures() {
           const isAi = item.isAiAssistant;
           
           return (
-            <motion.div
+            <div
               key={item.title}
-              custom={i}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              variants={{
-                hidden: { 
-                  opacity: 0, 
-                  y: 40, 
-                  scale: isAi ? 0.98 : 1 
-                },
-                visible: (idx: number) => ({
-                  opacity: 1,
-                  y: 0,
-                  scale: 1,
-                  transition: {
-                    delay: idx * 0.1,
-                    duration: 0.6,
-                    ease: "easeOut",
-                  },
-                }),
-              }}
-              className={`group relative glass-card glass-card-hover p-8 flex flex-col justify-between overflow-hidden ${item.className}`}
+              className={`group relative glass-card glass-card-hover p-8 flex flex-col justify-between overflow-hidden animate-fade-in-up ${item.className}`}
+              style={{ animationDelay: `${i * 100}ms` }}
             >
               {/* Dynamic hover backgrounds */}
               {isAi ? (
@@ -96,7 +70,7 @@ const BentoFeatures = React.memo(function BentoFeatures() {
                   <p className="text-sm text-muted">{item.desc}</p>
                 </div>
               </div>
-            </motion.div>
+            </div>
           );
         })}
       </div>
