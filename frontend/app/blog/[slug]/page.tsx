@@ -82,13 +82,37 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     h1: (props: any) => <h1 className="text-3xl font-bold text-foreground mt-12 mb-6" {...props} />,
     h2: (props: any) => <h2 className="text-2xl font-bold text-foreground mt-12 mb-6" {...props} />,
     h3: (props: any) => <h3 className="text-xl font-semibold text-foreground mt-8 mb-4" {...props} />,
-    p: (props: any) => <p className="text-lg text-muted mb-6 leading-relaxed max-w-[75ch]" {...props} />,
-    ul: (props: any) => <ul className="list-disc pl-6 space-y-3 text-muted mb-8 max-w-[75ch]" {...props} />,
-    ol: (props: any) => <ol className="list-decimal pl-6 space-y-3 text-muted mb-8 max-w-[75ch]" {...props} />,
+    p: (props: any) => <p className="text-lg text-muted mb-6 leading-relaxed max-w-[85ch]" {...props} />,
+    ul: (props: any) => <ul className="list-disc pl-6 space-y-3 text-muted mb-8 max-w-[85ch]" {...props} />,
+    ol: (props: any) => <ol className="list-decimal pl-6 space-y-3 text-muted mb-8 max-w-[85ch]" {...props} />,
     li: (props: any) => <li className="text-muted" {...props} />,
     a: (props: any) => <a className="text-accent-blue hover:underline" {...props} />,
     strong: (props: any) => <strong className="text-foreground font-semibold" {...props} />,
-    blockquote: (props: any) => <blockquote className="border-l-4 border-accent-purple pl-4 italic text-muted my-6 max-w-[75ch]" {...props} />,
+    blockquote: (props: any) => <blockquote className="border-l-4 border-accent-purple pl-4 italic text-muted my-6 max-w-[85ch]" {...props} />,
+    table: (props: any) => (
+      <div className="overflow-x-auto my-10 max-w-[85ch] rounded-xl border border-card-border shadow-sm">
+        <table className="w-full border-collapse text-left" {...props} />
+      </div>
+    ),
+    thead: (props: any) => <thead className="bg-surface/60 border-b border-card-border" {...props} />,
+    th: (props: any) => <th className="p-4 font-semibold text-foreground" {...props} />,
+    td: (props: any) => <td className="p-4 text-muted border-t border-card-border/50" {...props} />,
+    tr: (props: any) => <tr className="even:bg-surface/20 hover:bg-surface/40 transition-colors" {...props} />,
+    KeyTakeaways: ({ children }: any) => (
+      <div className="bg-surface/40 border border-card-border rounded-2xl p-6 sm:p-8 my-10 max-w-[85ch] shadow-sm">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 bg-accent-blue/10 rounded-full flex items-center justify-center flex-shrink-0">
+            <svg className="w-5 h-5 text-accent-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-bold text-foreground m-0">Key Takeaways</h2>
+        </div>
+        <div className="text-muted text-lg pl-2 space-y-2">
+          {children}
+        </div>
+      </div>
+    ),
   };
 
   let faqSchema = null;
@@ -160,7 +184,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   const updatedDate = article.metadata.updatedAt ? new Date(article.metadata.updatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : null;
 
   return (
-    <main className="relative min-h-screen pb-24">
+    <main className="relative min-h-screen pb-12">
       <GradientBackground />
       
       {/* Skip to Content */}
@@ -177,7 +201,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
       <article className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 md:py-20">
         
         {/* Header Section (Re-ordered) */}
-        <header className="max-w-[75ch] mx-auto mb-12">
+        <header className="max-w-[85ch] mx-auto mb-12">
           {/* Breadcrumbs */}
           <nav className="flex text-sm text-muted mb-6" aria-label="Breadcrumb">
             <ol className="inline-flex items-center space-x-2">
@@ -231,7 +255,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         <div className="flex flex-col lg:flex-row gap-12 max-w-6xl mx-auto">
           
           {/* Left Column (Content & CTA) */}
-          <div className="lg:w-3/4 max-w-[75ch] mx-auto lg:mx-0 w-full" id="article-content">
+          <div className="lg:w-3/4 max-w-[85ch] mx-auto lg:mx-0 w-full" id="article-content">
             
             {/* Mobile TOC (Accordion) */}
             {headings.length > 0 && (
@@ -281,6 +305,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                 </svg>
               </div>
               <h3 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">Ready to eliminate manual meeting notes?</h3>
+              <p className="text-lg text-muted mb-8 max-w-xl mx-auto">Secure your meeting data while generating accurate AI summaries in minutes.</p>
               
               <ul className="text-muted mb-8 space-y-3 text-left inline-block mx-auto">
                 <li className="flex items-center gap-3">
@@ -344,7 +369,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
         {/* Related Articles */}
         {relatedArticles.length > 0 && (
-          <section className="mt-24 pt-12 border-t border-card-border max-w-6xl mx-auto">
+          <section className="mt-16 pt-12 border-t border-card-border max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold text-foreground mb-8">Related Articles</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {relatedArticles.map((related) => (
