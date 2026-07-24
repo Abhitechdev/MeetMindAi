@@ -5,8 +5,9 @@ import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 import ProgressTracker from "./progress-tracker";
 import WaveformAnimation from "./waveform-animation";
-import AudioUpload from "./audio-upload";
 import { useMeetingProcessor } from "../hooks/useMeetingProcessor";
+
+const AudioUpload = dynamic(() => import("./audio-upload"));
 
 const TranscriptViewer = dynamic(() => import("./transcript-viewer"));
 const SummaryViewer = dynamic(() => import("./summary-viewer"));
@@ -112,39 +113,26 @@ export default function MeetingOrchestrator() {
   }, [result]);
 
   return (
-    <AnimatePresence mode="wait">
+    <>
       {/* ====== IDLE / ERROR ====== */}
       {(status === "idle" || status === "error") && (
-        <motion.div
-          key="idle"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.25 }}
-        >
+        <div className="animate-fade-in-up">
           {/* Upload */}
-          <motion.div
-            id="upload-section"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.25, delay: 0.1 }}
-          >
+          <div id="upload-section">
             <AudioUpload onUpload={handleUpload} disabled={false} limitReached={limitReached} />
-          </motion.div>
+          </div>
 
           {/* Error */}
           {status === "error" && error && (
-            <motion.div
-              className="mt-4 glass-card px-5 py-4"
+            <div
+              className="mt-4 glass-card px-5 py-4 animate-fade-in-up"
               style={{ borderColor: "rgba(239,68,68,0.3)" }}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
             >
               <p className="text-sm text-red-400 font-medium mb-0.5">Processing failed</p>
               <p className="text-sm text-red-400/70">{error}</p>
-            </motion.div>
+            </div>
           )}
-        </motion.div>
+        </div>
       )}
 
       {/* ====== PROCESSING ====== */}
@@ -242,46 +230,35 @@ export default function MeetingOrchestrator() {
           </motion.div>
 
           {/* Export actions */}
-          <motion.div
-            className="flex flex-wrap gap-3 justify-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.25, delay: 0.2 }}
-          >
-            <motion.button
+          <div className="flex flex-wrap gap-3 justify-center animate-fade-in-up" style={{ animationDelay: '200ms' }}>
+            <button
               onClick={handleCopySummary}
-              className="glass-card glass-card-hover px-5 py-2.5 text-sm font-medium text-muted hover:text-foreground transition-colors flex items-center gap-2"
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
+              className="glass-card glass-card-hover px-5 py-2.5 text-sm font-medium text-muted hover:text-foreground transition-all flex items-center gap-2 hover:scale-[1.03] active:scale-[0.97]"
             >
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" />
               </svg>
               {copiedSummary ? "✓ Copied" : "Copy Summary"}
-            </motion.button>
-            <motion.button
+            </button>
+            <button
               onClick={handleExportTxt}
-              className="glass-card glass-card-hover px-5 py-2.5 text-sm font-medium text-muted hover:text-foreground transition-colors flex items-center gap-2"
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
+              className="glass-card glass-card-hover px-5 py-2.5 text-sm font-medium text-muted hover:text-foreground transition-all flex items-center gap-2 hover:scale-[1.03] active:scale-[0.97]"
             >
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
               </svg>
               Export TXT
-            </motion.button>
-            <motion.button
+            </button>
+            <button
               onClick={handleExportMd}
-              className="glass-card glass-card-hover px-5 py-2.5 text-sm font-medium text-muted hover:text-foreground transition-colors flex items-center gap-2"
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
+              className="glass-card glass-card-hover px-5 py-2.5 text-sm font-medium text-muted hover:text-foreground transition-all flex items-center gap-2 hover:scale-[1.03] active:scale-[0.97]"
             >
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
               </svg>
               Export Markdown
-            </motion.button>
-          </motion.div>
+            </button>
+          </div>
           
           <Suspense fallback={<div className="h-48 w-full animate-pulse bg-surface/50 rounded-xl" />}>
             <ChatBot 
@@ -298,6 +275,6 @@ export default function MeetingOrchestrator() {
           </Suspense>
         </motion.div>
       )}
-    </AnimatePresence>
+    </>
   );
 }

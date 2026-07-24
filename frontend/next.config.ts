@@ -1,4 +1,10 @@
 import type { NextConfig } from "next";
+import withBundleAnalyzer from '@next/bundle-analyzer';
+
+const analyzeBundle = process.env.ANALYZE === 'true';
+const withAnalyzer = withBundleAnalyzer({
+  enabled: analyzeBundle,
+});
 
 // ponytail: dynamically grab the backend domain for CSP to avoid blocking our own API
 const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || '';
@@ -84,4 +90,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withAnalyzer(nextConfig);

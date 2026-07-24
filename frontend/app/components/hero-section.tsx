@@ -35,13 +35,9 @@ const HeroSection = React.memo(function HeroSection() {
             <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 ease-in-out group-hover:translate-x-full" />
             
             <span className="relative">Try it Free</span>
-            {React.createElement('dotlottie-wc', {
-              src: "https://lottie.host/9f240d2e-23f3-4d82-9dfa-1b263248b781/kqnEgLqE1L.lottie",
-              autoplay: true,
-              loop: true,
-              style: { width: "24px", height: "24px" },
-              class: "relative transition-transform duration-300 group-hover:translate-y-1"
-            })}
+            <svg className="relative w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
           </a>
         </div>
 
