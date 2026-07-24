@@ -2,7 +2,6 @@
 
 import { useState, useCallback, useMemo, Suspense } from "react";
 import dynamic from "next/dynamic";
-import { motion, AnimatePresence } from "framer-motion";
 import ProgressTracker from "./progress-tracker";
 import WaveformAnimation from "./waveform-animation";
 import { useMeetingProcessor } from "../hooks/useMeetingProcessor";
@@ -137,13 +136,9 @@ export default function MeetingOrchestrator() {
 
       {/* ====== PROCESSING ====== */}
       {isProcessing && (
-        <motion.div
+        <div
           key="processing"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.4 }}
-          className="pt-8"
+          className="pt-8 animate-in fade-in slide-in-from-bottom-4 duration-500"
         >
           <div className="glass-card p-10 text-center max-w-2xl mx-auto">
             <WaveformAnimation />
@@ -157,16 +152,14 @@ export default function MeetingOrchestrator() {
 
             <ProgressTracker status={status} />
           </div>
-        </motion.div>
+        </div>
       )}
 
       {/* ====== RESULTS ====== */}
       {status === "complete" && result && (
-        <motion.div
+        <div
           key="results"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.25 }}
+          className="animate-in fade-in duration-300"
         >
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
@@ -174,18 +167,16 @@ export default function MeetingOrchestrator() {
               <h2 className="text-2xl font-bold text-foreground">Meeting Results</h2>
               <p className="text-sm text-muted mt-1">AI-powered analysis complete</p>
             </div>
-            <motion.button
+            <button
               id="new-meeting-btn"
               onClick={handleReset}
-              className="glass-card glass-card-hover flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-muted hover:text-foreground transition-colors"
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
+              className="glass-card glass-card-hover flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-muted hover:text-foreground transition-all hover:scale-[1.03] active:scale-[0.97]"
             >
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
               </svg>
               New Meeting
-            </motion.button>
+            </button>
           </div>
 
           {/* Insights grid */}
@@ -201,24 +192,14 @@ export default function MeetingOrchestrator() {
           )}
 
           {/* Transcript */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.25, delay: 0.1 }}
-            className="mb-5"
-          >
+          <div className="mb-5 animate-in fade-in slide-in-from-bottom-4 duration-300 delay-100 fill-mode-both">
             <Suspense fallback={<div className="h-64 w-full animate-pulse bg-surface/50 rounded-xl" />}>
               <TranscriptViewer transcript={result.transcript} segments={result.segments} language={result.language} />
             </Suspense>
-          </motion.div>
+          </div>
 
           {/* Summary */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.25, delay: 0.15 }}
-            className="mb-8"
-          >
+          <div className="mb-8 animate-in fade-in slide-in-from-bottom-4 duration-300 delay-150 fill-mode-both">
             <Suspense fallback={<div className="h-48 w-full animate-pulse bg-surface/50 rounded-xl" />}>
               <SummaryViewer
                 executiveSummary={result.executiveSummary}
@@ -227,7 +208,7 @@ export default function MeetingOrchestrator() {
                 nextSteps={result.nextSteps}
               />
             </Suspense>
-          </motion.div>
+          </div>
 
           {/* Export actions */}
           <div className="flex flex-wrap gap-3 justify-center animate-fade-in-up" style={{ animationDelay: '200ms' }}>
@@ -273,7 +254,7 @@ export default function MeetingOrchestrator() {
               })} 
             />
           </Suspense>
-        </motion.div>
+        </div>
       )}
     </>
   );

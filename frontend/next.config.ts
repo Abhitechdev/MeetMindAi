@@ -24,6 +24,7 @@ const cspHeader = `
 `.replace(/\s{2,}/g, ' ').trim()
 
 const nextConfig: NextConfig = {
+  productionBrowserSourceMaps: true,
   async redirects() {
     return [
       {

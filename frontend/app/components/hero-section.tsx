@@ -2,7 +2,7 @@
 // must be server-rendered HTML so it arrives in the first response
 import React from "react";
 
-const HeroSection = React.memo(function HeroSection() {
+const HeroSection = function HeroSection() {
   return (
     <section className="relative pt-24 pb-16 md:pt-32 md:pb-24 overflow-hidden">
       {/* Subtle Aurora Background */}
@@ -44,6 +44,6 @@ const HeroSection = React.memo(function HeroSection() {
       </div>
     </section>
   );
-});
+};
 
 export default HeroSection;

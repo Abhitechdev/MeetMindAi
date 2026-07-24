@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { askQuestion } from "@/lib/api";
+import Script from "next/script";
 
 interface Message {
   id: string;
@@ -260,6 +261,7 @@ export default function ChatBot({ meetingId, transcript, summary }: ChatBotProps
           </motion.div>
         )}
       </AnimatePresence>
+      <Script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.9.14/dist/dotlottie-wc.js" type="module" strategy="lazyOnload" />
     </>
   );
 }

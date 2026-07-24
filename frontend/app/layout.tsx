@@ -108,7 +108,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-background text-foreground transition-colors duration-300">
+      <body className={`min-h-full flex flex-col bg-background text-foreground ${inter.className}`}>
         <Script src="https://www.googletagmanager.com/gtag/js?id=G-XTH4Y4K2JM" strategy="lazyOnload" />
         <Script id="google-analytics" strategy="lazyOnload">
           {`
@@ -118,9 +118,9 @@ export default function RootLayout({
             gtag('config', 'G-XTH4Y4K2JM');
           `}
         </Script>
-        <Script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.9.14/dist/dotlottie-wc.js" type="module" strategy="lazyOnload" />
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
 
+        
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <Navigation />
           {children}
           <Analytics />

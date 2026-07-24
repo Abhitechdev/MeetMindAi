@@ -1,0 +1,122 @@
+{
+  "results": [
+    {
+      "bundleName": ".next/static/chunks/0druyxhzsjkh7.js",
+      "totalBytes": 31439,
+      "mappedBytes": 31268,
+      "unmappedBytes": 128,
+      "eolBytes": 2,
+      "sourceMapCommentBytes": 41,
+      "files": {
+        "turbopack:///[project]/node_modules/next/dist/compiled/process/browser.js": {
+          "size": 1913
+        },
+        "turbopack:///[project]/node_modules/next/src/build/polyfills/process.ts": {
+          "size": 158
+        },
+        "turbopack:///[project]/node_modules/next/dist/compiled/react/cjs/react-jsx-runtime.production.js": {
+          "size": 348
+        },
+        "turbopack:///[project]/node_modules/next/dist/compiled/react/jsx-runtime.js": {
+          "size": 51
+        },
+        "turbopack:///[project]/node_modules/next/dist/compiled/react/cjs/react.production.js": {
+          "size": 7793
+        },
+        "turbopack:///[project]/node_modules/next/dist/compiled/react/index.js": {
+          "size": 50
+        },
+        "turbopack:///[project]/node_modules/@swc/helpers/cjs/_interop_require_default.cjs": {
+          "size": 85
+        },
+        "turbopack:///[project]/node_modules/@swc/helpers/cjs/_interop_require_wildcard.cjs": {
+          "size": 676
+        },
+        "turbopack:///[project]/node_modules/next/src/server/app-render/async-local-storage.ts": {
+          "size": 780
+        },
+        "turbopack:///[project]/node_modules/next/src/shared/lib/invariant-error.ts": {
+          "size": 305
+        },
+        "turbopack:///[project]/node_modules/next/src/client/components/redirect-status-code.ts": {
+          "size": 504
+        },
+        "turbopack:///[project]/node_modules/next/src/client/components/redirect-error.ts": {
+          "size": 760
+        },
+        "turbopack:///[project]/node_modules/next/src/client/components/app-router-headers.ts": {
+          "size": 1853
+        },
+        "turbopack:///[project]/node_modules/next/src/shared/lib/promise-with-resolvers.ts": {
+          "size": 319
+        },
+        "turbopack:///[project]/node_modules/next/src/shared/lib/app-router-context.shared-runtime.ts": {
+          "size": 551
+        },
+        "turbopack:///[project]/node_modules/next/src/shared/lib/segment.ts": {
+          "size": 1118
+        },
+        "turbopack:///[project]/node_modules/next/src/client/components/unrecognized-action-error.ts": {
+          "size": 638
+        },
+        "turbopack:///[project]/node_modules/next/src/server/app-render/action-async-storage-instance.ts": {
+          "size": 221
+        },
+        "turbopack:///[project]/node_modules/next/src/server/app-render/action-async-storage.external.ts": {
+          "size": 193
+        },
+        "turbopack:///[project]/node_modules/next/src/client/components/redirect.ts": {
+          "size": 1580
+        },
+        "turbopack:///[project]/node_modules/next/dist/compiled/react-dom/cjs/react-dom.production.js": {
+          "size": 3343
+        },
+        "turbopack:///[project]/node_modules/next/dist/compiled/react-dom/index.js": {
+          "size": 250
+        },
+        "turbopack:///[project]/node_modules/next/src/shared/lib/deployment-id.ts": {
+          "size": 629
+        },
+        "turbopack:///[project]/node_modules/next/src/server/app-render/work-async-storage-instance.ts": {
+          "size": 219
+        },
+        "turbopack:///[project]/node_modules/next/src/server/app-render/work-async-storage.external.ts": {
+          "size": 206
+        },
+        "turbopack:///[project]/node_modules/next/src/client/components/handle-isr-error.tsx": {
+          "size": 537
+        },
+        "turbopack:///[project]/node_modules/next/src/client/components/navigation-untracked.ts": {
+          "size": 718
+        },
+        "turbopack:///[project]/node_modules/next/src/client/components/nav-failure-handler.ts": {
+          "size": 822
+        },
+        "turbopack:///[project]/node_modules/next/src/client/components/error-boundary.tsx": {
+          "size": 1746
+        },
+        "turbopack:///[project]/node_modules/next/src/client/components/redirect-boundary.tsx": {
+          "size": 1351
+        },
+        "turbopack:///[project]/node_modules/next/src/client/components/router-reducer/create-router-cache-key.ts": {
+          "size": 452
+        },
+        "turbopack:///[project]/node_modules/next/src/client/components/unresolved-thenable.ts": {
+          "size": 457
+        },
+        "turbopack:///[project]/node_modules/next/src/lib/framework/boundary-components.tsx": {
+          "size": 642
+        },
+        "[sourceMappingURL]": {
+          "size": 41
+        },
+        "[unmapped]": {
+          "size": 128
+        },
+        "[EOLs]": {
+          "size": 2
+        }
+      }
+    }
+  ]
+}

@@ -1,5 +1,4 @@
 import { ProcessingResponse } from "./types";
-import { createClient } from "./supabase";
 
 let API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:8000";
 if (API_BASE === "/api") {
@@ -11,6 +10,7 @@ if (API_BASE.endsWith("/")) {
   API_BASE = API_BASE.slice(0, -1);
 }
 async function getAuthHeaders(): Promise<Record<string, string>> {
+  const { createClient } = await import("./supabase");
   const supabase = createClient();
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) return {};

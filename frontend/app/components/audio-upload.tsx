@@ -1,8 +1,6 @@
 "use client";
 
 import { useCallback, useState, useRef } from "react";
-import { motion } from "framer-motion";
-import { createClient } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 
 interface AudioUploadProps {
@@ -43,6 +41,7 @@ export default function AudioUpload({ onUpload, disabled, limitReached }: AudioU
 
   const handleFile = useCallback(
     async (file: File) => {
+      const { createClient } = await import("@/lib/supabase");
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
@@ -67,7 +66,7 @@ export default function AudioUpload({ onUpload, disabled, limitReached }: AudioU
   return (
     <div>
       {/* Drop zone */}
-      <motion.div
+      <div
         id="audio-drop-zone"
         onDrop={handleDrop}
         onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
@@ -75,14 +74,13 @@ export default function AudioUpload({ onUpload, disabled, limitReached }: AudioU
         onClick={() => inputRef.current?.click()}
         className={`
           relative cursor-pointer rounded-2xl border-2 border-dashed bg-surface/50 p-12 text-center transition-all duration-300
+          hover:scale-[1.005] active:scale-[0.995]
           ${isDragging
             ? "border-foreground/50 bg-muted/10 shadow-sm"
             : "border-card-border hover:border-foreground/30 hover:bg-muted/5"
           }
           ${disabled ? "opacity-50 pointer-events-none" : ""}
         `}
-        whileHover={{ scale: 1.005 }}
-        whileTap={{ scale: 0.995 }}
       >
         <input
           ref={inputRef}
@@ -107,27 +105,18 @@ export default function AudioUpload({ onUpload, disabled, limitReached }: AudioU
         <p className="text-sm text-muted">
           Drag & drop or click to browse · MP3, WAV, M4A, MP4, WEBM, MOV, AVI · Max 100MB
         </p>
-      </motion.div>
+      </div>
 
       {/* Error */}
       {error && (
-        <motion.div
-          className="mt-3 glass-card border-red-500/30 px-4 py-3 text-sm text-red-400"
-          initial={{ opacity: 0, y: -5 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
+        <div className="mt-3 glass-card border-red-500/30 px-4 py-3 text-sm text-red-400 animate-in fade-in slide-in-from-top-2">
           {error}
-        </motion.div>
+        </div>
       )}
 
       {/* Selected file + process button */}
       {selectedFile && !error && (
-        <motion.div
-          className="mt-4"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-        >
+        <div className="mt-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
           <div className="flex items-center justify-between glass-card px-5 py-4">
             <div className="flex items-center gap-3 min-w-0">
               <div
@@ -153,13 +142,11 @@ export default function AudioUpload({ onUpload, disabled, limitReached }: AudioU
                   <option value="Original Language">Original Language Output</option>
                 </select>
               </div>
-              <motion.button
+              <button
                 id="process-meeting-btn"
                 onClick={() => onUpload(selectedFile, outputLanguage)}
                 disabled={disabled || limitReached}
-                className="flex items-center gap-2 rounded-xl px-6 py-2.5 text-sm font-semibold bg-foreground text-background shadow-sm hover:bg-foreground/90 transition-colors disabled:opacity-50 disabled:pointer-events-none"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
+                className="flex items-center gap-2 rounded-xl px-6 py-2.5 text-sm font-semibold bg-foreground text-background shadow-sm hover:bg-foreground/90 transition-all hover:scale-[1.03] active:scale-[0.97] disabled:opacity-50 disabled:pointer-events-none"
               >
                 {limitReached && (
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -167,7 +154,7 @@ export default function AudioUpload({ onUpload, disabled, limitReached }: AudioU
                   </svg>
                 )}
                 Process Meeting
-              </motion.button>
+              </button>
               {limitReached && (
                 <div className="absolute -top-10 left-1/2 -translate-x-1/2 rounded bg-foreground px-2 py-1 text-xs text-background opacity-0 transition-opacity group-hover:opacity-100 whitespace-nowrap pointer-events-none">
                   Free plan limit reached
@@ -175,7 +162,7 @@ export default function AudioUpload({ onUpload, disabled, limitReached }: AudioU
               )}
             </div>
           </div>
-        </motion.div>
+        </div>
       )}
     </div>
   );
