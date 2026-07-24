@@ -9,7 +9,7 @@ import AudioUpload from "./components/audio-upload";
 import HeroSection from "./components/hero-section";
 import BentoFeatures from "./components/bento-features";
 import LanguageMarquee from "./components/language-marquee";
-import HomeContent from "./components/home-content";
+
 import { useMeetingProcessor } from "./hooks/useMeetingProcessor";
 
 const TranscriptViewer = lazy(() => import("./components/transcript-viewer"));
@@ -134,7 +134,7 @@ export default function Home() {
               <BentoFeatures />
               <LanguageMarquee />
               
-              <HomeContent />
+
 
               {/* Upload */}
               <motion.div
