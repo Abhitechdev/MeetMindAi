@@ -78,11 +78,11 @@ export default function PricingPage() {
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-20">
           {/* Free Plan */}
           <div className="rounded-3xl border border-card-border bg-surface p-8 xl:p-10 flex flex-col">
-            <div className="mb-6">
-              <h3 className="text-2xl font-bold text-foreground">Free</h3>
-              <p className="text-muted mt-2">Perfect for individuals just getting started.</p>
-            </div>
-            <div className="mb-6">
+            <div>
+                <h3 className="text-xl font-bold text-foreground">Free</h3>
+                <p className="text-muted mt-2">Ideal for individuals just getting started.</p>
+              </div>
+              <div className="mt-6 mb-8">
               <span className="text-5xl font-bold tracking-tight text-foreground">₹0</span>
             </div>
             <Link

@@ -12,9 +12,9 @@ const STEPS = [
     icon: "📤",
   },
   {
-    number: "02",
+    step: "02",
     title: "AI Transcription",
-    desc: "Our secure system utilizes Faster Whisper to convert your speech into a highly accurate, timestamped text transcript across 99+ languages.",
+    desc: "Our secure system utilizes Faster Whisper to convert your speech into a highly accurate, timestamped text transcript across multiple languages.",
     icon: "🎙️",
   },
   {
@@ -36,9 +36,9 @@ const STEPS = [
     icon: "🔍",
   },
   {
-    number: "06",
+    step: "04",
     title: "Export & Share",
-    desc: "Instantly copy the results or export your perfectly formatted notes to Markdown or TXT to share with your team via Slack or Email.",
+    desc: "Instantly copy the results or export your cleanly formatted notes to Markdown or TXT to share with your team via Slack or Email.",
     icon: "✨",
   },
 ];

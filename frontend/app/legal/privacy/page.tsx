@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: '/legal/privacy',
+  },
   title: "Privacy Policy",
   description:
     "Learn how MeetMind AI collects, stores, and protects your information.",

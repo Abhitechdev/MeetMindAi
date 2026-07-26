@@ -4,6 +4,9 @@ import { getAllArticles } from "../../lib/mdx";
 import GradientBackground from "../components/gradient-background";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: '/blog',
+  },
   title: "MeetMind AI Blog | AI Productivity & Meeting Intelligence",
   description: "Read the latest insights on AI meeting assistants, productivity tips, transcription technology, and how to optimize your business communication.",
   openGraph: {

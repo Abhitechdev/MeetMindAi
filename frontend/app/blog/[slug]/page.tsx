@@ -135,7 +135,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     }
   }
 
-  const baseUrl = "https://meetmind.ai";
+  const baseUrl = "https://meetmindai.co.in";
   const articleUrl = `${baseUrl}/blog/${article.metadata.slug}`;
   const imageUrl = article.metadata.coverImage ? `${baseUrl}${article.metadata.coverImage}` : undefined;
 

@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: '/legal/acceptable-use',
+  },
   title: "Acceptable Use Policy",
   description:
     "Understand the rules for using MeetMind AI, including prohibited activities and our enforcement process.",

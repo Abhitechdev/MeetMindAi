@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: '/legal/ai-transparency',
+  },
   title: "AI Transparency",
   description:
     "Understand how MeetMind AI uses artificial intelligence, what models power it, and how your data flows through the system.",

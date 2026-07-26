@@ -16,7 +16,7 @@ draft: false
 canonical: ""
 ---
 
-When an executive reads a perfectly formatted, three-bullet-point summary of a chaotic 45-minute meeting, it often feels like magic. 
+When an executive reads a cleanly formatted, three-bullet-point summary of a chaotic 45-minute meeting, it often feels like magic. 
 
 But if you are a software engineer or a product manager who has actually tried to build one of these tools internally, you know the truth. There is no magic. There is only a highly complex, incredibly fragile pipeline of machine learning models that are constantly on the verge of breaking. 
 
@@ -67,7 +67,7 @@ The immediate technical limitation here is the "context window"—the maximum am
 ### The "Lost in the Middle" Phenomenon
 While models like Gemini 1.5 Pro boast massive context windows capable of digesting entire books, throwing a 3-hour, 40,000-word transcript directly into an LLM is an amateur engineering mistake. 
 
-Extensive research, including landmark studies by [Stanford researchers](https://arxiv.org/abs/2307.03172), has proven that LLMs suffer from a "lost in the middle" phenomenon. If you feed an LLM a massive document, it remembers the introduction perfectly. It remembers the conclusion perfectly. But it drastically hallucinates or completely ignores critical data buried in the middle of the text. 
+Extensive research, including landmark studies by [Stanford researchers](https://arxiv.org/abs/2307.03172), has proven that LLMs suffer from a "lost in the middle" phenomenon. If you feed an LLM a massive document, it remembers the introduction accurately. It remembers the conclusion accurately. But it drastically hallucinates or completely ignores critical data buried in the middle of the text. 
 
 If your company's Q3 budget gets approved at the 45-minute mark of a 2-hour meeting, a naive API call will likely miss it entirely.
 

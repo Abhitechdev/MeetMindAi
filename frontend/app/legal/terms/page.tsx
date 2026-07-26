@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: '/legal/terms',
+  },
   title: "Terms of Service",
   description:
     "Read the terms and conditions governing your use of MeetMind AI.",

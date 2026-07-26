@@ -27,10 +27,10 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://meetmindai.co.in"),
   title: "MeetMind AI | Free AI Meeting Summaries & Audio Transcription",
   description:
-    "Upload meeting audio or video to instantly generate transcripts, action items, and summaries in 99+ languages. Try MeetMind AI 2.0 free today.",
+    "Upload meeting audio or video to instantly generate transcripts, action items, and summaries in multiple languages. Try MeetMind AI 2.0 free today.",
   openGraph: {
     title: "MeetMind AI | Free AI Meeting Summaries & Audio Transcription",
-    description: "Upload meeting audio or video to instantly generate transcripts, action items, and summaries in 99+ languages. Try MeetMind AI 2.0 free today.",
+    description: "Upload meeting audio or video to instantly generate transcripts, action items, and summaries in multiple languages. Try MeetMind AI 2.0 free today.",
     url: "https://meetmindai.co.in",
     siteName: "MeetMind AI",
     images: [{ url: "/images/og-card.png", width: 1200, height: 630, alt: "MeetMind AI dashboard showing meeting transcript and AI summary" }],
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "MeetMind AI | Free AI Meeting Summaries & Audio Transcription",
-    description: "Upload meeting audio or video to instantly generate transcripts, action items, and summaries in 99+ languages.",
+    description: "Upload meeting audio or video to instantly generate transcripts, action items, and summaries in multiple languages.",
     images: ["/images/og-card.png"],
   },
 };
@@ -64,7 +64,7 @@ export default function RootLayout({
                 url: "https://meetmindai.co.in",
                 applicationCategory: "BusinessApplication",
                 operatingSystem: "Web",
-                description: "AI-powered meeting transcription, summarization, and action item extraction supporting 99+ languages.",
+                description: "AI-powered meeting transcription, summarization, and action item extraction supporting multiple languages.",
                 offers: {
                   "@type": "Offer",
                   price: "0",
@@ -77,7 +77,7 @@ export default function RootLayout({
                   "Executive Summary Generation",
                   "Action Item Extraction",
                   "Decision Tracking",
-                  "99+ Language Support",
+                  "Multilingual Support",
                   "AI Meeting Chat Assistant",
                 ],
               },

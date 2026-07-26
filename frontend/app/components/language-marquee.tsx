@@ -13,10 +13,10 @@ const MARQUEE_ITEMS = [...LANGUAGES, ...LANGUAGES];
 const LanguageMarquee = React.memo(function LanguageMarquee() {
   return (
     <div className="w-full overflow-hidden py-10 relative">
-      <div className="text-center mb-8 relative z-20">
-        <h2 className="text-xl font-semibold text-foreground tracking-tight">Supports 99+ Languages</h2>
-        <p className="text-sm text-muted mt-2 max-w-lg mx-auto">
-          Transcribe and summarize meetings in 99+ languages with automatic language detection.
+      <div className="mx-auto max-w-5xl px-6 sm:px-8 lg:px-8">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Multilingual Support</h2>
+        <p className="mt-2 text-sm text-muted">
+          Transcribe and summarize meetings in multiple languages with automatic language detection.
         </p>
       </div>
 

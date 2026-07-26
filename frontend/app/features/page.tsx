@@ -3,6 +3,9 @@ import BentoFeatures from "../components/bento-features";
 import GradientBackground from "../components/gradient-background";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: '/features',
+  },
   title: "Features - MeetMind AI",
   description: "Explore the powerful features of MeetMind AI including speech-to-text, AI summaries, and more.",
 };
@@ -37,8 +40,8 @@ export default function FeaturesPage() {
               </div>
               <div>
                 <h3 className="text-xl font-semibold text-foreground mb-2">High-Fidelity AI Transcription</h3>
-                <p className="leading-relaxed">
-                  Utilizing Faster Whisper, our system processes audio locally on our secure servers to generate highly accurate transcripts across 99+ languages. It handles technical jargon, cross-talk, and thick accents effortlessly. Every word is timestamped so you can verify exactly what was said and when.
+                <p className="text-muted leading-relaxed">
+                  Utilizing Faster Whisper, our system processes audio locally on our secure servers to generate highly accurate transcripts across multiple languages. It handles technical jargon, cross-talk, and thick accents effortlessly. Every word is timestamped so you can verify exactly what was said and when.
                 </p>
               </div>
               <div>
