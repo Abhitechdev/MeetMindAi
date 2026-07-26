@@ -385,7 +385,7 @@ async def chat(req: ChatRequest, client: Client = Depends(get_user_supabase)):
             logger.warning(f"Unauthorized chat access attempt: user {client.user.id} requested meeting {req.meeting_id}")
             raise HTTPException(status_code=403, detail="Forbidden or meeting not found")
         
-        answer = gemini_service.chat(req.question, req.transcript, req.summary)
+        answer = gemini_service.chat(req.question, req.transcript, req.summary, history=req.history)
         return ChatResponse(answer=answer)
     except HTTPException:
         raise

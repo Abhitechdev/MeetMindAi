@@ -1,38 +1,32 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { askQuestion } from "@/lib/api";
-import Script from "next/script";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 interface Message {
   id: string;
   role: "assistant" | "user";
   content: string;
+  isError?: boolean;
 }
 
 interface ChatBotProps {
   meetingId: string;
   transcript: string;
   summary: string;
+  segments?: { speaker?: string; text: string; start: number; end: number }[];
+  diarizationUnavailable?: boolean;
 }
 
-const QUICK_ACTIONS = [
-  "Key Decisions",
-  "Action Items",
-  "Deadlines",
-  "Risks",
-  "Next Steps",
-  "Assigned Tasks",
-];
+function formatTime(seconds: number): string {
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+  return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+}
 
-const INITIAL_MESSAGE: Message = {
-  id: "initial",
-  role: "assistant",
-  content: "Hello 👋\n\nI can answer questions about this meeting.\n\nTry asking:\n• What decisions were made?\n• What action items were assigned?\n• What are the next steps?",
-};
-
-// SVG Icons
 const ChatIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
     <path fillRule="evenodd" d="M4.804 21.644A6.707 6.707 0 006 21.75a6.721 6.721 0 003.583-1.029c.774.182 1.584.279 2.417.279 5.322 0 9.75-3.97 9.75-9 0-5.03-4.428-9-9.75-9s-9.75 3.97-9.75 9c0 2.409 1.025 4.587 2.674 6.192.232.226.277.428.254.543a3.73 3.73 0 01-.814 1.686.75.75 0 00.44 1.223zM8.25 10.875a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25zM10.875 12a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0zm4.875-1.125a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25z" clipRule="evenodd" />
@@ -51,63 +45,206 @@ const SendIcon = () => (
   </svg>
 );
 
-export default function ChatBot({ meetingId, transcript, summary }: ChatBotProps) {
+const TrashIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+  </svg>
+);
+
+export default function ChatBot({ meetingId, transcript, summary, segments = [], diarizationUnavailable = false }: ChatBotProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [currentSuggestions, setCurrentSuggestions] = useState<string[]>([]);
+  
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Parse structured data safely
+  const summaryData = useMemo(() => {
+    try {
+      return JSON.parse(summary);
+    } catch {
+      return {};
+    }
+  }, [summary]);
+
+  const uniqueSpeakers = useMemo(() => {
+    if (diarizationUnavailable) return [];
+    return Array.from(new Set(segments.filter(s => s.speaker).map(s => s.speaker)));
+  }, [segments, diarizationUnavailable]);
+
+  const initialSuggestions = useMemo(() => {
+    const suggs: string[] = ["Summarize this meeting"];
+    if (summaryData.decisions && summaryData.decisions.length > 0) suggs.push("What decisions were made?");
+    if (summaryData.actionItems && summaryData.actionItems.length > 0) suggs.push("What are the action items?");
+    if (uniqueSpeakers.length > 0) suggs.push("How many speakers were detected?");
+    if (transcript.match(/\b(Monday|Tuesday|Wednesday|Thursday|Friday|tomorrow|next week|\d{1,2}\/\d{1,2})\b/i)) {
+      if (suggs.length < 4) suggs.push("What deadlines were mentioned?");
+    }
+    return suggs.slice(0, 4);
+  }, [summaryData, uniqueSpeakers, transcript]);
+
+  useEffect(() => {
+    if (messages.length === 0) {
+      setCurrentSuggestions(initialSuggestions);
+    }
+  }, [messages.length, initialSuggestions]);
+
+  useEffect(() => {
+    if (isOpen) scrollToBottom();
+  }, [messages, isOpen]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  useEffect(() => {
-    if (isOpen) {
-      scrollToBottom();
+  const handleInput = () => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 120)}px`;
     }
-  }, [messages, isOpen]);
+  };
+
+  const clearChat = () => {
+    setMessages([]);
+    setCurrentSuggestions(initialSuggestions);
+    setInputValue("");
+    setIsLoading(false);
+  };
+
+  const getFollowUpSuggestions = (userQ: string): string[] => {
+    const q = userQ.toLowerCase();
+    if (q.includes("action items") || q.includes("tasks")) {
+      return ["Who owns these tasks?", "Were deadlines mentioned?", "What are the next steps?"];
+    }
+    if (q.includes("decisions")) {
+      return ["Why were these decisions made?", "Who was involved?", "What actions resulted from them?"];
+    }
+    if (q.includes("speaker") || q.includes("who spoke")) {
+      if (uniqueSpeakers.length > 0) {
+        return [`What did ${uniqueSpeakers[0]} discuss?`, "Summarize this meeting", "Were any deadlines mentioned?"];
+      }
+    }
+    return ["What are the next steps?", "What decisions were made?"];
+  };
 
   const handleSend = async (text: string) => {
-    if (!text.trim() || isLoading) return;
+    const trimmed = text.trim();
+    if (!trimmed || isLoading) return;
 
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      role: "user",
-      content: text,
-    };
+    // Reset textarea height
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+    }
 
+    const userMessage: Message = { id: Date.now().toString(), role: "user", content: trimmed };
     setMessages((prev) => [...prev, userMessage]);
     setInputValue("");
     setIsLoading(true);
+    setCurrentSuggestions([]);
 
+    const q = trimmed.toLowerCase();
+    
+    // Deterministic Routing for conservative queries
+    let deterministicAnswer = "";
+    
+    if (q === "summarize this meeting" || q === "give me the summary") {
+      deterministicAnswer = summaryData.executiveSummary || "No summary is available for this meeting.";
+    } 
+    else if (q === "what are the action items?" || q === "what tasks were assigned?" || q === "are there any action items?") {
+      if (summaryData.actionItems && summaryData.actionItems.length > 0) {
+        deterministicAnswer = `${summaryData.actionItems.length} action items were identified:\n\n${summaryData.actionItems.map((a: string, i: number) => `${i + 1}. ${a}`).join('\n')}`;
+      } else {
+        deterministicAnswer = "No action items were identified in this meeting.";
+      }
+    }
+    else if (q === "what decisions were made?" || q === "decisions") {
+      if (summaryData.decisions && summaryData.decisions.length > 0) {
+        deterministicAnswer = `${summaryData.decisions.length} key decisions were identified:\n\n${summaryData.decisions.map((d: string, i: number) => `${i + 1}. ${d}`).join('\n')}`;
+      } else {
+        deterministicAnswer = "No key decisions were identified in this meeting.";
+      }
+    }
+    else if (q === "how many speakers" || q === "who spoke" || q === "number of speakers" || q === "speakers in this meeting" || q === "how many speakers were detected?") {
+      if (diarizationUnavailable || uniqueSpeakers.length === 0) {
+        deterministicAnswer = "Speaker detection wasn't available for this recording, so I can't reliably determine how many people spoke.";
+      } else {
+        deterministicAnswer = `${uniqueSpeakers.length} speakers were detected.\n\n${uniqueSpeakers.map((s, i) => `- ${s}`).join('\n')}\n\nTheir identities weren't determined from speaker diarization alone.`;
+      }
+    }
+
+    if (deterministicAnswer) {
+      setTimeout(() => {
+        setMessages(prev => [...prev, { id: (Date.now() + 1).toString(), role: "assistant", content: deterministicAnswer }]);
+        setCurrentSuggestions(getFollowUpSuggestions(trimmed));
+        setIsLoading(false);
+      }, 300);
+      return;
+    }
+
+    // Semantic backend LLM routing
     try {
-      const { answer } = await askQuestion(meetingId, text, transcript, summary);
-      const aiMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        content: answer,
-      };
-      setMessages((prev) => [...prev, aiMessage]);
+      // 1. Prepare history limit (max 8, enforce length)
+      const validHistory = messages.filter(m => m.role === "user" || m.role === "assistant").slice(-8).map(m => ({
+        role: m.role,
+        content: m.content.substring(0, 4000)
+      }));
+
+      // 2. Format transcript with speakers AND timestamps for strict grounding
+      let chatTranscript = transcript;
+      const hasSpeakers = segments && segments.some(s => s.speaker);
+      
+      if (segments && segments.length > 0) {
+        let currentSpeaker = segments[0].speaker || "Unknown";
+        let parts: string[] = [];
+        let currentText: string[] = [];
+        let startTime = segments[0].start;
+        
+        for (const seg of segments) {
+          const spk = seg.speaker || "Unknown";
+          if (spk !== currentSpeaker) {
+            // Flush previous speaker
+            const timeTag = `[${formatTime(startTime)}]`;
+            parts.push(`${hasSpeakers ? `[${currentSpeaker}] ` : ''}${timeTag}: ${currentText.join(" ")}`);
+            
+            currentSpeaker = spk;
+            currentText = [seg.text];
+            startTime = seg.start;
+          } else {
+            currentText.push(seg.text);
+          }
+        }
+        if (currentText.length > 0) {
+          const timeTag = `[${formatTime(startTime)}]`;
+          parts.push(`${hasSpeakers ? `[${currentSpeaker}] ` : ''}${timeTag}: ${currentText.join(" ")}`);
+        }
+        chatTranscript = parts.join("\n\n");
+      }
+
+      const { answer } = await askQuestion(meetingId, trimmed, chatTranscript, summary, validHistory);
+      setMessages((prev) => [...prev, { id: (Date.now() + 1).toString(), role: "assistant", content: answer }]);
+      setCurrentSuggestions(getFollowUpSuggestions(trimmed));
     } catch (error) {
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        content: "Sorry, I encountered an error. Please try again.",
-      };
-      setMessages((prev) => [...prev, errorMessage]);
+      setMessages((prev) => [...prev, { 
+        id: (Date.now() + 1).toString(), 
+        role: "assistant", 
+        content: "MeetMind is temporarily unavailable or I couldn't answer that right now. Your meeting data is still safe.",
+        isError: true
+      }]);
     } finally {
       setIsLoading(false);
+      // Refocus input
+      setTimeout(() => textareaRef.current?.focus(), 100);
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    handleSend(inputValue);
-  };
-
-  const handleQuickAction = (action: string) => {
-    handleSend(`What were the ${action.toLowerCase()}?`);
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend(inputValue);
+    }
   };
 
   return (
@@ -120,9 +257,8 @@ export default function ChatBot({ meetingId, transcript, summary }: ChatBotProps
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 px-5 py-3 text-white shadow-lg hover:shadow-xl transition-shadow font-medium"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            aria-label="Open MeetMind AI Chat"
+            className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-background shadow-lg hover:shadow-xl transition-all font-semibold hover:bg-foreground/90 hover:scale-[1.05] active:scale-[0.95]"
           >
             <ChatIcon />
             Ask MeetMind AI
@@ -138,49 +274,58 @@ export default function ChatBot({ meetingId, transcript, summary }: ChatBotProps
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.95 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="fixed bottom-0 sm:bottom-6 sm:right-6 z-50 w-full sm:w-[400px] h-[85vh] sm:h-[600px] glass-card flex flex-col shadow-2xl overflow-hidden border border-glass-border sm:rounded-2xl rounded-t-2xl rounded-b-none"
-            style={{ backgroundColor: "var(--surface)" }}
+            className="fixed inset-0 sm:inset-auto sm:bottom-6 sm:right-6 z-50 w-full sm:w-[420px] h-full sm:h-[650px] glass-card flex flex-col shadow-2xl overflow-hidden border border-glass-border sm:rounded-2xl rounded-none bg-surface"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-5 py-4 border-b border-glass-border bg-foreground/5">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-glass-border bg-background/50 backdrop-blur-md shrink-0">
               <div className="flex items-center gap-3">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600 shadow-sm text-white">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-foreground text-background shadow-sm">
                   <ChatIcon />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-sm text-foreground">MeetMind AI</h3>
+                  <h3 className="font-semibold text-sm text-foreground">MeetMind Assistant</h3>
                   <p className="text-xs text-muted flex items-center gap-1">
-                    <span className="h-1.5 w-1.5 rounded-full bg-green-400 animate-pulse block" />
-                    Online
+                    <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
+                    Meeting context active
                   </p>
                 </div>
               </div>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="rounded-full p-2 text-muted hover:bg-white/10 hover:text-foreground transition-colors"
-              >
-                <CloseIcon />
-              </button>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={clearChat}
+                  aria-label="Clear chat history"
+                  title="Clear Chat"
+                  className="rounded-lg p-2 text-muted hover:bg-surface hover:text-foreground transition-colors border border-transparent hover:border-card-border"
+                >
+                  <TrashIcon />
+                </button>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  aria-label="Close chat"
+                  className="rounded-lg p-2 text-muted hover:bg-surface hover:text-foreground transition-colors border border-transparent hover:border-card-border"
+                >
+                  <CloseIcon />
+                </button>
+              </div>
             </div>
 
             {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto p-5 scroll-smooth">
+            <div className="flex-1 overflow-y-auto p-5 scroll-smooth bg-surface/30">
               <div className="space-y-6">
                 
-                {/* Lottie Animation on open */}
-                {messages.length === 1 && (
-                  <motion.div 
-                    className="flex justify-center mb-2"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.4 }}
-                  >
-                    {/* @ts-ignore */}
-                    <dotlottie-wc src="https://lottie.host/de3c229a-8178-4113-9937-1d2b03ad4444/e9RdggEUwX.lottie" style={{ width: "200px", height: "200px" }} autoplay loop></dotlottie-wc>
-                  </motion.div>
+                {messages.length === 0 && (
+                  <div className="text-center pt-8 pb-4 animate-in fade-in slide-in-from-bottom-2">
+                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-foreground text-background mb-4 shadow-sm">
+                      <ChatIcon />
+                    </div>
+                    <h4 className="text-lg font-bold text-foreground mb-2">Ask MeetMind</h4>
+                    <p className="text-sm text-muted mb-6 px-4">
+                      Get answers from this meeting's transcript, decisions, and action items.
+                    </p>
+                  </div>
                 )}
 
-                {messages.map((msg) => (
+                {messages.map((msg, i) => (
                   <motion.div
                     key={msg.id}
                     initial={{ opacity: 0, y: 10 }}
@@ -188,28 +333,45 @@ export default function ChatBot({ meetingId, transcript, summary }: ChatBotProps
                     className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                   >
                     <div
-                      className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm whitespace-pre-wrap leading-relaxed ${
+                      className={`max-w-[88%] rounded-2xl px-4 py-3 text-[14px] leading-relaxed shadow-sm ${
                         msg.role === "user"
-                          ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-tr-sm"
-                          : "bg-white/5 text-foreground border border-glass-border rounded-tl-sm shadow-sm"
-                      }`}
+                          ? "bg-foreground text-background rounded-tr-sm font-medium"
+                          : "bg-surface text-foreground border border-card-border rounded-tl-sm prose prose-sm prose-invert"
+                      } ${msg.isError ? "border-red-500/30 bg-red-500/10" : ""}`}
                     >
-                      {msg.content}
+                      {msg.role === "assistant" ? (
+                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                          {msg.content}
+                        </ReactMarkdown>
+                      ) : (
+                        <span className="whitespace-pre-wrap">{msg.content}</span>
+                      )}
+                      
+                      {msg.isError && (
+                        <button 
+                          onClick={() => {
+                            setMessages(prev => prev.slice(0, -1));
+                            handleSend(messages[i-1].content);
+                          }}
+                          className="mt-3 text-xs font-semibold text-foreground bg-surface hover:bg-background border border-card-border px-3 py-1.5 rounded-lg transition-colors"
+                        >
+                          Retry
+                        </button>
+                      )}
                     </div>
                   </motion.div>
                 ))}
 
                 {isLoading && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="flex justify-start"
-                  >
-                    <div className="bg-white/5 border border-glass-border rounded-2xl rounded-tl-sm px-4 py-4 max-w-[85%] shadow-sm">
-                      <div className="flex gap-1.5">
-                        <motion.div className="h-2 w-2 rounded-full bg-purple-400" animate={{ y: [0, -5, 0] }} transition={{ duration: 0.6, repeat: Infinity, delay: 0 }} />
-                        <motion.div className="h-2 w-2 rounded-full bg-purple-400" animate={{ y: [0, -5, 0] }} transition={{ duration: 0.6, repeat: Infinity, delay: 0.2 }} />
-                        <motion.div className="h-2 w-2 rounded-full bg-purple-400" animate={{ y: [0, -5, 0] }} transition={{ duration: 0.6, repeat: Infinity, delay: 0.4 }} />
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start">
+                    <div className="bg-surface border border-card-border rounded-2xl rounded-tl-sm px-4 py-4 max-w-[85%] shadow-sm">
+                      <div className="flex items-center gap-2 text-xs font-medium text-muted">
+                        <span>MeetMind is thinking</span>
+                        <span className="flex gap-1 pt-1">
+                          <motion.div className="h-1 w-1 rounded-full bg-muted" animate={{ y: [0, -3, 0] }} transition={{ duration: 0.6, repeat: Infinity, delay: 0 }} />
+                          <motion.div className="h-1 w-1 rounded-full bg-muted" animate={{ y: [0, -3, 0] }} transition={{ duration: 0.6, repeat: Infinity, delay: 0.2 }} />
+                          <motion.div className="h-1 w-1 rounded-full bg-muted" animate={{ y: [0, -3, 0] }} transition={{ duration: 0.6, repeat: Infinity, delay: 0.4 }} />
+                        </span>
                       </div>
                     </div>
                   </motion.div>
@@ -218,50 +380,56 @@ export default function ChatBot({ meetingId, transcript, summary }: ChatBotProps
               </div>
             </div>
 
-            {/* Quick Actions (only show if no messages besides initial or empty input) */}
-            {messages.length < 3 && !inputValue && !isLoading && (
-               <div className="px-5 pb-3">
-                 <div className="flex flex-wrap gap-2">
-                   {QUICK_ACTIONS.map((action) => (
-                     <button
-                       key={action}
-                       onClick={() => handleQuickAction(action)}
-                       className="rounded-full border border-glass-border bg-white/5 px-3 py-1.5 text-xs text-muted hover:bg-white/10 hover:text-foreground transition-colors"
-                     >
-                       {action}
-                     </button>
-                   ))}
-                 </div>
-               </div>
+            {/* Suggestions Area */}
+            {currentSuggestions.length > 0 && !isLoading && (
+              <div className="px-4 pb-3 bg-surface/30">
+                <div className="flex flex-wrap gap-2 animate-in fade-in slide-in-from-bottom-2">
+                  {currentSuggestions.map((action) => (
+                    <button
+                      key={action}
+                      onClick={() => handleSend(action)}
+                      className="rounded-xl border border-card-border bg-surface px-3 py-2 text-xs font-medium text-foreground hover:bg-background transition-colors text-left"
+                    >
+                      {action}
+                    </button>
+                  ))}
+                </div>
+              </div>
             )}
 
             {/* Input Area */}
-            <div className="p-4 border-t border-glass-border bg-foreground/5">
-              <form
-                onSubmit={handleSubmit}
-                className="relative flex items-center rounded-xl border border-glass-border bg-foreground/10 overflow-hidden shadow-inner focus-within:border-purple-500/50 transition-colors"
-              >
-                <input
-                  type="text"
+            <div className="p-4 border-t border-glass-border bg-background/50 backdrop-blur-md shrink-0">
+              <div className="relative flex items-end rounded-xl border border-card-border bg-surface shadow-inner focus-within:border-foreground/30 transition-colors">
+                <textarea
+                  ref={textareaRef}
                   value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  placeholder="Ask a question..."
-                  className="flex-1 bg-transparent px-4 py-3 text-sm text-foreground placeholder:text-muted focus:outline-none"
+                  onChange={(e) => {
+                    setInputValue(e.target.value);
+                    handleInput();
+                  }}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Ask about this meeting..."
+                  className="flex-1 max-h-32 bg-transparent px-4 py-3.5 text-sm text-foreground placeholder:text-muted focus:outline-none resize-none"
                   disabled={isLoading}
+                  rows={1}
+                  aria-label="Chat input"
                 />
                 <button
-                  type="submit"
+                  onClick={() => handleSend(inputValue)}
                   disabled={!inputValue.trim() || isLoading}
-                  className="pr-4 pl-2 text-muted hover:text-purple-400 disabled:opacity-50 disabled:hover:text-muted transition-colors"
+                  aria-label="Send message"
+                  className="p-3 mb-0.5 mr-0.5 text-muted hover:text-foreground disabled:opacity-30 disabled:hover:text-muted transition-colors"
                 >
                   <SendIcon />
                 </button>
-              </form>
+              </div>
+              <div className="text-[10px] text-muted text-center mt-2 font-medium">
+                MeetMind AI can make mistakes. Check important info.
+              </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-      <Script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.9.14/dist/dotlottie-wc.js" type="module" strategy="lazyOnload" />
     </>
   );
 }

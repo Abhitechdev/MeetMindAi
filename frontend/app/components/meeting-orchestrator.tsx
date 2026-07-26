@@ -252,6 +252,8 @@ export default function MeetingOrchestrator() {
                 nextSteps: result.nextSteps,
                 tags: result.tags
               })} 
+              segments={result.segments}
+              diarizationUnavailable={result.diarization_unavailable}
             />
           </Suspense>
         </div>

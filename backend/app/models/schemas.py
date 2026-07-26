@@ -1,4 +1,5 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from typing import Literal
 
 
 class TranscriptionSegment(BaseModel):
@@ -33,11 +34,17 @@ class ProcessingResponse(BaseModel):
     priority: str | None = None
 
 
+class ChatMessage(BaseModel):
+    role: Literal["user", "assistant"]
+    content: str = Field(..., max_length=4000)
+
+
 class ChatRequest(BaseModel):
     meeting_id: str
     question: str
     transcript: str
     summary: str
+    history: list[ChatMessage] | None = None
 
 
 class ChatResponse(BaseModel):

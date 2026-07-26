@@ -67,7 +67,8 @@ export async function askQuestion(
   meetingId: string,
   question: string,
   transcript: string,
-  summary: string
+  summary: string,
+  history: { role: string; content: string }[] = []
 ): Promise<{ answer: string }> {
   const headers = await getAuthHeaders();
   const response = await fetch(`${API_BASE}/chat`, {
@@ -76,7 +77,7 @@ export async function askQuestion(
       ...headers,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ meeting_id: meetingId, question, transcript, summary }),
+    body: JSON.stringify({ meeting_id: meetingId, question, transcript, summary, history }),
   });
 
   if (!response.ok) {

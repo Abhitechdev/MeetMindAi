@@ -90,18 +90,20 @@ def summarize(transcript: str, detected_language: str = "en", output_language: s
     return result
 
 
-CHAT_SYSTEM = """You are an AI Meeting Assistant.
-Answer questions only using the provided transcript and summary.
-Rules:
-- Do not invent information.
-- Do not make assumptions.
-- Reply in the same language used by the user.
-- If the answer is not present, respond: "I couldn't find that information in the meeting."
-- Keep answers concise, factual, and conversational.
-- NEVER output raw JSON arrays or objects. Always use natural text and bullet points."""
+CHAT_SYSTEM = """You are MeetMind AI, a direct, highly capable meeting assistant.
+Answer questions using ONLY the provided transcript and summary.
+
+CRITICAL RULES:
+- Never invent information, deadlines, people, or assumptions.
+- If the answer is not present, respond EXACTLY with: "I couldn't find that information in the meeting."
+- Do not repeat the question or use phrases like "Based on the transcript...". Just answer directly.
+- Use 2-4 short paragraphs or bullet lists depending on content.
+- If transcript content is cited and timestamps are available, optionally append subtle timestamps like [08:32]. NEVER invent timestamps.
+- Differentiate between detected speakers (e.g. Speaker 1) and actual people unless identities are explicitly mapped.
+- Keep answers concise, factual, and scannable."""
 
 
-def chat(question: str, transcript: str, summary: str) -> str:
+def chat(question: str, transcript: str, summary: str, history: list = None) -> str:
     """Answer a question using only the transcript and summary as context."""
     client, model_name = _get_client()
     
@@ -113,23 +115,32 @@ def chat(question: str, transcript: str, summary: str) -> str:
         if summary_data.get("executiveSummary"):
             formatted_summary.append(f"Executive Summary: {summary_data['executiveSummary']}")
         if summary_data.get("decisions"):
-            formatted_summary.append(f"Decisions: {', '.join(summary_data['decisions'])}")
+            formatted_summary.append(f"Decisions:\n- " + "\n- ".join(summary_data['decisions']))
         if summary_data.get("actionItems"):
-            formatted_summary.append(f"Action Items: {', '.join(summary_data['actionItems'])}")
+            formatted_summary.append(f"Action Items:\n- " + "\n- ".join(summary_data['actionItems']))
         if summary_data.get("nextSteps"):
-            formatted_summary.append(f"Next Steps: {', '.join(summary_data['nextSteps'])}")
+            formatted_summary.append(f"Next Steps:\n- " + "\n- ".join(summary_data['nextSteps']))
         summary_text = "\n".join(formatted_summary)
     except Exception:
         summary_text = summary
 
     # ponytail: stuff transcript+summary into user message, no RAG/embeddings needed at this scale
-    context = f"Transcript:\n{transcript}\n\nSummary:\n{summary_text}"
+    context = f"Meeting Context:\n\nTranscript:\n{transcript}\n\nSummary:\n{summary_text}"
+    
+    # Build messages
+    messages = [{"role": "system", "content": CHAT_SYSTEM}]
+    
+    # Inject bounded history (last 8 messages)
+    if history:
+        for msg in history[-8:]:
+            messages.append({"role": msg.role, "content": msg.content})
+            
+    # Add current question with context
+    messages.append({"role": "user", "content": f"{context}\n\nUser Question: {question}"})
+    
     response = client.chat.completions.create(
         model=model_name,
-        messages=[
-            {"role": "system", "content": CHAT_SYSTEM},
-            {"role": "user", "content": f"{context}\n\nQuestion: {question}"},
-        ],
+        messages=messages,
         temperature=0.2,
         max_tokens=512,
     )
