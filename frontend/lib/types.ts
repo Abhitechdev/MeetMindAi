@@ -2,6 +2,7 @@ export interface TranscriptionSegment {
   start: number;
   end: number;
   text: string;
+  speaker?: string;
 }
 
 export interface ProcessingResponse {
@@ -17,6 +18,7 @@ export interface ProcessingResponse {
   language: string;
   sentiment?: string;
   priority?: string;
+  diarization_unavailable?: boolean;
 }
 
 export type ProcessingStatus =

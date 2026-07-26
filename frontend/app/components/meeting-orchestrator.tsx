@@ -194,7 +194,7 @@ export default function MeetingOrchestrator() {
           {/* Transcript */}
           <div className="mb-5 animate-in fade-in slide-in-from-bottom-4 duration-300 delay-100 fill-mode-both">
             <Suspense fallback={<div className="h-64 w-full animate-pulse bg-surface/50 rounded-xl" />}>
-              <TranscriptViewer transcript={result.transcript} segments={result.segments} language={result.language} />
+              <TranscriptViewer transcript={result.transcript} segments={result.segments} language={result.language} diarizationUnavailable={result.diarization_unavailable} />
             </Suspense>
           </div>
 

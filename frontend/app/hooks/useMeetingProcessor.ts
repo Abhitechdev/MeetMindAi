@@ -34,14 +34,14 @@ export function useMeetingProcessor() {
     };
   }, []);
 
-  const handleUpload = useCallback(async (file: File, outputLanguage: string) => {
+  const handleUpload = useCallback(async (file: File, outputLanguage: string, mode: string) => {
     setError(null);
     setResult(null);
     setStatus("uploading");
 
     try {
       setStatus("transcribing");
-      const data = await processMeeting(file, outputLanguage);
+      const data = await processMeeting(file, outputLanguage, mode);
       
       setStatus("summarizing");
       setResult(data);

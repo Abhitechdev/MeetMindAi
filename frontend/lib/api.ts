@@ -24,10 +24,11 @@ export class UsageLimitError extends Error {
   }
 }
 
-export async function processMeeting(file: File, outputLanguage: string = "English"): Promise<ProcessingResponse> {
+export async function processMeeting(file: File, outputLanguage: string = "English", mode: string = "fast"): Promise<ProcessingResponse> {
   const formData = new FormData();
   formData.append("file", file);
   formData.append("output_language", outputLanguage);
+  formData.append("mode", mode);
 
   const headers = await getAuthHeaders();
 

@@ -4,7 +4,7 @@ import { useCallback, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 interface AudioUploadProps {
-  onUpload: (file: File, outputLanguage: string) => void;
+  onUpload: (file: File, outputLanguage: string, mode: string) => void;
   disabled: boolean;
   limitReached?: boolean;
 }
@@ -21,6 +21,7 @@ export default function AudioUpload({ onUpload, disabled, limitReached }: AudioU
   const [isDragging, setIsDragging] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [outputLanguage, setOutputLanguage] = useState("English");
+  const [mode, setMode] = useState("fast");
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -131,8 +132,16 @@ export default function AudioUpload({ onUpload, disabled, limitReached }: AudioU
                 <p className="text-xs text-muted">{formatFileSize(selectedFile.size)}</p>
               </div>
             </div>
-            <div className="relative group ml-4 shrink-0">
+            <div className="relative group ml-4 shrink-0 flex items-center">
               <div className="flex items-center gap-3 mr-4">
+                <select
+                  value={mode}
+                  onChange={(e) => setMode(e.target.value)}
+                  className="bg-surface border border-card-border rounded-lg px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20"
+                >
+                  <option value="fast">Fast transcription and AI insights</option>
+                  <option value="meeting">Speaker detection + transcription and AI insights</option>
+                </select>
                 <select
                   value={outputLanguage}
                   onChange={(e) => setOutputLanguage(e.target.value)}
@@ -144,7 +153,7 @@ export default function AudioUpload({ onUpload, disabled, limitReached }: AudioU
               </div>
               <button
                 id="process-meeting-btn"
-                onClick={() => onUpload(selectedFile, outputLanguage)}
+                onClick={() => onUpload(selectedFile, outputLanguage, mode)}
                 disabled={disabled || limitReached}
                 className="flex items-center gap-2 rounded-xl px-6 py-2.5 text-sm font-semibold bg-foreground text-background shadow-sm hover:bg-foreground/90 transition-all hover:scale-[1.03] active:scale-[0.97] disabled:opacity-50 disabled:pointer-events-none"
               >

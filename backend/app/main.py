@@ -216,6 +216,7 @@ def get_decisions(client: Client = Depends(get_user_supabase)):
 @app.post("/process-meeting", response_model=ProcessingResponse)
 async def process_meeting(
     file: UploadFile = File(...),
+    mode: str = Form("fast"),
     output_language: str = Form("English"),
     client: Client = Depends(get_user_supabase)
 ):
@@ -274,22 +275,29 @@ async def process_meeting(
             
         tmp.close()
         logger.info(f"Processing meeting upload: {file.filename} ({total_size} bytes) for user {client.user.id}")
+        t_start = time.time()
 
         # Step 1: Transcribe with Whisper (Concurrency protected)
         async with transcription_semaphore:
             loop = asyncio.get_running_loop()
-            transcription = await loop.run_in_executor(None, whisper_service.transcribe, tmp.name)
+            transcription = await loop.run_in_executor(None, whisper_service.transcribe, tmp.name, mode)
             
+        t_transcribe = time.time() - t_start
+        logger.info(f"[PERFORMANCE] Transcription ({mode} mode) took {t_transcribe:.2f}s")
+
         lang_code = transcription.get("language", "en")
         detected_language = LANGUAGE_MAP.get(lang_code, "English")
         target_lang = detected_language if output_language == "Original Language" else output_language
 
         # Step 2: Summarize with Gemini
+        t_gemini_start = time.time()
         summary = gemini_service.summarize(
             transcription["transcript"],
             detected_language=detected_language,
             output_language=target_lang
         )
+        t_gemini = time.time() - t_gemini_start
+        logger.info(f"[PERFORMANCE] LLM Analysis took {t_gemini:.2f}s")
         
         # Calculate duration from segments
         segments = transcription["segments"]
@@ -324,6 +332,8 @@ async def process_meeting(
             decisions = [{"meeting_id": meeting_id, "decision_text": d} for d in summary["decisions"]]
             client.table("decisions").insert(decisions).execute()
         
+        t_total = time.time() - t_start
+        logger.info(f"[PERFORMANCE] Total pipeline time: {t_total:.2f}s")
         logger.info(f"Meeting processed successfully: {meeting_id} for user {client.user.id}")
 
         return ProcessingResponse(

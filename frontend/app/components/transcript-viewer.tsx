@@ -8,6 +8,7 @@ interface TranscriptViewerProps {
   transcript: string;
   segments: TranscriptionSegment[];
   language?: string;
+  diarizationUnavailable?: boolean;
 }
 
 function formatTime(seconds: number): string {
@@ -16,7 +17,7 @@ function formatTime(seconds: number): string {
   return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
 }
 
-export default function TranscriptViewer({ transcript, segments, language = "English" }: TranscriptViewerProps) {
+export default function TranscriptViewer({ transcript, segments, language = "English", diarizationUnavailable }: TranscriptViewerProps) {
   const [copied, setCopied] = useState(false);
   const [showTimestamps, setShowTimestamps] = useState(true);
   const [search, setSearch] = useState("");
@@ -67,6 +68,9 @@ export default function TranscriptViewer({ transcript, segments, language = "Eng
     );
   };
 
+  const uniqueSpeakers = Array.from(new Set(segments.filter(s => s.speaker).map(s => s.speaker)));
+  const speakerCount = uniqueSpeakers.length;
+
   return (
     <div className="glass-card glass-card-hover p-6">
       <div className="flex items-center justify-between mb-4">
@@ -78,7 +82,10 @@ export default function TranscriptViewer({ transcript, segments, language = "Eng
               <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
             </svg>
           </div>
-          <h2 className="text-lg font-semibold text-foreground">Transcript {language !== "English" && `(${language})`}</h2>
+          <h2 className="text-lg font-semibold text-foreground">
+            Transcript {language !== "English" && `(${language})`}
+            {speakerCount > 0 && <span className="ml-3 text-sm font-normal text-muted bg-surface px-2 py-0.5 rounded-full border border-card-border">Speakers: {speakerCount}</span>}
+          </h2>
         </div>
         <div className="flex items-center gap-2">
           {language !== "English" && (
@@ -106,6 +113,12 @@ export default function TranscriptViewer({ transcript, segments, language = "Eng
         </div>
       </div>
 
+      {diarizationUnavailable && (
+        <div className="mb-4 text-sm text-amber-500/90 bg-amber-500/10 border border-amber-500/20 px-4 py-2.5 rounded-lg">
+          Speaker detection wasn't available for this recording. The transcript was generated successfully.
+        </div>
+      )}
+
       {/* Search */}
       <div className="mb-4">
         <input
@@ -122,14 +135,17 @@ export default function TranscriptViewer({ transcript, segments, language = "Eng
           ? filteredSegments.map((seg, i) => (
               <motion.div
                 key={i}
-                className="flex gap-3 py-1.5 group hover:bg-surface rounded px-2 -mx-2 transition-colors border-l-2 border-transparent hover:border-foreground/50"
+                className="flex flex-col gap-1 py-2 group hover:bg-surface rounded px-2 -mx-2 transition-colors border-l-2 border-transparent hover:border-foreground/50"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: Math.min(i * 0.02, 0.5) }}
               >
-                <span className="shrink-0 text-[11px] font-mono text-accent-purple/70 pt-0.5 w-12 text-right">
-                  {formatTime(seg.start)}
-                </span>
+                <div className="flex items-center gap-2">
+                  {seg.speaker && <span className="text-[12px] font-semibold text-foreground">{seg.speaker}</span>}
+                  <span className="shrink-0 text-[11px] font-mono text-accent-purple/70">
+                    [{formatTime(seg.start)} - {formatTime(seg.end)}]
+                  </span>
+                </div>
                 <p className="text-[13px] font-medium text-foreground/80 leading-snug">
                   {highlightMatch(seg.text)}
                 </p>
