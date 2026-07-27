@@ -109,13 +109,13 @@ export default function RootLayout({
         />
       </head>
       <body className={`min-h-full flex flex-col bg-background text-foreground ${inter.className}`}>
-        <Script src="https://www.googletagmanager.com/gtag/js?id=G-XTH4Y4K2JM" strategy="lazyOnload" />
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-HS4WZF1K1M" strategy="lazyOnload" />
         <Script id="google-analytics" strategy="lazyOnload">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-XTH4Y4K2JM');
+            gtag('config', 'G-HS4WZF1K1M');
           `}
         </Script>
 
