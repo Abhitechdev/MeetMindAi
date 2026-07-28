@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { getAllArticles } from '../lib/mdx';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://meetmindai.co.in';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.meetmindai.co.in';
 
   return [
     { url: `${baseUrl}`, lastModified: new Date(), changeFrequency: 'daily', priority: 1.0 },

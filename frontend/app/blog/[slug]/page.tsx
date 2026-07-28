@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   
   if (!article) return { title: "Article Not Found" };
 
-  const baseUrl = "https://meetmind.ai";
+  const baseUrl = "https://www.meetmindai.co.in";
   const imageUrl = article.metadata.coverImage ? `${baseUrl}${article.metadata.coverImage}` : undefined;
 
   return {
@@ -135,7 +135,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     }
   }
 
-  const baseUrl = "https://meetmindai.co.in";
+  const baseUrl = "https://www.meetmindai.co.in";
   const articleUrl = `${baseUrl}/blog/${article.metadata.slug}`;
   const imageUrl = article.metadata.coverImage ? `${baseUrl}${article.metadata.coverImage}` : undefined;
 

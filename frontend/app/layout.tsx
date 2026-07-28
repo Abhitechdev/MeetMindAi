@@ -24,14 +24,14 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://meetmindai.co.in"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://www.meetmindai.co.in"),
   title: "MeetMind AI | Free AI Meeting Summaries & Audio Transcription",
   description:
     "Upload meeting audio or video to instantly generate transcripts, action items, and summaries in multiple languages. Try MeetMind AI 2.0 free today.",
   openGraph: {
     title: "MeetMind AI | Free AI Meeting Summaries & Audio Transcription",
     description: "Upload meeting audio or video to instantly generate transcripts, action items, and summaries in multiple languages. Try MeetMind AI 2.0 free today.",
-    url: "https://meetmindai.co.in",
+    url: "https://www.meetmindai.co.in",
     siteName: "MeetMind AI",
     images: [{ url: "/images/og-card.png", width: 1200, height: 630, alt: "MeetMind AI dashboard showing meeting transcript and AI summary" }],
     locale: "en_US",
@@ -61,7 +61,7 @@ export default function RootLayout({
                 "@context": "https://schema.org",
                 "@type": "SoftwareApplication",
                 name: "MeetMind AI",
-                url: "https://meetmindai.co.in",
+                url: "https://www.meetmindai.co.in",
                 applicationCategory: "BusinessApplication",
                 operatingSystem: "Web",
                 description: "AI-powered meeting transcription, summarization, and action item extraction supporting multiple languages.",
@@ -85,8 +85,8 @@ export default function RootLayout({
                 "@context": "https://schema.org",
                 "@type": "Organization",
                 name: "MeetMind AI",
-                url: "https://meetmindai.co.in",
-                logo: "https://meetmindai.co.in/images/og-card.png",
+                url: "https://www.meetmindai.co.in",
+                logo: "https://www.meetmindai.co.in/images/og-card.png",
                 contactPoint: {
                   "@type": "ContactPoint",
                   email: "meetmindai.help@zohomail.in",
@@ -97,10 +97,10 @@ export default function RootLayout({
                 "@context": "https://schema.org",
                 "@type": "WebSite",
                 name: "MeetMind AI",
-                url: "https://meetmindai.co.in",
+                url: "https://www.meetmindai.co.in",
                 potentialAction: {
                   "@type": "SearchAction",
-                  target: "https://meetmindai.co.in/blog?q={search_term_string}",
+                  target: "https://www.meetmindai.co.in/blog?q={search_term_string}",
                   "query-input": "required name=search_term_string"
                 }
               }

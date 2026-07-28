@@ -41,12 +41,12 @@ export default async function BlogIndex() {
               "@context": "https://schema.org",
               "@type": "Blog",
               "name": "MeetMind AI Blog",
-              "url": "https://meetmindai.co.in/blog",
+              "url": "https://www.meetmindai.co.in/blog",
               "description": metadata.description,
               "blogPost": articles.map(article => ({
                 "@type": "BlogPosting",
                 "headline": article.title,
-                "url": `https://meetmindai.co.in/blog/${article.slug}`,
+                "url": `https://www.meetmindai.co.in/blog/${article.slug}`,
                 "datePublished": article.publishedAt
               }))
             })

@@ -8,13 +8,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Cookies Policy | MeetMind AI",
     description: "Learn how MeetMind AI uses cookies to improve your experience.",
-    url: "https://meetmindai.co.in/legal/cookies-policy",
+    url: "https://www.meetmindai.co.in/legal/cookies-policy",
     siteName: "MeetMind AI",
     locale: "en_US",
     type: "website",
   },
   alternates: {
-    canonical: "https://meetmindai.co.in/legal/cookies-policy",
+    canonical: "https://www.meetmindai.co.in/legal/cookies-policy",
   },
 };
 

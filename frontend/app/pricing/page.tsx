@@ -9,13 +9,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Pricing | MeetMind AI",
     description: "Simple, transparent pricing for MeetMind AI.",
-    url: "https://meetmindai.co.in/pricing",
+    url: "https://www.meetmindai.co.in/pricing",
     siteName: "MeetMind AI",
     locale: "en_US",
     type: "website",
   },
   alternates: {
-    canonical: "https://meetmindai.co.in/pricing",
+    canonical: "https://www.meetmindai.co.in/pricing",
   },
 };
 
@@ -27,14 +27,14 @@ export default function PricingPage() {
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Web",
     "description": "100 AI meeting transcriptions, summaries, and action item extraction.",
-    "url": "https://meetmindai.co.in/pricing",
+    "url": "https://www.meetmindai.co.in/pricing",
     "publisher": {
       "@type": "Organization",
       "name": "MeetMind AI"
     },
     "offers": {
       "@type": "Offer",
-      "url": "https://meetmindai.co.in/pricing",
+      "url": "https://www.meetmindai.co.in/pricing",
       "priceCurrency": "INR",
       "price": "299.00",
       "priceValidUntil": "2027-12-31",
