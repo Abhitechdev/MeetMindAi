@@ -1,8 +1,16 @@
+import { Metadata } from 'next';
 import GradientBackground from "./components/gradient-background";
 import HeroSection from "./components/hero-section";
 import BentoFeatures from "./components/bento-features";
 import LanguageMarquee from "./components/language-marquee";
 import MeetingOrchestrator from "./components/meeting-orchestrator";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: '/',
+  },
+};
+
 export default function Home() {
   return (
     <main className="relative min-h-screen">
