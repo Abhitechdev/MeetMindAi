@@ -12,7 +12,7 @@ interface UpgradeModalProps {
 
 declare global {
   interface Window {
-    Razorpay: any;
+    Razorpay: new (options: Record<string, unknown>) => { on: (event: string, handler: (response: Record<string, unknown>) => void) => void; open: () => void };
   }
 }
 
@@ -40,7 +40,7 @@ export default function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
         name: "MeetMind AI",
         description: "Pro Upgrade - 100 Meetings",
         order_id: order.id,
-        handler: async function (response: any) {
+        handler: async function (response: Record<string, string>) {
           try {
             await verifyPayment({
               razorpay_order_id: response.razorpay_order_id,
@@ -69,9 +69,10 @@ export default function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
       }
 
       const rzp = new window.Razorpay(options);
-      rzp.on("payment.failed", function (response: any) {
-        console.error(response.error);
-        alert("Payment failed: " + response.error.description);
+      rzp.on("payment.failed", function (response: Record<string, unknown>) {
+        const err = response.error as { description?: string };
+        console.error(err);
+        alert("Payment failed: " + (err.description || "Unknown error"));
       });
       rzp.open();
     } catch (error) {

@@ -27,8 +27,8 @@ export default function DecisionsPage() {
         const data = await getDecisions(controller.signal);
         cachedDecisions = data;
         setDecisions(data);
-      } catch (e: any) {
-        if (e.name !== "AbortError") {
+      } catch (e: unknown) {
+        if (e instanceof Error && e.name !== "AbortError") {
           console.error(e);
         }
       } finally {

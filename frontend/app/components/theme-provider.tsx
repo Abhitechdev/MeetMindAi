@@ -6,8 +6,8 @@ import { ThemeProvider as NextThemesProvider, ThemeProviderProps } from "next-th
 // Suppress React 19 false positive warning caused by next-themes injecting a script tag
 if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
   const originalConsoleError = console.error;
-  console.error = (...args: any[]) => {
-    if (typeof args[0] === "string" && args[0].includes("Encountered a script tag")) {
+  console.error = (...args: unknown[]) => {
+    if (args[0] === 'Warning: Extra attributes from the server: %s' && args[1] === 'style') {
       return;
     }
     originalConsoleError.apply(console, args);

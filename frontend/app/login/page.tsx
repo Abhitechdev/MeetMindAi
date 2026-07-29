@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import { createClient } from "@/lib/supabase";
 import GradientBackground from "../components/gradient-background";
+import Image from "next/image";
 
 function LoginContent() {
   const router = useRouter();
@@ -36,8 +37,8 @@ function LoginContent() {
         },
       });
       if (error) throw error;
-    } catch (error: any) {
-      setError(error.message || "An error occurred with Google login.");
+    } catch (error: unknown) {
+      setError(error instanceof Error ? error.message : "An error occurred with Google login.");
       setLoading(false);
     }
   };
@@ -48,7 +49,7 @@ function LoginContent() {
       <div className="relative z-10 w-full max-w-md">
         <div className="glass-card p-8 md:p-10">
           <div className="text-center mb-8 flex flex-col items-center">
-            <img src="/logo.jpg" alt="MeetingMind AI Logo" className="h-12 w-auto object-contain rounded-md mb-4" />
+            <Image src="/logo.jpg" alt="MeetingMind AI Logo" width={48} height={48} className="h-12 w-auto object-contain rounded-md mb-4" />
             <h1 className="text-3xl font-bold tracking-tight text-foreground mb-2">Welcome Back</h1>
             <p className="text-sm text-muted">Sign in to your MeetingMind AI workspace</p>
           </div>

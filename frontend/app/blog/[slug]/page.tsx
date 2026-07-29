@@ -79,26 +79,26 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   });
 
   const components = {
-    h1: (props: any) => <h1 className="text-3xl font-bold text-foreground mt-12 mb-6" {...props} />,
-    h2: (props: any) => <h2 className="text-2xl font-bold text-foreground mt-12 mb-6" {...props} />,
-    h3: (props: any) => <h3 className="text-xl font-semibold text-foreground mt-8 mb-4" {...props} />,
-    p: (props: any) => <p className="text-lg text-muted mb-6 leading-relaxed max-w-[85ch]" {...props} />,
-    ul: (props: any) => <ul className="list-disc pl-6 space-y-3 text-muted mb-8 max-w-[85ch]" {...props} />,
-    ol: (props: any) => <ol className="list-decimal pl-6 space-y-3 text-muted mb-8 max-w-[85ch]" {...props} />,
-    li: (props: any) => <li className="text-muted" {...props} />,
-    a: (props: any) => <a className="text-accent-blue hover:underline" {...props} />,
-    strong: (props: any) => <strong className="text-foreground font-semibold" {...props} />,
-    blockquote: (props: any) => <blockquote className="border-l-4 border-accent-purple pl-4 italic text-muted my-6 max-w-[85ch]" {...props} />,
-    table: (props: any) => (
-      <div className="overflow-x-auto my-10 max-w-[85ch] rounded-xl border border-card-border shadow-sm">
-        <table className="w-full border-collapse text-left" {...props} />
+    h1: (props: React.ComponentPropsWithoutRef<'h1'>) => <h1 className="text-3xl font-bold text-foreground mt-12 mb-6" {...props} />,
+    h2: (props: React.ComponentPropsWithoutRef<'h2'>) => <h2 className="text-2xl font-bold text-foreground mt-12 mb-6" {...props} />,
+    h3: (props: React.ComponentPropsWithoutRef<'h3'>) => <h3 className="text-xl font-semibold text-foreground mt-8 mb-4" {...props} />,
+    p: (props: React.ComponentPropsWithoutRef<'p'>) => <p className="text-lg text-muted mb-6 leading-relaxed max-w-[85ch]" {...props} />,
+    ul: (props: React.ComponentPropsWithoutRef<'ul'>) => <ul className="list-disc pl-6 space-y-3 text-muted mb-8 max-w-[85ch]" {...props} />,
+    ol: (props: React.ComponentPropsWithoutRef<'ol'>) => <ol className="list-decimal pl-6 space-y-3 text-muted mb-8 max-w-[85ch]" {...props} />,
+    li: (props: React.ComponentPropsWithoutRef<'li'>) => <li className="text-muted" {...props} />,
+    a: (props: React.ComponentPropsWithoutRef<'a'>) => <a className="text-accent-blue hover:underline" {...props} />,
+    strong: (props: React.ComponentPropsWithoutRef<'strong'>) => <strong className="text-foreground font-semibold" {...props} />,
+    blockquote: (props: React.ComponentPropsWithoutRef<'blockquote'>) => <blockquote className="border-l-4 border-accent-purple pl-4 italic text-muted my-6 max-w-[85ch]" {...props} />,
+    table: (props: React.ComponentPropsWithoutRef<'table'>) => (
+      <div className="overflow-x-auto mb-8">
+        <table className="w-full max-w-[85ch] text-left border-collapse" {...props} />
       </div>
     ),
-    thead: (props: any) => <thead className="bg-surface/60 border-b border-card-border" {...props} />,
-    th: (props: any) => <th className="p-4 font-semibold text-foreground" {...props} />,
-    td: (props: any) => <td className="p-4 text-muted border-t border-card-border/50" {...props} />,
-    tr: (props: any) => <tr className="even:bg-surface/20 hover:bg-surface/40 transition-colors" {...props} />,
-    KeyTakeaways: ({ children }: any) => (
+    thead: (props: React.ComponentPropsWithoutRef<'thead'>) => <thead className="bg-surface/60 border-b border-card-border" {...props} />,
+    th: (props: React.ComponentPropsWithoutRef<'th'>) => <th className="p-4 font-semibold text-foreground" {...props} />,
+    td: (props: React.ComponentPropsWithoutRef<'td'>) => <td className="p-4 text-muted border-t border-card-border/50" {...props} />,
+    tr: (props: React.ComponentPropsWithoutRef<'tr'>) => <tr className="even:bg-surface/20 hover:bg-surface/40 transition-colors" {...props} />,
+    KeyTakeaways: ({ children }: { children: React.ReactNode }) => (
       <div className="bg-surface/40 border border-card-border rounded-2xl p-6 sm:p-8 my-10 max-w-[85ch] shadow-sm">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-10 h-10 bg-accent-blue/10 rounded-full flex items-center justify-center flex-shrink-0">

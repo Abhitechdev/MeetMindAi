@@ -47,8 +47,8 @@ export default function HistoryPage() {
         const data = await getMeetings(controller.signal);
         cachedMeetings = data;
         setMeetings(data);
-      } catch (e: any) {
-        if (e.name !== "AbortError") {
+      } catch (e: unknown) {
+        if (e instanceof Error && e.name !== "AbortError") {
           console.error(e);
         }
       } finally {

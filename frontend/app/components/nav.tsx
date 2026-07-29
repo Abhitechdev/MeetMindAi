@@ -8,6 +8,7 @@ import { ThemeToggle } from "./theme-toggle"
 const UpgradeModal = lazy(() => import("./upgrade-modal"))
 import type { User } from "@supabase/supabase-js"
 import { getUsage } from "@/lib/api"
+import Image from "next/image"
 
 // ponytail: single nav component, zero extra state, ternary inline for auth/public split. lazy, effective.
 const publicLinks = [
@@ -63,7 +64,6 @@ export function Navigation() {
 
   useEffect(() => {
     if (!user) {
-      setUsage(null)
       return
     }
     const fetchUsage = () => getUsage().then(setUsage).catch(console.error)
@@ -86,7 +86,7 @@ export function Navigation() {
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center hover:opacity-90 transition-opacity">
-              <img src="/logo.jpg" alt="MeetingMind AI" className="h-8 w-auto object-contain p-1 rounded-xl" />
+              <Image src="/logo.jpg" alt="MeetingMind AI" width={32} height={32} className="h-8 w-auto object-contain p-1 rounded-xl" />
             </Link>
             
             <div className="hidden md:flex items-center gap-1">

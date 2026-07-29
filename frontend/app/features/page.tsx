@@ -66,7 +66,7 @@ export default function FeaturesPage() {
               </div>
               <div className="glass-card p-6 rounded-2xl">
                 <h3 className="text-lg font-semibold text-foreground mb-3">User Research Interviews</h3>
-                <p className="text-sm">Generate verbatim transcripts of user interviews. Use our AI Chat Assistant to query across the interview ("What did they say about the onboarding flow?") to extract insights instantly.</p>
+                <p className="text-sm">Generate verbatim transcripts of user interviews. Use our AI Chat Assistant to query across the interview (&quot;What did they say about the onboarding flow?&quot;) to extract insights instantly.</p>
               </div>
               <div className="glass-card p-6 rounded-2xl">
                 <h3 className="text-lg font-semibold text-foreground mb-3">Executive Board Meetings</h3>
@@ -125,7 +125,7 @@ export default function FeaturesPage() {
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-foreground">How does the AI Chat Assistant work?</h3>
-                <p className="mt-2">Once your meeting is processed, you can chat with it just like ChatGPT. You can ask "What was the final decision on the marketing budget?" and the AI will scan the transcript and answer you instantly based solely on the meeting context.</p>
+                <p className="mt-2">Once your meeting is processed, you can chat with it just like ChatGPT. You can ask &quot;What was the final decision on the marketing budget?&quot; and the AI will scan the transcript and answer you instantly based solely on the meeting context.</p>
               </div>
             </div>
           </section>

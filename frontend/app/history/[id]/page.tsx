@@ -26,8 +26,8 @@ export default function MeetingDetailsPage() {
       try {
         const data = await getMeeting(id)
         setMeeting(data)
-      } catch (err: any) {
-        setError(err.message || "Failed to load meeting details")
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : "Failed to load meeting details")
       } finally {
         setLoading(false)
       }

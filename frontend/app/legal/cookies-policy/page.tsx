@@ -88,7 +88,7 @@ export default function CookiesPolicyPage() {
                 Session Management (Essential)
               </h3>
               <p className="text-sm text-muted">
-                We use session cookies to remember your state as you navigate between pages. For example, if you are uploading a meeting file and navigate away briefly, session cookies help ensure your progress isn't lost. These cookies expire when you close your browser.
+                We use session cookies to remember your state as you navigate between pages. For example, if you are uploading a meeting file and navigate away briefly, session cookies help ensure your progress isn&apos;t lost. These cookies expire when you close your browser.
               </p>
             </div>
 
@@ -98,7 +98,7 @@ export default function CookiesPolicyPage() {
                 Google Analytics (Performance)
               </h3>
               <p className="text-sm text-muted">
-                We use Google Analytics to understand how visitors interact with our marketing pages and blog. These cookies collect anonymous information such as the number of visitors to the site, where visitors have come to the site from, and the pages they visited. This helps us improve our website's design and functionality.
+                We use Google Analytics to understand how visitors interact with our marketing pages and blog. These cookies collect anonymous information such as the number of visitors to the site, where visitors have come to the site from, and the pages they visited. This helps us improve our website&apos;s design and functionality.
               </p>
             </div>
 

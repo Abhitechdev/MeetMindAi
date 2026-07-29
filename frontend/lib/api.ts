@@ -39,7 +39,7 @@ export async function processMeeting(file: File, outputLanguage: string = "Engli
   });
 
   if (!response.ok) {
-    let error: any = {};
+    let error: { upgradeRequired?: boolean; error?: string; detail?: string } = {};
     const clonedResponse = response.clone();
     try {
       error = await response.json();
