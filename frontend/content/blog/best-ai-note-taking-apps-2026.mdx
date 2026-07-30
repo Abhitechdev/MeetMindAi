@@ -40,7 +40,7 @@ When evaluating the hundreds of tools on the market, we cut through the noise by
 2.  **Ecosystem Integration:** Does it push structured data natively to Salesforce, HubSpot, Slack, or Notion, or does it trap your data in a walled garden?
 3.  **Bot Intrusiveness:** Does it force a highly visible, distracting "Bot" to join your client calls, or does it operate natively/asynchronously?
 4.  **Prompt Customization:** Can you force the AI to format summaries using your company's specific frameworks (e.g., BANT for sales, Agile for engineering)?
-5.  **Security Posture:** What is the underlying LLM architecture? Does the vendor use zero-retention enterprise APIs, or are they using your private board meetings to train public models?
+5.  **Security Posture:** What is the underlying LLM architecture? Does the vendor use enterprise APIs that do not train on your data, or are they using your private board meetings to train public models?
 
 ## Detailed Review: Top 7 Note-Taking Apps
 
@@ -56,7 +56,7 @@ Fireflies built its reputation on integrations, and it remains a powerhouse for 
 ### 2. MeetMind AI (Best for Privacy and High-Fidelity Extraction)
 MeetMind AI takes a radically different architectural approach. Instead of forcing bots into live meetings, it focuses on asynchronous processing. Teams record meetings natively (via Zoom, Meet, or Teams) and upload the audio. 
 
-**The Operational Reality:** Because MeetMind AI processes files asynchronously, it can afford to run a much heavier, multi-pass AI pipeline (using dynamic routing between models like [Gemini](/blog/gemini-vs-[ChatGPT](/blog/gemini-vs-chatgpt-for-meeting-notes)-for-meeting-notes) and GPT-4o) without worrying about live latency. This results in highly accurate extraction of complex action items. Furthermore, because there is no bot joining the call, it is favored by legal, consulting, and healthcare teams who require high discretion and strict privacy-focused controls.
+**The Operational Reality:** Because MeetMind AI processes files asynchronously, it can afford to run a much heavier, multi-pass AI pipeline (using models like Llama 3.3) without worrying about live latency. This results in highly accurate extraction of complex action items. Furthermore, because there is no bot joining the call, it is favored by legal, consulting, and healthcare teams who require high discretion and strict privacy-focused controls.
 *   **Standout feature:** Deep, multi-pass LLM pipeline for flawless action item extraction.
 *   **Biggest trade-off:** Requires a manual file upload (no live bot automation).
 
@@ -112,7 +112,7 @@ While not a standalone recorder, Notion AI is the ultimate synthesis tool if you
 *   **Best for Engineering Standups:** MeetMind AI or Notion AI (due to highly structured extraction capabilities that easily port to ticketing systems).
 *   **Best for Sales Discovery:** Fireflies.ai (pushes everything straight to Salesforce).
 *   **Best for Solo Consultants:** Fathom (free, unintrusive on Zoom).
-*   **Best for Highly Regulated Industries:** MeetMind AI or MS Copilot (strict compliance, zero-retention architectures).
+*   **Best for Highly Regulated Industries:** MeetMind AI or MS Copilot (strict compliance, privacy-first architectures).
 
 ## The Privacy Reality: What You Need to Know
 

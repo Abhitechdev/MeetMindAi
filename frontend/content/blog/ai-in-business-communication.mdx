@@ -72,7 +72,7 @@ Integrating AI into your communication stack introduces specific risks that must
 Large language models can hallucinate. If the audio quality is poor and the transcription model (ASR) misinterprets a word, the LLM may confidently generate a summary based on flawed data. Furthermore, the AI only knows what was spoken into the microphone; it lacks the context of pre-meeting emails, shared documents not read aloud, or non-verbal visual cues.
 
 ### Privacy and Sensitive Communication
-Deploying AI in enterprise environments requires strict data governance. If your executive team discusses confidential financial data or HR matters, processing that audio through a public AI model is a significant security risk. Organizations must utilize zero-retention architectures, where transcripts are processed and immediately deleted from the LLM provider's servers, ensuring the data is not used for model training.
+Deploying AI in enterprise environments requires strict data governance. If your executive team discusses confidential financial data or HR matters, processing that audio through a public AI model is a significant security risk. Organizations must utilize enterprise APIs, where transcripts are processed securely by the LLM provider without being retained for model training, even if the application temporarily stores the audio for transcription.
 
 ### The Necessity of Human Review
 Because of the risks of hallucination and misinterpretation, AI outputs should always be treated as drafts. Critical business, legal, or financial summaries must be verified by a human against the source audio before being treated as a system of record.

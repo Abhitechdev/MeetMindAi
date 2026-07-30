@@ -1,8 +1,8 @@
 ---
 title: "How MeetMind AI Works: From Raw Audio to Actionable Intelligence"
 seoTitle: "How MeetMind AI Works — Architecture, Pipeline & Privacy (2026)"
-description: "A transparent look at the engineering pipeline behind MeetMind AI — from audio compression and Whisper transcription to LLM extraction and zero-retention privacy."
-seoDescription: "Learn exactly how MeetMind AI converts raw meeting recordings into structured summaries, action items, and decisions using Whisper, Llama 3.3, and a zero-retention architecture."
+description: "A transparent look at the engineering pipeline behind MeetMind AI — from audio compression and Whisper transcription to LLM extraction and privacy-first architecture."
+seoDescription: "Learn exactly how MeetMind AI converts raw meeting recordings into structured summaries, action items, and decisions using Whisper, Llama 3.3, and a privacy-first architecture."
 slug: "how-meetmind-ai-works"
 author: "MeetMind Engineering"
 publishedAt: "2026-07-15T00:00:00Z"
@@ -103,7 +103,7 @@ We route the transcript to **Llama 3.3 70B** — a 70-billion parameter model �
 
 Most AI tools generate a paragraph of prose. Prose is nice for reading. It's useless for automation.
 
-Because MeetMind AI outputs machine-readable structured data, every field can be independently consumed by downstream systems. Your action items can be ported to Jira. Your decisions can be logged in Notion. Your executive summary can be pushed to a Slack channel. The structured format is what makes MeetMind AI a workflow integration, not just a note-taking app.
+Because MeetMind AI outputs machine-readable structured data, every field can be independently consumed by downstream systems. Your action items are prepared for export to Jira (Coming Soon). Your decisions can be logged in Notion. Your executive summary can be easily shared to Slack channels. The structured format is what makes MeetMind AI a workflow integration, not just a note-taking app.
 
 ### Prompt Engineering: Forcing Accountability
 
@@ -180,11 +180,11 @@ For a typical 60-minute meeting, end-to-end processing — compression, transcri
 
 ### Is my audio stored permanently?
 
-No. Your uploaded audio file is written to a temporary location on our processing server, used for transcription, and then **immediately deleted**. Only the structured output (transcript, summary, action items, decisions) is stored in your database under your user account.
+No. Your uploaded audio file is written to a temporary location on our processing server for transcription, and the temporary file is immediately deleted after processing. The original audio remains in your secure database account until you choose to delete it.
 
 ### What model do you use for summaries?
 
-We use **Llama 3.3 70B Versatile**, a 70-billion parameter open-weight model hosted on Groq's LPU inference platform. It is accessed via a zero-retention enterprise API, meaning your transcript data is not used to train the model.
+We use **Llama 3.3 70B Versatile**, a 70-billion parameter open-weight model hosted on Groq's LPU inference platform. It is accessed via a secure enterprise API, meaning your transcript data is not used to train the model.
 
 ### Can I use MeetMind AI for meetings in languages other than English?
 
