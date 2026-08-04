@@ -6,7 +6,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import { getArticleBySlug, getArticleSlugs, getRelatedArticles, getAdjacentArticles } from "../../../lib/mdx";
+import { getArticleBySlug, getArticleSlugs, getRelatedArticles } from "../../../lib/mdx";
 import AdUnit from "../../components/ad-unit";
 import GradientBackground from "../../components/gradient-background";
 
@@ -69,7 +69,6 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   }
 
   const relatedArticles = getRelatedArticles(slug, article.metadata.category, article.metadata.tags, 4);
-  const { prev, next } = getAdjacentArticles(slug);
 
   const headings = Array.from(article.content.matchAll(/^(#{2,3})\s+(.+)$/gm)).map(match => {
     const level = match[1].length;
@@ -158,7 +157,9 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     "image": imageUrl ? [imageUrl] : undefined,
     "author": {
       "@type": "Person",
-      "name": article.metadata.author
+      "name": article.metadata.author,
+      "url": `${baseUrl}/authors/abhishek`,
+      "jobTitle": "Founder & Developer"
     },
     "publisher": {
       "@type": "Organization",

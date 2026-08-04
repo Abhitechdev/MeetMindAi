@@ -50,7 +50,7 @@ export default function AboutPage() {
               We built MeetMind AI to act as a flawless, objective memory for your organization. By combining state-of-the-art speech recognition with advanced language models.
             </p>
             <p className="text-muted leading-relaxed">
-              We don't just transcribe what was said—we understand what it means. We extract the decisions, assign the action items, and synthesize the context so you can focus on the conversation, not the notes.
+              We don&apos;t just transcribe what was said—we understand what it means. We extract the decisions, assign the action items, and synthesize the context so you can focus on the conversation, not the notes.
             </p>
           </motion.div>
         </div>
@@ -72,7 +72,7 @@ export default function AboutPage() {
                 </svg>
               </div>
               <h3 className="font-semibold text-foreground mb-2">Frictionless</h3>
-              <p className="text-sm text-muted">No bots joining your calls. Just upload your audio when you're ready, and we handle the rest instantly.</p>
+              <p className="text-sm text-muted">No bots joining your calls. Just upload your audio when you&apos;re ready, and we handle the rest instantly.</p>
             </div>
             
             <div className="glass-card p-6">
@@ -92,7 +92,7 @@ export default function AboutPage() {
                 </svg>
               </div>
               <h3 className="font-semibold text-foreground mb-2">Signal over Noise</h3>
-              <p className="text-sm text-muted">We don't just give you a wall of text. Our AI separates the crucial decisions from the casual chatter.</p>
+              <p className="text-sm text-muted">We don&apos;t just give you a wall of text. Our AI separates the crucial decisions from the casual chatter.</p>
             </div>
           </div>
 
@@ -105,7 +105,7 @@ export default function AboutPage() {
             <ul className="list-disc pl-6 space-y-4 text-muted leading-relaxed">
               <li><strong>AI Assistance:</strong> We utilize Large Language Models to help brainstorm topics, generate outlines, and draft initial content blocks. We also use AI for creating article illustrations and diagrams.</li>
               <li><strong>Human Editorial Review:</strong> No article is published without rigorous human review. Our founding engineering team and product managers fact-check all technical claims, rewrite sections for clarity and accuracy, and ensure the content aligns with our mission.</li>
-              <li><strong>Who Reviews:</strong> All content is reviewed by our lead developers who actively write the software powering MeetMind AI. If an article discusses a technical concept like "Faster Whisper" or "Row-Level Security," it is vetted by the engineer who implemented it.</li>
+              <li><strong>Who Reviews:</strong> All content is reviewed by our lead developers who actively write the software powering MeetMind AI. If an article discusses a technical concept like &quot;Faster Whisper&quot; or &quot;Row-Level Security,&quot; it is vetted by the engineer who implemented it.</li>
             </ul>
           </div>
 

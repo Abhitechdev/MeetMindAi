@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Terminal, Code, BookOpen, Key } from "lucide-react";
+import { Terminal, Code, Key } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "API Documentation | MeetMind AI",

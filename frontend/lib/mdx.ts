@@ -55,7 +55,7 @@ export function getArticleBySlug(slug: string): Article | null {
       seoTitle: data.seoTitle,
       seoDescription: data.seoDescription,
       slug: realSlug,
-      author: data.author || 'MeetMind Editorial Team',
+      author: data.author || 'Abhishek',
       publishedAt: data.publishedAt || new Date().toISOString(),
       updatedAt: data.updatedAt,
       tags: data.tags || [],

@@ -81,7 +81,7 @@ export function Navigation() {
           <UpgradeModal isOpen={isUpgradeModalOpen} onClose={() => setIsUpgradeModalOpen(false)} />
         </Suspense>
       )}
-      <nav className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/80 backdrop-blur-md">
+      <nav className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/80 backdrop-blur-md transform-gpu">
       <div className="mx-auto max-w-5xl px-6 sm:px-8 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-8">
@@ -109,7 +109,7 @@ export function Navigation() {
           
           <div className="flex items-center gap-4">
             {loading ? (
-              <div className="h-8 w-8 rounded-full bg-foreground/10 animate-pulse" />
+              <div className="h-8 w-24 rounded-full bg-foreground/10 animate-pulse" />
             ) : user ? (
               <div className="flex items-center gap-3">
                 {/* Usage Display */}

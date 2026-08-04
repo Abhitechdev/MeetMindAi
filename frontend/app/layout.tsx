@@ -138,38 +138,44 @@ export default function RootLayout({
                   <h3 className="font-semibold text-foreground mb-4 text-sm tracking-wider uppercase">Product</h3>
                   <ul className="space-y-3 text-sm text-muted">
                     <li><Link href="/features" className="hover:text-foreground transition-colors">Features</Link></li>
+                    <li><Link href="/use-cases" className="hover:text-foreground transition-colors">Use Cases</Link></li>
                     <li><Link href="/pricing" className="hover:text-foreground transition-colors">Pricing</Link></li>
+                    <li><Link href="/changelog" className="hover:text-foreground transition-colors">Changelog</Link></li>
                   </ul>
                 </div>
                 <div>
                   <h3 className="font-semibold text-foreground mb-4 text-sm tracking-wider uppercase">Resources</h3>
                   <ul className="space-y-3 text-sm text-muted">
                     <li><Link href="/blog" className="hover:text-foreground transition-colors">Blog</Link></li>
+                    <li><Link href="/help-center" className="hover:text-foreground transition-colors">Help Center</Link></li>
                     <li><Link href="/faq" className="hover:text-foreground transition-colors">FAQ</Link></li>
+                    <li><Link href="/rss.xml" className="hover:text-foreground transition-colors">RSS Feed</Link></li>
                   </ul>
                 </div>
                 <div>
                   <h3 className="font-semibold text-foreground mb-4 text-sm tracking-wider uppercase">Company</h3>
                   <ul className="space-y-3 text-sm text-muted">
                     <li><Link href="/about" className="hover:text-foreground transition-colors">About</Link></li>
+                    <li><Link href="/authors/abhishek" className="hover:text-foreground transition-colors">Founder Bio</Link></li>
                     <li><Link href="/contact" className="hover:text-foreground transition-colors">Contact</Link></li>
                     <li><Link href="/legal/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link></li>
                     <li><Link href="/legal/terms" className="hover:text-foreground transition-colors">Terms of Service</Link></li>
                   </ul>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-foreground mb-4 text-sm tracking-wider uppercase">Trust</h3>
+                  <h3 className="font-semibold text-foreground mb-4 text-sm tracking-wider uppercase">Trust & Standards</h3>
                   <ul className="space-y-3 text-sm text-muted">
                     <li><Link href="/security" className="hover:text-foreground transition-colors">Security</Link></li>
+                    <li><Link href="/editorial-policy" className="hover:text-foreground transition-colors">Editorial Policy</Link></li>
+                    <li><Link href="/accessibility" className="hover:text-foreground transition-colors">Accessibility Statement</Link></li>
                     <li><Link href="/legal/ai-transparency" className="hover:text-foreground transition-colors">AI Transparency</Link></li>
                     <li><Link href="/legal/cookies-policy" className="hover:text-foreground transition-colors">Cookies Policy</Link></li>
-                    <li><Link href="/legal/acceptable-use" className="hover:text-foreground transition-colors">Acceptable Use</Link></li>
                   </ul>
                 </div>
               </div>
               <div className="border-t border-card-border pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted">
                 <p>&copy; 2026 MeetMind AI. All rights reserved.</p>
-                <p>Developed by <span className="font-semibold text-foreground/80">Abhishek</span></p>
+                <p>Developed by <Link href="/authors/abhishek" className="font-semibold text-foreground/80 hover:text-foreground transition-colors">Abhishek</Link></p>
               </div>
             </div>
           </footer>

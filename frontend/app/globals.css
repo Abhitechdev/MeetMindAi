@@ -83,6 +83,8 @@ html, body {
   border: 1px solid var(--glass-border);
   border-radius: 12px;
   box-shadow: 0 4px 24px -1px rgba(0,0,0,0.03);
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 /* ponytail: blur(12px) is ~3x GPU cost of blur(4px) on mobile — keep visual, cut cost */
 @media (pointer: coarse) {
@@ -96,12 +98,13 @@ html, body {
 }
 
 .glass-card-hover {
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
 }
 .glass-card-hover:hover {
   border-color: color-mix(in srgb, var(--foreground) 15%, transparent);
   box-shadow: 0 8px 32px -4px rgba(0,0,0,0.05);
-  transform: translateY(-1px);
+  transform: translateY(-1px) translateZ(0);
 }
 .dark .glass-card-hover:hover {
   box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.03), 0 8px 32px -4px rgba(0,0,0,0.6);
@@ -121,19 +124,19 @@ html, body {
 }
 
 @keyframes float-1 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(30px, -50px) scale(1.1); }
-  66% { transform: translate(-20px, 20px) scale(0.9); }
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33% { transform: translate3d(30px, -50px, 0) scale(1.1); }
+  66% { transform: translate3d(-20px, 20px, 0) scale(0.9); }
 }
 @keyframes float-2 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(-40px, 30px) scale(0.9); }
-  66% { transform: translate(30px, -40px) scale(1.1); }
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33% { transform: translate3d(-40px, 30px, 0) scale(0.9); }
+  66% { transform: translate3d(30px, -40px, 0) scale(1.1); }
 }
 @keyframes float-3 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(20px, 40px) scale(1.05); }
-  66% { transform: translate(-30px, -20px) scale(0.95); }
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33% { transform: translate3d(20px, 40px, 0) scale(1.05); }
+  66% { transform: translate3d(-30px, -20px, 0) scale(0.95); }
 }
 
 @media (min-width: 768px) {
@@ -280,17 +283,26 @@ html, body {
 @keyframes fade-in-up {
   0% {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translate3d(0, 20px, 0);
   }
   100% {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
 .animate-fade-in-up {
-  animation: fade-in-up 0.5s ease-out forwards;
-  opacity: 0; /* Ensures it is hidden before the animation starts */
+  animation: fade-in-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: transform, opacity;
+}
+
+/* Fallback for users who prefer reduced motion: skip the animation and just show it */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* Fallback for users who prefer reduced motion: skip the animation and just show it */

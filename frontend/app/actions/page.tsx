@@ -48,7 +48,7 @@ export default function ActionsPage() {
   async function toggleStatus(id: string, currentStatus: string) {
     const newStatus = currentStatus === "pending" ? "completed" : "pending"
     // Optimistic update
-    setActions(actions.map(a => a.id === id ? { ...a, status: newStatus as any } : a))
+    setActions(actions.map(a => a.id === id ? { ...a, status: newStatus as ActionItem["status"] } : a))
     
     // ponytail: zero-dependency toast, no new libraries
     setToast(newStatus === "completed" ? "Task marked as completed" : "Task moved to pending")

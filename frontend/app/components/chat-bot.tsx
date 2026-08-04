@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useMemo } from "react";
+import { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { askQuestion } from "@/lib/api";
 import ReactMarkdown from "react-markdown";
@@ -86,19 +86,13 @@ export default function ChatBot({ meetingId, transcript, summary, segments = [],
     return suggs.slice(0, 4);
   }, [summaryData, uniqueSpeakers, transcript]);
 
-  useEffect(() => {
-    if (messages.length === 0) {
-      setCurrentSuggestions(initialSuggestions);
-    }
-  }, [messages.length, initialSuggestions]);
+  const scrollToBottom = useCallback(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
 
   useEffect(() => {
     if (isOpen) scrollToBottom();
-  }, [messages, isOpen]);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  }, [messages, isOpen, scrollToBottom]);
 
   const handleInput = () => {
     if (textareaRef.current) {
@@ -139,7 +133,7 @@ export default function ChatBot({ meetingId, transcript, summary, segments = [],
       textareaRef.current.style.height = 'auto';
     }
 
-    const userMessage: Message = { id: Date.now().toString(), role: "user", content: trimmed };
+    const userMessage: Message = { id: `usr-${messages.length + 1}`, role: "user", content: trimmed };
     setMessages((prev) => [...prev, userMessage]);
     setInputValue("");
     setIsLoading(true);
@@ -171,7 +165,7 @@ export default function ChatBot({ meetingId, transcript, summary, segments = [],
       if (diarizationUnavailable || uniqueSpeakers.length === 0) {
         deterministicAnswer = "Speaker detection wasn't available for this recording, so I can't reliably determine how many people spoke.";
       } else {
-        deterministicAnswer = `${uniqueSpeakers.length} speakers were detected.\n\n${uniqueSpeakers.map((s, i) => `- ${s}`).join('\n')}\n\nTheir identities weren't determined from speaker diarization alone.`;
+        deterministicAnswer = `${uniqueSpeakers.length} speakers were detected.\n\n${uniqueSpeakers.map((s) => `- ${s}`).join('\n')}\n\nTheir identities weren't determined from speaker diarization alone.`;
       }
     }
 
@@ -198,7 +192,7 @@ export default function ChatBot({ meetingId, transcript, summary, segments = [],
       
       if (segments && segments.length > 0) {
         let currentSpeaker = segments[0].speaker || "Unknown";
-        let parts: string[] = [];
+        const parts: string[] = [];
         let currentText: string[] = [];
         let startTime = segments[0].start;
         
@@ -226,7 +220,7 @@ export default function ChatBot({ meetingId, transcript, summary, segments = [],
       const { answer } = await askQuestion(meetingId, trimmed, chatTranscript, summary, validHistory);
       setMessages((prev) => [...prev, { id: (Date.now() + 1).toString(), role: "assistant", content: answer }]);
       setCurrentSuggestions(getFollowUpSuggestions(trimmed));
-    } catch (error) {
+    } catch {
       setMessages((prev) => [...prev, { 
         id: (Date.now() + 1).toString(), 
         role: "assistant", 
@@ -320,7 +314,7 @@ export default function ChatBot({ meetingId, transcript, summary, segments = [],
                     </div>
                     <h4 className="text-lg font-bold text-foreground mb-2">Ask MeetMind</h4>
                     <p className="text-sm text-muted mb-6 px-4">
-                      Get answers from this meeting's transcript, decisions, and action items.
+                      Get answers from this meeting&apos;s transcript, decisions, and action items.
                     </p>
                   </div>
                 )}
@@ -381,21 +375,25 @@ export default function ChatBot({ meetingId, transcript, summary, segments = [],
             </div>
 
             {/* Suggestions Area */}
-            {currentSuggestions.length > 0 && !isLoading && (
-              <div className="px-4 pb-3 bg-surface/30">
-                <div className="flex flex-wrap gap-2 animate-in fade-in slide-in-from-bottom-2">
-                  {currentSuggestions.map((action) => (
-                    <button
-                      key={action}
-                      onClick={() => handleSend(action)}
-                      className="rounded-xl border border-card-border bg-surface px-3 py-2 text-xs font-medium text-foreground hover:bg-background transition-colors text-left"
-                    >
-                      {action}
-                    </button>
-                  ))}
+            {(() => {
+              const activeSuggestions = currentSuggestions.length > 0 ? currentSuggestions : (messages.length === 0 ? initialSuggestions : []);
+              if (activeSuggestions.length === 0 || isLoading) return null;
+              return (
+                <div className="px-4 pb-3 bg-surface/30">
+                  <div className="flex flex-wrap gap-2 animate-in fade-in slide-in-from-bottom-2">
+                    {activeSuggestions.map((action) => (
+                      <button
+                        key={action}
+                        onClick={() => handleSend(action)}
+                        className="rounded-xl border border-card-border bg-surface px-3 py-2 text-xs font-medium text-foreground hover:bg-background transition-colors text-left"
+                      >
+                        {action}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              );
+            })()}
 
             {/* Input Area */}
             <div className="p-4 border-t border-glass-border bg-background/50 backdrop-blur-md shrink-0">

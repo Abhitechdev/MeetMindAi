@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Lock } from "lucide-react";
 import { motion } from "framer-motion";
 import { TranscriptionSegment } from "@/lib/types";
 
@@ -116,7 +115,7 @@ export default function TranscriptViewer({ transcript, segments, language = "Eng
 
       {diarizationUnavailable && (
         <div className="mb-4 text-sm text-amber-500/90 bg-amber-500/10 border border-amber-500/20 px-4 py-2.5 rounded-lg">
-          Speaker detection wasn't available for this recording. The transcript was generated successfully.
+          Speaker detection was not available for this recording. The transcript was generated successfully.
         </div>
       )}
 
@@ -157,18 +156,6 @@ export default function TranscriptViewer({ transcript, segments, language = "Eng
               {displayTranscript}
             </p>
           )}
-          <div className="absolute inset-0 flex items-center justify-center bg-background/50 backdrop-blur-sm z-10 rounded-xl">
-            <div className="bg-surface/80 p-6 rounded-2xl border border-card-border shadow-xl text-center max-w-sm mx-4">
-              <h3 className="text-xl font-bold text-foreground mb-2">Pro Feature</h3>
-              <p className="text-sm text-muted mb-6">Upgrade to access full AI summaries and action items for all your meetings.</p>
-              <button 
-                onClick={() => window.dispatchEvent(new Event("open-upgrade-modal"))}
-                className="w-full bg-gradient-to-r from-accent-purple to-accent-blue text-white font-medium py-2 px-4 rounded-xl hover:opacity-90 transition-opacity"
-              >
-                Upgrade Now
-              </button>
-            </div>
-          </div>
       </div>
     </div>
   );
