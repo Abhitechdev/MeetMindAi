@@ -1,4 +1,4 @@
-import Link from "next";
+import Link from "next/link";
 import { GraduationCap, Microscope, Briefcase, Users, CheckCircle2, ArrowRight, Sparkles } from "lucide-react";
 import GradientBackground from "@/app/components/gradient-background";
 
