@@ -149,7 +149,6 @@ export default function RootLayout({
                     <li><Link href="/blog" className="hover:text-foreground transition-colors">Blog</Link></li>
                     <li><Link href="/help-center" className="hover:text-foreground transition-colors">Help Center</Link></li>
                     <li><Link href="/faq" className="hover:text-foreground transition-colors">FAQ</Link></li>
-                    <li><Link href="/rss.xml" className="hover:text-foreground transition-colors">RSS Feed</Link></li>
                   </ul>
                 </div>
                 <div>
