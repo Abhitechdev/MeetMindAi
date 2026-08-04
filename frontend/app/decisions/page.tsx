@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { CheckCircle2, Clock, Sparkles, Check, RotateCcw } from "lucide-react"
+import { Check } from "lucide-react"
 import { createClient } from "@/lib/supabase"
 import { getDecisions } from "@/lib/api"
 import GradientBackground from "../components/gradient-background"
@@ -52,8 +52,7 @@ export default function DecisionsPage() {
     // Optimistic update
     setDecisions(decisions.map(d => d.id === id ? { ...d, status: newStatus } : d))
     
-    // ponytail: zero-dependency toast notification
-    setToast(newStatus === "approved" ? "Decision approved & finalized" : "Decision moved back to proposed")
+    setToast(newStatus === "approved" ? "Decision approved" : "Decision moved back to proposed")
     setTimeout(() => setToast(null), 3000)
 
     try {
@@ -81,46 +80,32 @@ export default function DecisionsPage() {
           isApproved ? "border-emerald-500/20 bg-emerald-500/5 shadow-sm" : "border-card-border/80"
         }`}
       >
-        <div className="space-y-2 flex-1 min-w-0">
-          <div className="flex items-start gap-2.5">
-            {isApproved ? (
-              <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-            ) : (
-              <Clock className="w-5 h-5 text-accent-purple shrink-0 mt-0.5" />
-            )}
-            <p className="text-base font-semibold text-foreground leading-snug">
-              {decision.decision_text}
-            </p>
-          </div>
-          <div className="flex items-center gap-2 text-xs text-muted pl-7">
+        <div className="space-y-1.5 flex-1 min-w-0">
+          <p className="text-base font-semibold text-foreground leading-snug">
+            {decision.decision_text}
+          </p>
+          <div className="flex items-center gap-2 text-xs text-muted">
             <span>Meeting: <span className="font-medium text-foreground">{decision.meetings?.title || "Unknown"}</span></span>
             <span>•</span>
             <span>{new Date(decision.created_at).toLocaleDateString()}</span>
           </div>
         </div>
 
-        <div className="flex items-center gap-3 shrink-0 pt-2 sm:pt-0 self-end sm:self-center">
-          <span className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full border capitalize transition-colors ${
-            isApproved 
-              ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" 
-              : "bg-accent-purple/10 text-accent-purple border-accent-purple/20"
-          }`}>
-            {isApproved ? <Check className="w-3 h-3" /> : <Sparkles className="w-3 h-3" />}
-            <span>{decision.status}</span>
-          </span>
-
+        <div className="flex-shrink-0 pt-2 sm:pt-0 self-end sm:self-center">
           <button
             onClick={() => toggleDecisionStatus(decision.id, decision.status)}
-            className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-medium rounded-xl transition-all shadow-sm ${
+            className={`inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-xl transition-all shadow-sm ${
               isApproved
-                ? "bg-surface hover:bg-card-border text-muted hover:text-foreground border border-card-border"
-                : "bg-gradient-to-r from-accent-purple to-accent-blue text-white hover:scale-[1.02]"
+                ? "bg-emerald-500/10 hover:bg-amber-500/10 text-emerald-400 hover:text-amber-400 border border-emerald-500/20 hover:border-amber-500/20"
+                : "bg-gradient-to-r from-accent-purple to-accent-blue text-white hover:scale-[1.02] shadow-md"
             }`}
+            title={isApproved ? "Click to undo approval" : "Click to approve decision"}
           >
             {isApproved ? (
               <>
-                <RotateCcw className="w-3.5 h-3.5" />
-                <span>Undo</span>
+                <Check className="w-3.5 h-3.5" />
+                <span>Approved</span>
+                <span className="text-[10px] opacity-70 ml-1 font-normal">(Undo)</span>
               </>
             ) : (
               <>
@@ -138,15 +123,15 @@ export default function DecisionsPage() {
     <main className="relative min-h-screen">
       <GradientBackground />
       <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight text-foreground">Decision Center</h1>
-            <p className="text-muted mt-2">Log and audit key decisions finalized across all meetings</p>
-          </div>
+        <div className="mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+            Decision <span className="bg-gradient-to-r from-accent-purple via-foreground to-accent-blue bg-clip-text text-transparent">Center</span>
+          </h1>
+          <p className="text-muted mt-2 text-sm md:text-base">Log and audit key decisions finalized across all meetings</p>
         </div>
 
         {/* Filter Navigation Tabs */}
-        <div className="flex gap-2 mb-8 p-1 bg-surface border border-card-border inline-flex rounded-lg shadow-sm">
+        <div className="flex gap-2 mb-8 p-1 bg-surface/80 border border-card-border inline-flex rounded-xl shadow-sm backdrop-blur-md">
           {[
             { id: "all", label: `All (${decisions.length})` },
             { id: "approved", label: `Approved (${approvedDecisions.length})` },
@@ -155,8 +140,10 @@ export default function DecisionsPage() {
             <button
               key={tab.id}
               onClick={() => setFilter(tab.id as "all" | "approved" | "proposed")}
-              className={`px-4 py-2 rounded-md text-sm font-medium capitalize transition-colors ${
-                filter === tab.id ? "bg-foreground text-background shadow-sm" : "text-muted hover:text-foreground"
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                filter === tab.id 
+                  ? "bg-foreground text-background shadow-md font-semibold" 
+                  : "text-muted hover:text-foreground"
               }`}
             >
               {tab.label}
@@ -165,9 +152,9 @@ export default function DecisionsPage() {
         </div>
 
         {loading ? (
-          <div className="text-center py-12 text-muted animate-pulse">Loading decisions...</div>
+          <div className="text-center py-16 text-muted animate-pulse">Loading decisions...</div>
         ) : decisions.length === 0 ? (
-          <div className="text-center py-12 glass-card">
+          <div className="text-center py-16 glass-card rounded-2xl">
             <p className="text-muted">No decisions recorded yet.</p>
           </div>
         ) : (
@@ -178,9 +165,8 @@ export default function DecisionsPage() {
                 <>
                   {approvedDecisions.length > 0 && (
                     <div className="space-y-3">
-                      <h2 className="text-xs font-semibold text-emerald-400 uppercase tracking-wider px-1 flex items-center gap-1.5">
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                        <span>Approved Decisions ({approvedDecisions.length})</span>
+                      <h2 className="text-xs font-semibold text-emerald-400 uppercase tracking-wider px-1">
+                        Approved Decisions ({approvedDecisions.length})
                       </h2>
                       <div className="grid gap-3">
                         {approvedDecisions.map(renderDecisionCard)}
@@ -190,9 +176,8 @@ export default function DecisionsPage() {
 
                   {proposedDecisions.length > 0 && (
                     <div className="space-y-3 pt-4 border-t border-card-border/50">
-                      <h2 className="text-xs font-semibold text-accent-purple uppercase tracking-wider px-1 flex items-center gap-1.5">
-                        <Clock className="w-3.5 h-3.5" />
-                        <span>Proposed Decisions ({proposedDecisions.length})</span>
+                      <h2 className="text-xs font-semibold text-accent-purple uppercase tracking-wider px-1">
+                        Proposed Decisions ({proposedDecisions.length})
                       </h2>
                       <div className="grid gap-3">
                         {proposedDecisions.map(renderDecisionCard)}
@@ -209,7 +194,7 @@ export default function DecisionsPage() {
                     {approvedDecisions.map(renderDecisionCard)}
                   </div>
                 ) : (
-                  <div className="text-center py-12 glass-card">
+                  <div className="text-center py-16 glass-card rounded-2xl">
                     <p className="text-muted">No approved decisions yet.</p>
                   </div>
                 )
@@ -222,7 +207,7 @@ export default function DecisionsPage() {
                     {proposedDecisions.map(renderDecisionCard)}
                   </div>
                 ) : (
-                  <div className="text-center py-12 glass-card">
+                  <div className="text-center py-16 glass-card rounded-2xl">
                     <p className="text-muted">No pending proposed decisions!</p>
                   </div>
                 )

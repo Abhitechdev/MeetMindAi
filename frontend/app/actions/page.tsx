@@ -104,14 +104,14 @@ export default function ActionsPage() {
     <main className="relative min-h-screen">
       <GradientBackground />
       <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight text-foreground">Action Center</h1>
-            <p className="text-muted mt-2">Track and manage tasks from all meetings</p>
-          </div>
+        <div className="mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+            Action <span className="bg-gradient-to-r from-accent-purple via-foreground to-accent-blue bg-clip-text text-transparent">Center</span>
+          </h1>
+          <p className="text-muted mt-2 text-sm md:text-base">Track and manage tasks from all meetings</p>
         </div>
 
-        <div className="flex gap-2 mb-8 p-1 bg-surface border border-card-border inline-flex rounded-lg shadow-sm">
+        <div className="flex gap-2 mb-8 p-1 bg-surface/80 border border-card-border inline-flex rounded-xl shadow-sm backdrop-blur-md">
           {[
             { id: "all", label: `All (${actions.length})` },
             { id: "pending", label: `Pending (${pendingActions.length})` },
@@ -120,8 +120,10 @@ export default function ActionsPage() {
             <button
               key={tab.id}
               onClick={() => setFilter(tab.id as "all" | "pending" | "completed")}
-              className={`px-4 py-2 rounded-md text-sm font-medium capitalize transition-colors ${
-                filter === tab.id ? "bg-foreground text-background shadow-sm" : "text-muted hover:text-foreground"
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                filter === tab.id 
+                  ? "bg-foreground text-background shadow-md font-semibold" 
+                  : "text-muted hover:text-foreground"
               }`}
             >
               {tab.label}
