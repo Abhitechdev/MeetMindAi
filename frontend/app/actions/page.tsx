@@ -50,17 +50,55 @@ export default function ActionsPage() {
     // Optimistic update
     setActions(actions.map(a => a.id === id ? { ...a, status: newStatus as ActionItem["status"] } : a))
     
-    // ponytail: zero-dependency toast, no new libraries
-    setToast(newStatus === "completed" ? "Task marked as completed" : "Task moved to pending")
+    // ponytail: zero-dependency toast notification
+    setToast(newStatus === "completed" ? "Task moved to Completed section" : "Task moved to Pending section")
     setTimeout(() => setToast(null), 3000)
     
     await supabase.from("action_items").update({ status: newStatus }).eq("id", id)
   }
 
-  const filteredActions = actions.filter(a => {
-    if (filter === "all") return true
-    return a.status === filter
-  })
+  const pendingActions = actions.filter(a => a.status === "pending")
+  const completedActions = actions.filter(a => a.status === "completed")
+
+  const renderActionCard = (action: ActionItem) => (
+    <motion.div
+      key={action.id}
+      layout
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.2 }}
+      className={`glass-card glass-card-hover p-5 flex gap-4 items-start transition-all ${
+        action.status === "completed" ? "opacity-75 bg-surface/30" : ""
+      }`}
+    >
+      <button
+        onClick={() => toggleStatus(action.id, action.status)}
+        className={`mt-1 w-5 h-5 flex-shrink-0 rounded border flex items-center justify-center transition-colors ${
+          action.status === "completed" 
+            ? "bg-foreground border-foreground text-background shadow-sm" 
+            : "border-card-border bg-surface hover:border-foreground"
+        }`}
+        aria-label={action.status === "completed" ? "Mark as pending" : "Mark as completed"}
+      >
+        {action.status === "completed" && (
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+          </svg>
+        )}
+      </button>
+      <div className="space-y-1 min-w-0 flex-1">
+        <p className={`text-base font-medium transition-all ${
+          action.status === "completed" ? "line-through text-muted/60" : "text-foreground"
+        }`}>
+          {action.action_text}
+        </p>
+        <p className="text-xs text-muted">
+          From: <span className="font-medium">{action.meetings?.title || "Unknown"}</span> • {new Date(action.created_at).toLocaleDateString()}
+        </p>
+      </div>
+    </motion.div>
+  )
 
   return (
     <main className="relative min-h-screen">
@@ -74,60 +112,84 @@ export default function ActionsPage() {
         </div>
 
         <div className="flex gap-2 mb-8 p-1 bg-surface border border-card-border inline-flex rounded-lg shadow-sm">
-          {(["all", "pending", "completed"] as const).map((f) => (
+          {[
+            { id: "all", label: `All (${actions.length})` },
+            { id: "pending", label: `Pending (${pendingActions.length})` },
+            { id: "completed", label: `Completed (${completedActions.length})` },
+          ].map((tab) => (
             <button
-              key={f}
-              onClick={() => setFilter(f)}
+              key={tab.id}
+              onClick={() => setFilter(tab.id as "all" | "pending" | "completed")}
               className={`px-4 py-2 rounded-md text-sm font-medium capitalize transition-colors ${
-                filter === f ? "bg-foreground text-background shadow-sm" : "text-muted hover:text-foreground"
+                filter === tab.id ? "bg-foreground text-background shadow-sm" : "text-muted hover:text-foreground"
               }`}
             >
-              {f}
+              {tab.label}
             </button>
           ))}
         </div>
 
         {loading ? (
           <div className="text-center py-12 text-muted animate-pulse">Loading actions...</div>
-        ) : filteredActions.length === 0 ? (
+        ) : actions.length === 0 ? (
           <div className="text-center py-12 glass-card">
             <p className="text-muted">No action items found.</p>
           </div>
         ) : (
-          <div className="grid gap-3">
-            <AnimatePresence>
-              {filteredActions.map((action) => (
-                <motion.div
-                  key={action.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  className="glass-card glass-card-hover p-5 flex gap-4 items-start transition-opacity"
-                >
-                  <button
-                    onClick={() => toggleStatus(action.id, action.status)}
-                    className={`mt-1 w-5 h-5 flex-shrink-0 rounded border flex items-center justify-center transition-colors ${
-                      action.status === "completed" 
-                        ? "bg-foreground border-foreground text-background shadow-sm" 
-                        : "border-card-border bg-surface hover:border-foreground"
-                    }`}
-                  >
-                    {action.status === "completed" && (
-                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                      </svg>
-                    )}
-                  </button>
-                  <div className="space-y-1">
-                    <p className="text-base font-medium text-foreground">
-                      {action.action_text}
-                    </p>
-                    <p className="text-xs text-muted">
-                      From: <span className="font-medium">{action.meetings?.title || "Unknown"}</span> • {new Date(action.created_at).toLocaleDateString()}
-                    </p>
+          <div className="space-y-8">
+            <AnimatePresence mode="popLayout">
+              {/* All View: Grouped into Pending Tasks and Completed Tasks */}
+              {filter === "all" && (
+                <>
+                  {pendingActions.length > 0 && (
+                    <div className="space-y-3">
+                      <h2 className="text-xs font-semibold text-muted uppercase tracking-wider px-1">
+                        Pending Tasks ({pendingActions.length})
+                      </h2>
+                      <div className="grid gap-3">
+                        {pendingActions.map(renderActionCard)}
+                      </div>
+                    </div>
+                  )}
+
+                  {completedActions.length > 0 && (
+                    <div className="space-y-3 pt-4 border-t border-card-border/50">
+                      <h2 className="text-xs font-semibold text-muted uppercase tracking-wider px-1 flex items-center justify-between">
+                        <span>Completed ({completedActions.length})</span>
+                      </h2>
+                      <div className="grid gap-3">
+                        {completedActions.map(renderActionCard)}
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+
+              {/* Pending Only View */}
+              {filter === "pending" && (
+                pendingActions.length > 0 ? (
+                  <div className="grid gap-3">
+                    {pendingActions.map(renderActionCard)}
                   </div>
-                </motion.div>
-              ))}
+                ) : (
+                  <div className="text-center py-12 glass-card">
+                    <p className="text-muted">No pending tasks remaining!</p>
+                  </div>
+                )
+              )}
+
+              {/* Completed Only View */}
+              {filter === "completed" && (
+                completedActions.length > 0 ? (
+                  <div className="grid gap-3">
+                    {completedActions.map(renderActionCard)}
+                  </div>
+                ) : (
+                  <div className="text-center py-12 glass-card">
+                    <p className="text-muted">No completed tasks yet.</p>
+                  </div>
+                )
+              )}
             </AnimatePresence>
           </div>
         )}
