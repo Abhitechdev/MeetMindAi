@@ -3,8 +3,8 @@ import Image from "next/image";
 import GradientBackground from "@/app/components/gradient-background";
 
 export const metadata = {
-  title: "Abhishek | Founder & Developer of MeetMind AI",
-  description: "Learn about Abhishek, founder and lead developer of MeetMind AI. Discover his background in AI application development, tech decoders, and product engineering.",
+  title: "About the Author | Abhishek - Founder of MeetMind AI",
+  description: "Abhishek is the founder and developer of MeetMind AI and creator of AbhiTech Decoded. Learn how MeetMind AI uses Whisper and Gemini AI for automated meeting intelligence.",
   alternates: {
     canonical: "/authors/abhishek",
   },
@@ -23,12 +23,13 @@ export default function AbhishekAuthorPage() {
       url: "https://www.meetmindai.co.in",
     },
     url: "https://www.meetmindai.co.in/authors/abhishek",
-    description: "AI Application Developer and Founder of MeetMind AI, specializing in audio transcription workflows, AbhiTech Decoded tech education, and automated meeting intelligence.",
+    description: "Abhishek is the founder and developer of MeetMind AI and the creator of AbhiTech Decoded. He created MeetMind AI to help users save time by automatically transcribing meeting recordings, generating AI-powered summaries, identifying action items, and organizing key decisions.",
     knowsAbout: [
       "Artificial Intelligence",
       "Speech-to-Text Transcription",
       "Whisper Models",
-      "Next.js & Full-Stack Web Development",
+      "Gemini AI Integration",
+      "Next.js & Web Product Development",
       "Meeting Productivity Systems"
     ],
   };
@@ -79,18 +80,18 @@ export default function AbhishekAuthorPage() {
           </div>
 
           <div className="space-y-6 text-muted leading-relaxed">
-            <p>
-              Abhishek is the founder and primary developer of <strong>MeetMind AI</strong> and creator of <strong>AbhiTech Decoded</strong>. Passionate about software craftsmanship and artificial intelligence, he designed MeetMind AI to eliminate the manual burden of taking meeting notes, organizing action items, and digesting long audio recordings.
+            <h2 className="text-2xl font-bold text-foreground tracking-tight">About the Author</h2>
+            <p className="text-base leading-relaxed">
+              Abhishek is the founder and developer of <strong>MeetMind AI</strong> and the creator of <strong>AbhiTech Decoded</strong>.
             </p>
-
-            <h2 className="text-xl font-semibold text-foreground pt-4">Technical Focus & Product Philosophy</h2>
-            <p>
-              Abhishek focuses on building friction-free web applications that combine state-of-the-art open-weights speech recognition (Whisper) with advanced language models (Gemini AI). His product philosophy prioritizes user privacy, zero mandatory bot integrations, fast processing, and clear human-readable executive summaries.
+            <p className="text-base leading-relaxed">
+              He created MeetMind AI to help users save time by automatically transcribing meeting recordings, generating AI-powered summaries, identifying action items, and organizing key decisions.
             </p>
-
-            <h2 className="text-xl font-semibold text-foreground pt-4">Editorial & Quality Role</h2>
-            <p>
-              As the sole maintainer of MeetMind AI, Abhishek personally drafts, reviews, and fact-checks all technical guides, blog articles, and documentation on this website. Every tutorial on transcription technology or AI meeting workflows is vetted directly against the underlying codebase implementation.
+            <p className="text-base leading-relaxed">
+              His work focuses on building practical AI-powered web applications that are simple to use and solve real productivity problems. MeetMind AI combines Whisper for speech transcription with Gemini AI to help users turn conversations into structured notes and insights.
+            </p>
+            <p className="text-base leading-relaxed">
+              As the sole developer and maintainer of MeetMind AI, Abhishek writes and maintains the product documentation, help guides, and blog articles published on this website. Content is reviewed against the current functionality of the product and updated as features change to keep the information accurate and relevant.
             </p>
           </div>
         </div>
