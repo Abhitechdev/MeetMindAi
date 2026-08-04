@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import GradientBackground from "../components/gradient-background";
 
@@ -16,11 +18,46 @@ export default function AboutPage() {
           className="text-center mb-16"
         >
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-foreground mb-6">
-            We build memory for <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">modern teams</span>
+            We build memory for <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-purple to-accent-blue">modern teams</span>
           </h1>
           <p className="text-lg md:text-xl text-muted max-w-2xl mx-auto leading-relaxed">
             MeetMind AI was founded on a simple premise: human conversation is the most powerful tool for collaboration, but the worst medium for retention.
           </p>
+        </motion.div>
+
+        {/* Meet the Founder Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="glass-card p-8 md:p-10 mb-16 rounded-2xl border border-accent-purple/20 bg-accent-purple/5 shadow-xl"
+        >
+          <div className="flex flex-col sm:flex-row items-center gap-6">
+            <div className="relative h-28 w-28 md:h-32 md:w-32 rounded-2xl overflow-hidden border-2 border-accent-purple/50 shadow-xl shrink-0">
+              <Image
+                src="/images/abhishek-kumar.jpg"
+                alt="Abhishek - Founder & Lead Developer of MeetMind AI"
+                fill
+                sizes="(max-width: 768px) 112px, 128px"
+                className="object-cover"
+              />
+            </div>
+            <div className="text-center sm:text-left space-y-2">
+              <div className="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-accent-purple/10 text-accent-purple border border-accent-purple/20">
+                Founder & Lead Developer
+              </div>
+              <h2 className="text-2xl font-bold text-foreground">Built by Abhishek</h2>
+              <p className="text-sm text-muted leading-relaxed max-w-xl">
+                &quot;I created MeetMind AI to eliminate manual note-taking and ensure teams never lose critical decisions or action items after a call.&quot;
+              </p>
+              <Link 
+                href="/authors/abhishek" 
+                className="inline-flex items-center text-xs font-semibold text-accent-purple hover:underline pt-1"
+              >
+                Read Founder Profile & Bio →
+              </Link>
+            </div>
+          </div>
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-8 mb-24">
@@ -28,7 +65,7 @@ export default function AboutPage() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="glass-card p-8 md:p-10"
+            className="glass-card p-8 md:p-10 rounded-2xl"
           >
             <h2 className="text-2xl font-bold text-foreground mb-4">The Problem</h2>
             <p className="text-muted leading-relaxed mb-4">
@@ -43,7 +80,7 @@ export default function AboutPage() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="glass-card p-8 md:p-10 border-purple-500/20 bg-purple-500/5"
+            className="glass-card p-8 md:p-10 border-accent-purple/20 bg-accent-purple/5 rounded-2xl"
           >
             <h2 className="text-2xl font-bold text-foreground mb-4">Our Solution</h2>
             <p className="text-muted leading-relaxed mb-4">
@@ -65,8 +102,8 @@ export default function AboutPage() {
           <h2 className="text-3xl font-bold text-foreground mb-12">Core Principles</h2>
           
           <div className="grid sm:grid-cols-3 gap-6 text-left mb-24">
-            <div className="glass-card p-6">
-              <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center mb-4 text-blue-400">
+            <div className="glass-card p-6 rounded-xl">
+              <div className="w-10 h-10 rounded-full bg-accent-blue/20 flex items-center justify-center mb-4 text-accent-blue">
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
@@ -75,8 +112,8 @@ export default function AboutPage() {
               <p className="text-sm text-muted">No bots joining your calls. Just upload your audio when you&apos;re ready, and we handle the rest instantly.</p>
             </div>
             
-            <div className="glass-card p-6">
-              <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center mb-4 text-purple-400">
+            <div className="glass-card p-6 rounded-xl">
+              <div className="w-10 h-10 rounded-full bg-accent-purple/20 flex items-center justify-center mb-4 text-accent-purple">
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
@@ -85,7 +122,7 @@ export default function AboutPage() {
               <p className="text-sm text-muted">Your meetings are your business. We process your audio securely and never use your private conversations to train our models.</p>
             </div>
             
-            <div className="glass-card p-6">
+            <div className="glass-card p-6 rounded-xl">
               <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center mb-4 text-emerald-400">
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
@@ -97,7 +134,7 @@ export default function AboutPage() {
           </div>
 
           <h2 className="text-3xl font-bold text-foreground mb-8">Editorial Transparency & Human Review</h2>
-          <div className="glass-card p-8 md:p-10 text-left mb-16 border-blue-500/20 bg-blue-500/5">
+          <div className="glass-card p-8 md:p-10 text-left mb-16 border-accent-blue/20 bg-accent-blue/5 rounded-2xl">
             <h3 className="text-xl font-semibold text-foreground mb-4">How We Create Content</h3>
             <p className="text-muted leading-relaxed mb-4">
               At MeetMind AI, we believe in radical transparency regarding our use of Artificial Intelligence. While we build AI tools for productivity, we maintain strict editorial standards for our public content, blog posts, and educational resources.
