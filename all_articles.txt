@@ -10,7 +10,7 @@ seoTitle: "AI Agents vs AI Assistants: Key Differences for the Workplace"
 description: "Understand the fundamental differences between passive AI assistants and autonomous AI agents, and how both are reshaping modern workflows."
 seoDescription: "Are AI agents the same as AI assistants? Learn the key differences, use cases, and how the shift towards autonomous agents is changing modern business productivity."
 slug: "ai-agents-vs-assistants"
-author: "MeetMind Editorial Team"
+author: "Abhishek"
 publishedAt: "2026-07-17T00:00:00Z"
 updatedAt: "2026-07-17T00:00:00Z"
 tags: ["AI Agents", "AI Assistants", "Future of Work", "Productivity"]
@@ -90,7 +90,7 @@ seoTitle: "AI for Students: How to Use AI for Lectures and Notes"
 description: "Discover concrete workflows for using AI to record lectures, transcribe study group meetings, and generate effective study guides."
 seoDescription: "Learn how students use AI transcription and meeting summaries to manage lectures, group projects, and study sessions efficiently."
 slug: "ai-for-students"
-author: "MeetMind Editorial Team"
+author: "Abhishek"
 publishedAt: "2026-07-31T00:00:00Z"
 updatedAt: "2026-07-31T00:00:00Z"
 tags: ["Productivity", "AI", "Students"]
@@ -154,7 +154,7 @@ FILE: ai-in-business-communication.mdx
 title: "How AI Is Transforming Business Communication"
 description: "Learn how AI is transforming business communication through meeting transcription, automated summaries, action-item extraction, and enterprise knowledge management."
 slug: "ai-in-business-communication"
-author: "MeetMind Editorial Team"
+author: "Abhishek"
 publishedAt: "2026-07-25T10:00:00+05:30"
 updatedAt: "2026-07-25T10:00:00+05:30"
 tags: ["Productivity", "AI", "Remote Work"]
@@ -264,7 +264,7 @@ seoTitle: "AI Productivity Tips to 10x Your Workflow in 2026"
 description: "Discover the best AI productivity tips and tools to automate mundane tasks, manage time better, and skyrocket your output."
 seoDescription: "Learn how to leverage AI to boost your productivity. From automated [meeting notes](/blog/how-to-write-better-meeting-minutes) to intelligent task management, discover tips to optimize your workflow."
 slug: "ai-productivity-tips"
-author: "MeetMind Editorial Team"
+author: "Abhishek"
 publishedAt: "2026-07-14T00:00:00Z"
 updatedAt: "2026-07-14T00:00:00Z"
 tags: ["Productivity", "AI", "Work Hacks"]
@@ -355,7 +355,7 @@ seoTitle: "Best AI Tools for Professionals to Use in 2026"
 description: "Cut through the noise. Discover the most effective AI tools for professionals in 2026, categorized by real-world workflows like meetings, coding, and automation."
 seoDescription: "Explore the top AI tools for professionals in 2026. From MeetMind AI for meetings to Cursor for coding, learn how to build a highly productive tech stack."
 slug: "ai-tools-for-professionals"
-author: "MeetMind Editorial Team"
+author: "Abhishek"
 publishedAt: "2026-07-30T10:00:00Z"
 updatedAt: "2026-07-30T10:00:00Z"
 tags: ["Productivity", "AI Tools", "Future of Work"]
@@ -440,7 +440,7 @@ seoTitle: "AI Workflow Automation for Meetings — Eliminate Manual Follow-Ups (
 description: "Learn how to connect AI meeting assistants to your existing tools so action items, summaries, and transcripts flow automatically — no copy-pasting required."
 seoDescription: "Stop copy-pasting [meeting notes](/blog/how-to-write-better-meeting-minutes) into Slack and Jira. This guide shows you how to build an automated AI meeting pipeline using webhooks, Zapier, and native integrations in 2026."
 slug: "ai-workflow-automation"
-author: "MeetMind Editorial Team"
+author: "Abhishek"
 publishedAt: "2026-07-16T00:00:00Z"
 updatedAt: "2026-07-16T00:00:00Z"
 tags: ["Workflow Automation", "AI Tools", "Productivity"]
@@ -657,7 +657,7 @@ description: "A comprehensive, data-driven comparison of the top AI meeting assi
 slug: "best-ai-meeting-assistants-2026"
 seoTitle: "Best AI Meeting Assistants in 2026: Features, Pricing & Comparison"
 seoDescription: "Compare the top AI meeting assistants in 2026. Detailed feature matrices, pricing tiers, pros & cons, qualitative scorecards, security benchmarks, and recommendations for teams and enterprises."
-author: "MeetMind Editorial Team"
+author: "Abhishek"
 publishedAt: "2026-08-03T00:00:00Z"
 updatedAt: "2026-08-03T00:00:00Z"
 tags: ["AI Meeting Assistant", "Software Comparison", "Productivity", "Enterprise AI", "Voice AI"]
@@ -671,7 +671,7 @@ featured: true
 draft: false
 ---
 
-**Reviewed by [MeetMind Editorial Team](/about)** — 12 min read  
+**Reviewed by [Abhishek](/about)** — 12 min read  
 *Research methodology updated August 2026 • Editorial independence disclosure*
 
 Published • Aug 3, 2026 | Last Updated • Aug 3, 2026 | Last Reviewed • Aug 3, 2026
@@ -1236,7 +1236,7 @@ seoTitle: "7 Best AI Note-Taking Apps for Meetings in 2026 (Compared)"
 description: "A comprehensive review of the top AI note-taking and meeting assistant applications available in 2026 to boost your team's productivity."
 seoDescription: "Looking for the best AI note-taking app? We compare the top 7 meeting assistants in 2026, covering features, pricing, privacy, and ideal use cases."
 slug: "best-ai-note-taking-apps-2026"
-author: "MeetMind Editorial Team"
+author: "Abhishek"
 publishedAt: "2026-07-08T00:00:00Z"
 updatedAt: "2026-07-08T00:00:00Z"
 tags: ["Software Reviews", "AI Tools", "Productivity"]
@@ -1400,7 +1400,7 @@ FILE: best-practices-leveraging-ai-summaries.mdx
 title: "Best Practices for Leveraging AI Summaries Effectively"
 description: "Learn how to review, distribute, and integrate AI meeting summaries into your team's workflow to maximize productivity and alignment."
 slug: "best-practices-leveraging-ai-summaries"
-author: "MeetMind Editorial Team"
+author: "Abhishek"
 publishedAt: "2026-08-02T00:00:00Z"
 updatedAt: "2026-08-02T00:00:00Z"
 tags: ["Productivity", "AI", "Best Practices"]
@@ -1414,7 +1414,7 @@ featured: false
 draft: false
 ---
 
-**Written by MeetMind Editorial Team** — 6 min read
+**Written by Abhishek** — 6 min read
 *MeetMind AI publishes practical guides on AI meeting assistants, transcription technology, workplace productivity, and business communication.*
 
 Published • Aug 2, 2026 | Last Updated • Aug 2, 2026 | Reviewed • Aug 2, 2026
@@ -1637,7 +1637,7 @@ If you're looking for an AI meeting assistant that combines transcription, [AI s
       "dateModified": "2026-08-02T00:00:00Z",
       "author": {
         "@type": "Organization",
-        "name": "MeetMind Editorial Team",
+        "name": "Abhishek",
         "url": "https://meetmind.ai/about"
       },
       "publisher": {
@@ -1757,7 +1757,7 @@ FILE: common-meeting-mistakes.mdx
 title: "10 Common Meeting Mistakes That Kill Productivity (And How AI Fixes Them)"
 description: "Learn the most common meeting mistakes that reduce productivity and discover how AI meeting assistants help capture notes, summarize discussions, and track action items automatically."
 slug: "common-meeting-mistakes"
-author: "MeetMind Editorial Team"
+author: "Abhishek"
 publishedAt: "2026-07-21T00:00:00Z"
 updatedAt: "2026-07-21T00:00:00Z"
 tags: ["Productivity", "AI", "Remote Work"]
@@ -1892,7 +1892,7 @@ seoTitle: "Context-Aware Meeting Chatbots vs Summarizers: A Technical Deep Dive"
 description: "An architectural guide to how context-aware meeting chatbots use deterministic routing, speaker diarization, and timestamp grounding to improve reliability."
 seoDescription: "Explore the technical architecture of context-aware meeting chatbots. Learn how hybrid deterministic routing and diarization reduce LLM hallucinations."
 slug: "context-aware-meeting-chatbots"
-author: "MeetMind Editorial Team"
+author: "Abhishek"
 publishedAt: "2026-07-26T00:00:00Z"
 updatedAt: "2026-07-26T00:00:00Z"
 tags: ["AI Architecture", "Productivity", "Meeting Intelligence", "LLM Design"]
@@ -1983,7 +1983,7 @@ description: "A technical deep-dive into Faster-Whisper, CTranslate2, 8-bit quan
 slug: "faster-whisper-explained"
 seoTitle: "Faster Whisper Explained: Architecture & Inference Optimization"
 seoDescription: "Discover how Faster-Whisper uses CTranslate2 and quantization to deliver 4x faster speech recognition with 50% less memory for AI meeting platforms."
-author: "MeetMind Editorial Team"
+author: "Abhishek"
 publishedAt: "2026-08-03T00:00:00Z"
 updatedAt: "2026-08-03T00:00:00Z"
 tags: ["Faster Whisper", "ASR", "Deep Learning", "Speech Recognition", "CTranslate2", "Performance"]
@@ -1997,7 +1997,7 @@ featured: false
 draft: false
 ---
 
-**Written by MeetMind Editorial Team** — 7 min read  
+**Written by Abhishek** — 7 min read  
 *MeetMind AI publishes technical deep-dives on speech intelligence, transformer optimization, enterprise NLP, and automated meeting orchestration.*
 
 Published • Aug 3, 2026 | Last Updated • Aug 3, 2026 | Reviewed • Aug 3, 2026
@@ -2226,7 +2226,7 @@ seoTitle: "The Future of AI Meetings: Beyond Basic Transcription"
 description: "Explore the architectural shift in AI meeting assistants—from passive speech-to-text models to active orchestration engines and automated workflows."
 seoDescription: "What is the future of AI meetings? Learn how deep learning frameworks, orchestration paradigms, and autonomous agents will transform workplace collaboration by 2026."
 slug: "future-of-ai-meetings"
-author: "MeetMind Editorial Team"
+author: "Abhishek"
 publishedAt: "2026-07-18T00:00:00Z"
 updatedAt: "2026-07-18T00:00:00Z"
 tags: ["AI Assistants", "Future of Work", "System Design", "Orchestration"]
@@ -2333,7 +2333,7 @@ seoTitle: "Google Gemini vs ChatGPT for Meeting Notes (2026 Comparison)"
 description: "A comprehensive comparison of Google Gemini and OpenAI ChatGPT for transcribing, summarizing, and extracting action items from professional meeting notes."
 seoDescription: "Which LLM is best for [meeting summaries](/blog/how-ai-meeting-summaries-work)? We compare Google Gemini and OpenAI ChatGPT on context windows, accuracy, pricing, and data privacy."
 slug: "gemini-vs-chatgpt-for-meeting-notes"
-author: "MeetMind Editorial Team"
+author: "Abhishek"
 publishedAt: "2026-07-12T00:00:00Z"
 updatedAt: "2026-07-12T00:00:00Z"
 tags: ["AI Models", "ChatGPT", "Gemini", "Productivity"]
@@ -2643,7 +2643,7 @@ FILE: how-ai-saves-time-during-meetings.mdx
 title: "How AI Saves Time During Meetings"
 description: "Discover how AI meeting assistants streamline workflows, automate note-taking, and save your team hours of manual work every week."
 slug: "how-ai-saves-time-during-meetings"
-author: "MeetMind Editorial Team"
+author: "Abhishek"
 publishedAt: "2026-07-20T00:00:00Z"
 updatedAt: "2026-07-20T00:00:00Z"
 tags: ["Productivity", "AI"]
@@ -2732,7 +2732,7 @@ title: "How AI Transcription Works: A Deep Dive"
 description: "Discover exactly how AI transcription works in modern ASR pipelines. We break down the end-to-end architecture powering tools like Whisper and MeetMind AI."
 slug: "how-ai-transcription-works"
 seoTitle: "How AI Transcription Works: A Deep Dive"
-author: "MeetMind Editorial Team"
+author: "Abhishek"
 publishedAt: "2026-07-19T12:00:00Z"
 updatedAt: "2026-07-19T12:00:00Z"
 tags: ["Deep Learning", "NLP", "Transformers", "ASR"]
@@ -3253,7 +3253,7 @@ seoTitle: "How to Write Better Meeting Minutes: 2026 Guide"
 description: "A comprehensive guide on how to write better meeting minutes and how it impacts your workflow."
 seoDescription: "Learn how to write effective meeting minutes. Discover templates, best practices, and how AI can automate your note-taking process entirely."
 slug: "how-to-write-better-meeting-minutes"
-author: "MeetMind Editorial Team"
+author: "Abhishek"
 publishedAt: "2026-07-22T08:00:00Z"
 updatedAt: "2026-07-22T08:00:00Z"
 tags: ["Productivity", "AI", "Meeting Management"]
@@ -3376,7 +3376,7 @@ seoTitle: "Local AI Transcription: The Key to Meeting Data Privacy"
 description: "Discover why businesses are shifting from cloud-based AI to local transcription models to protect sensitive meeting data and maintain compliance."
 seoDescription: "Learn why local AI transcription models are becoming essential for businesses to protect sensitive meeting data, ensure compliance, and prevent data leaks."
 slug: "local-ai-transcription-privacy"
-author: "MeetMind Editorial Team"
+author: "Abhishek"
 publishedAt: "2026-07-24T00:00:00Z"
 updatedAt: "2026-07-24T00:00:00Z"
 tags: ["Data Privacy", "Local AI", "Transcription", "Enterprise Security"]
@@ -3490,7 +3490,7 @@ seoTitle: "Meeting Action Items: Best Practices & Templates"
 description: "Learn how to write effective meeting action items with templates, examples, and best practices to ensure accountability and project success."
 seoDescription: "Discover how to capture and track meeting action items effectively. Get free templates, real-world examples, and best practices for better meeting outcomes."
 slug: "meeting-action-items"
-author: "MeetMind Editorial Team"
+author: "Abhishek"
 publishedAt: "2026-07-28T00:00:00Z"
 updatedAt: "2026-07-28T00:00:00Z"
 tags: ["Meeting Productivity", "Action Items", "Templates", "Team Management"]
@@ -3644,7 +3644,7 @@ Clear action items turn meeting discussions into defined next steps. A consisten
   "image": "https://www.meetmindai.co.in/images/blog/meeting-action-items.webp",
   "author": {
     "@type": "Organization",
-    "name": "MeetMind Editorial Team"
+    "name": "Abhishek"
   },
   "publisher": {
     "@type": "Organization",
@@ -3697,7 +3697,7 @@ FILE: meeting-summary-templates.mdx
 title: "The Ultimate Guide to Meeting Summary Templates"
 description: "Free meeting summary templates for executive meetings, standups, project kickoffs, and AI-powered [meeting summaries](/blog/how-ai-meeting-summaries-work)."
 slug: "meeting-summary-templates"
-author: "MeetMind Editorial Team"
+author: "Abhishek"
 publishedAt: "2026-07-23T00:00:00Z"
 updatedAt: "2026-07-23T00:00:00Z"
 tags: ["Productivity", "Templates", "AI"]
@@ -3857,7 +3857,7 @@ seoTitle: "Remote Team Meeting Best Practices & Tips for 2026"
 description: "Discover essential remote team meeting best practices to improve engagement, reduce zoom fatigue, and boost productivity for distributed teams."
 seoDescription: "Learn how to run effective remote team meetings with these actionable best practices. Reduce meeting fatigue and increase productivity across time zones."
 slug: "remote-team-meeting-best-practices"
-author: "MeetMind Editorial Team"
+author: "Abhishek"
 publishedAt: "2026-07-29T00:00:00Z"
 updatedAt: "2026-07-29T00:00:00Z"
 tags: ["Remote Work", "Meeting Productivity", "Team Management"]
@@ -3953,7 +3953,7 @@ seoTitle: "[AI meeting assistant](/blog/what-is-an-ai-meeting-assistant) ROI: Ho
 description: "Discover the true ROI of AI meeting assistants in 2026. Learn how automated notes, action item extraction, and intelligent search save hundreds of hours and thousands of dollars."
 seoDescription: "Calculate the AI meeting assistant ROI for your team. Discover how meeting productivity AI and time saved with AI [meeting notes](/blog/how-to-write-better-meeting-minutes) can transform your workflow in 2026."
 slug: "roi-of-ai-meeting-assistants"
-author: "MeetMind Editorial Team"
+author: "Abhishek"
 publishedAt: "2026-07-13T00:00:00Z"
 updatedAt: "2026-07-13T00:00:00Z"
 tags: ["Productivity", "AI Tools"]
@@ -4144,7 +4144,7 @@ seoTitle: "Meeting Transcript to Action Items With AI: Guide"
 description: "Learn how to turn meeting transcripts into structured action items using AI. Discover the step-by-step process, best practices, and automation workflows."
 seoDescription: "Learn how AI extracts action items from meeting transcripts. Turn messy meeting notes into clear tasks, owners, and deadlines with our step-by-step guide."
 slug: "turn-meeting-transcripts-into-action-items-using-ai"
-author: "MeetMind Editorial Team"
+author: "Abhishek"
 publishedAt: "2026-07-27T12:00:00Z"
 updatedAt: "2026-07-27T12:00:00Z"
 tags: ["AI Action Items", "Productivity", "Meeting Automation", "Task Management"]
@@ -4350,7 +4350,7 @@ If you are ready to stop manually reviewing transcripts and want to start automa
   "image": "https://www.meetmindai.co.in/images/blog/transcript-to-action-items.png",
   "author": {
     "@type": "Organization",
-    "name": "MeetMind Editorial Team"
+    "name": "Abhishek"
   },
   "publisher": {
     "@type": "Organization",
@@ -4419,7 +4419,7 @@ description: "A comprehensive guide on Voice AI, explaining how ASR, speaker dia
 slug: "voice-ai-explained"
 seoTitle: "Voice AI Explained: How Speech Recognition & NLP Work"
 seoDescription: "What is Voice AI? Learn how Automatic Speech Recognition, Diarization, and NLP combine to create intelligent AI meeting assistants and workflows."
-author: "MeetMind Editorial Team"
+author: "Abhishek"
 publishedAt: "2026-08-01T11:44:23Z"
 updatedAt: "2026-08-01T11:44:23Z"
 tags: ["Voice AI", "Productivity", "Deep Learning", "Speech Recognition"]
@@ -4534,7 +4534,7 @@ seoTitle: "AI Meeting Assistant: Complete 2026 Guide"
 description: "Discover what an AI meeting assistant is, how it works, and why businesses are adopting them to transcribe, summarize, and extract action items from meetings."
 seoDescription: "Learn everything about AI meeting assistants in 2026. Explore how [AI transcription](/blog/how-ai-transcription-works), summaries, and automated note-taking can save your team hours every week."
 slug: "what-is-an-ai-meeting-assistant"
-author: "MeetMind Editorial Team"
+author: "Abhishek"
 publishedAt: "2026-07-10T00:00:00Z"
 updatedAt: "2026-07-10T00:00:00Z"
 tags: ["AI", "Meeting Management", "Productivity"]
