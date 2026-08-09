@@ -6,8 +6,8 @@ const domains = [
   'https://meetmindai.co.in/about',
   'http://www.meetmindai.co.in/about',
   'https://www.meetmindai.co.in/about',
-  'http://meetmind.ai/about',
-  'https://meetmind.ai/about',
+  'https://www.meetmindai.co.in/about',
+  'https://www.meetmindai.co.in/about',
   'http://www.meetmind.ai/about',
   'https://www.meetmind.ai/about'
 ];

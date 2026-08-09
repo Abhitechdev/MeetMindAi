@@ -27,7 +27,7 @@ The evolution of meeting AI is best understood through the structural changes in
 
 Early generation tools relied on standard Whisper-style models and generic LLM wrappers for summarization. Today’s state-of-the-art platforms utilize specialized architectures to extract structured JSON payloads directly from conversational streams.
 
-By employing advanced NLP techniques (such as **Transformer** variants fine-tuned for high-density multi-speaker environments), modern systems categorize intent, urgency, and technical context on the fly. 
+By employing advanced NLP techniques (such as **Transformer** variants fine-tuned for high-density multi-speaker environments), modern systems categorize intent, urgency, and technical context on the fly. Learn how modern speech pipelines handle this in [How AI Transcription Works](/blog/how-ai-transcription-works) and [How AI Meeting Summaries Work](/blog/how-ai-meeting-summaries-work).
 
 | Metric | Legacy Models (2023) | Modern Agents (2026) |
 | :--- | :--- | :--- |
@@ -42,15 +42,21 @@ By employing advanced NLP techniques (such as **Transformer** variants fine-tune
 
 The true value of AI in meetings doesn't end when the call disconnects. The future belongs to autonomous agents capable of system orchestration.
 
-### [workflow automation](/blog/ai-workflow-automation) without Human-in-the-loop (HITL)
+### [AI Workflow Automation](/blog/ai-workflow-automation) without Human-in-the-Loop (HITL)
 
 When a project manager says, *"Let's get those benchmark numbers to the client by Thursday"*, an orchestrating AI agent doesn't just log this as text. It interprets the systemic requirements:
 
 1. **Identity Resolution:** Maps "client" to the specific CRM record associated with the meeting calendar event.
-2. **Task Generation:** Automatically creates a Jira ticket or Asana task with the correct deadline (Thursday).
+2. **Task Generation:** Automatically creates a Jira ticket or Linear issue with assigned owner and due date (Thursday), as detailed in our guide to [Meeting Action Items](/blog/meeting-action-items).
 3. **Data Retrieval:** Uses RAG (Retrieval-Augmented Generation) to pre-fetch the mentioned "benchmark numbers" from a connected database.
 
-This multi-step pipeline replaces the manual sync up, pushing operational efficiency closer to O(1) human intervention.
+This multi-step pipeline replaces manual post-meeting administrative updates, pushing operational efficiency closer to O(1) human intervention.
+
+### Technical Limitations & Ambiguity Edge Cases
+
+Despite major performance gains, autonomous orchestration engines face real engineering trade-offs:
+* **Ambiguous Pronoun Resolution:** When a speaker says *"Send that deck to him"*, the agent must resolve *"that deck"* and *"him"* against calendar attendee metadata and recent meeting context. If context confidence drops below 85%, human confirmation must be requested to prevent erroneous data routing.
+* **API Rate Limits & Latency Slashes:** Multi-pass function calling across external APIs (Jira, Slack, Salesforce) introduces network latency. Platforms manage this by queuing non-blocking webhooks asynchronously.
 
 ---
 
@@ -98,4 +104,4 @@ The approach above ensures that heavy components (like `AgentOrchestrator` handl
 
 The future of AI meetings fundamentally alters how distributed teams operate. By shifting the focus from simple text generation to **autonomous system orchestration**, we move toward an era where meetings are no longer a drain on productivity, but the highly efficient command center for execution. 
 
-Are you ready to experience real orchestration? Explore how [MeetMind AI](/pricing) leverages state-of-the-art architecture to turn your meetings into actionable workflows.
+Are you ready to experience real orchestration? Explore how [MeetMind AI](/pricing) leverages state-of-the-art architecture to turn your meetings into actionable workflows. For model comparison details, review our analysis of [Gemini vs ChatGPT for Meeting Notes](/blog/gemini-vs-chatgpt-for-meeting-notes).
