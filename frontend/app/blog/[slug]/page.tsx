@@ -115,9 +115,9 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   };
 
   let faqSchema = null;
-  const faqSectionMatch = article.content.match(/## Frequently Asked Questions([\s\S]*?)(?=## |$)/);
+  const faqSectionMatch = article.content.match(/## Frequently Asked Questions([\s\S]*?)(?=\n## |$)/);
   if (faqSectionMatch) {
-    const faqMatches = Array.from(faqSectionMatch[1].matchAll(/###\s+(.+?)\n+([^#]+)/g));
+    const faqMatches = Array.from(faqSectionMatch[1].matchAll(/###\s+(.+?)\n+([\s\S]*?)(?=\n### |$)/g));
     if (faqMatches.length > 0) {
       faqSchema = {
         "@context": "https://schema.org",
