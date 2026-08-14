@@ -113,7 +113,7 @@ export default function RootLayout({
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=pub-8627957484050006"
           crossOrigin="anonymous"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
         <Script src="https://www.googletagmanager.com/gtag/js?id=G-HS4WZF1K1M" strategy="lazyOnload" />
         <Script id="google-analytics" strategy="lazyOnload">

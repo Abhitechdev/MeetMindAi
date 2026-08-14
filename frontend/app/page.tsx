@@ -4,8 +4,9 @@ import HeroSection from "./components/hero-section";
 import BentoFeatures from "./components/bento-features";
 import LanguageMarquee from "./components/language-marquee";
 import WorkflowSteps from "./components/workflow-steps";
-import InteractiveSampleViewer from "./components/interactive-sample-viewer";
-import MeetingOrchestrator from "./components/meeting-orchestrator";
+import dynamic from "next/dynamic";
+const InteractiveSampleViewer = dynamic(() => import("./components/interactive-sample-viewer"));
+const MeetingOrchestrator = dynamic(() => import("./components/meeting-orchestrator"));
 
 export const metadata: Metadata = {
   alternates: {
