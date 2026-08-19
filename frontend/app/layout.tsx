@@ -144,6 +144,7 @@ export default function RootLayout({
                     <li><Link href="/use-cases" className="hover:text-foreground transition-colors">Use Cases</Link></li>
                     <li><Link href="/pricing" className="hover:text-foreground transition-colors">Pricing</Link></li>
                     <li><Link href="/changelog" className="hover:text-foreground transition-colors">Changelog</Link></li>
+                    <li><Link href="/reviews" className="hover:text-foreground transition-colors">Reviews</Link></li>
                   </ul>
                 </div>
                 <div>

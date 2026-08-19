@@ -1,0 +1,1 @@
+const https = require('https'); https.get('https://www.meetmindai.co.in', (res) => { console.log('HTTP Status:', res.statusCode); let data = ''; res.on('data', chunk => data += chunk); res.on('end', () => { console.log('AdSense ID:', data.includes('pub-8627957484050006')); console.log('GTM ID:', data.includes('G-HS4WZF1K1M')); }); });
