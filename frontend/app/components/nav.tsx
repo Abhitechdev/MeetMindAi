@@ -18,6 +18,7 @@ const publicLinks = [
   { href: "/blog", label: "Blog" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
+  { href: "/reviews", label: "Reviews" },
 ]
 
 const authLinks = [
@@ -25,6 +26,7 @@ const authLinks = [
   { href: "/history", label: "History" },
   { href: "/actions", label: "Actions" },
   { href: "/decisions", label: "Decisions" },
+  { href: "/reviews", label: "Reviews" },
 ]
 
 export function Navigation() {
