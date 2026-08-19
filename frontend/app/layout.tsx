@@ -43,6 +43,9 @@ export const metadata: Metadata = {
     description: "Upload meeting audio or video to instantly generate transcripts, action items, and summaries in multiple languages.",
     images: ["/images/og-card.png"],
   },
+  other: {
+    "trustpilot-one-time-domain-verification-id": "3fe46a1d-8988-427f-b8b8-d61535403d2b",
+  },
 };
 
 export default function RootLayout({
