@@ -62,8 +62,12 @@ export async function submitReview(prevState: unknown, formData: FormData) {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
+    // Generate ID manually so we don't need to .select() it (which fails RLS because it's pending)
+    const reviewId = crypto.randomUUID()
+
     // 6. Insert review
-    const { data: reviewData, error } = await supabase.from("reviews").insert({
+    const { error } = await supabase.from("reviews").insert({
+      id: reviewId,
       user_id: user?.id || null,
       name,
       rating,
@@ -73,16 +77,16 @@ export async function submitReview(prevState: unknown, formData: FormData) {
       status: "pending", // Force safe default
       verified_user: false, // Force safe default
       trustpilot_invited: false // Force safe default
-    }).select("id").single()
+    })
 
-    if (error || !reviewData) {
+    if (error) {
       console.error("Error submitting review:", error)
-      return { success: false, message: "Failed to submit review. Please try again later." }
+      return { success: false, message: `Failed to submit review. DB Error: ${error?.message || "Unknown"}` }
     }
 
     // 7. Insert private data
     const { error: privateError } = await supabase.from("review_private_data").insert({
-      review_id: reviewData.id,
+      review_id: reviewId,
       email,
       contact_requested: contactRequested
     })
