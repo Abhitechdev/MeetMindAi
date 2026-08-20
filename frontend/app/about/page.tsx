@@ -149,30 +149,57 @@ export default function AboutPage() {
           </div>
         </motion.div>
 
-        {/* Editorial Transparency Card */}
+        {/* Publisher & Editorial Standards */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.5 }}
-          className="glass-card p-8 md:p-10 text-left rounded-2xl border border-card-border/80"
+          className="glass-card p-8 md:p-10 text-left rounded-2xl border border-card-border/80 mb-16"
         >
-          <h2 className="text-2xl font-bold text-foreground mb-4 tracking-tight">Editorial Transparency & Quality</h2>
-          <p className="text-sm text-muted leading-relaxed mb-6">
-            We maintain strict standards for all public documentation, help guides, and technical articles published on MeetMind AI.
+          <div className="flex items-center gap-3 mb-6">
+            <ShieldCheck className="w-6 h-6 text-accent-purple" />
+            <h2 className="text-2xl font-bold text-foreground tracking-tight">Publisher & Editorial Standards</h2>
+          </div>
+          <p className="text-sm text-muted leading-relaxed mb-8">
+            MeetMind AI is committed to maintaining strict standards for all public documentation, help guides, and technical articles published on our platform. Our editorial philosophy prioritizes accuracy, transparency, and actionable value for technical leaders and remote teams.
           </p>
-          <div className="grid md:grid-cols-3 gap-6 text-xs text-muted">
-            <div className="p-4 rounded-xl bg-surface/50 border border-card-border">
-              <h3 className="font-semibold text-foreground mb-1">Human Engineering Review</h3>
-              <p className="leading-relaxed">Every technical claim and guide is reviewed directly by our founding developer against actual code behavior.</p>
+
+          <div className="space-y-8">
+            <div>
+              <h3 className="text-lg font-semibold text-foreground mb-3">Publisher Information</h3>
+              <p className="text-sm text-muted leading-relaxed">
+                MeetMind AI is an independent software tool built to provide privacy-first meeting intelligence. All content, comparative guides, and product documentation are published directly by the core engineering team. We do not accept sponsored placements or paid product reviews.
+              </p>
             </div>
-            <div className="p-4 rounded-xl bg-surface/50 border border-card-border">
-              <h3 className="font-semibold text-foreground mb-1">Zero Hallucinations Guarantee</h3>
-              <p className="leading-relaxed">Meeting summaries and AI chat responses are strictly grounded in your uploaded transcript context.</p>
+
+            <div>
+              <h3 className="text-lg font-semibold text-foreground mb-3">Editorial Approach & Verification</h3>
+              <p className="text-sm text-muted leading-relaxed mb-3">
+                Our content strategy strictly adheres to an objective, engineering-first perspective. We verify every technical claim against actual code behavior.
+              </p>
+              <ul className="list-disc list-inside text-sm text-muted space-y-2 ml-2">
+                <li><strong className="text-foreground">Human Engineering Review:</strong> All architecture guides and comparison matrices are reviewed by our founding developer.</li>
+                <li><strong className="text-foreground">Fact-Checking:</strong> Product capabilities (both ours and competitors) are verified using official documentation, API references, and hands-on testing.</li>
+                <li><strong className="text-foreground">Zero Hallucinations Guarantee:</strong> Meeting summaries and AI chat responses are strictly grounded in your uploaded transcript context.</li>
+              </ul>
             </div>
-            <div className="p-4 rounded-xl bg-surface/50 border border-card-border">
-              <h3 className="font-semibold text-foreground mb-1">Continuous Updates</h3>
-              <p className="leading-relaxed">Documentation and help guides are updated whenever software features or model architectures evolve.</p>
+
+            <div>
+              <h3 className="text-lg font-semibold text-foreground mb-3">Corrections Policy</h3>
+              <p className="text-sm text-muted leading-relaxed">
+                The AI landscape moves rapidly. When new models are released or competitor features are updated, we actively revise our documentation. If a factual error is identified in our technical reviews or product guides, we correct it promptly and add a "Last Updated" timestamp to the article to reflect the change.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-foreground mb-3">Contact Us</h3>
+              <p className="text-sm text-muted leading-relaxed">
+                We welcome feedback, corrections, and questions regarding our editorial content or privacy practices. You can reach our editorial team directly at:
+              </p>
+              <a href="mailto:support@meetmindai.co.in" className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent-purple hover:text-accent-blue transition-colors mt-2">
+                support@meetmindai.co.in <ArrowRight className="w-3.5 h-3.5" />
+              </a>
             </div>
           </div>
         </motion.div>

@@ -9,6 +9,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { getArticleBySlug, getArticleSlugs, getRelatedArticles } from "../../../lib/mdx";
 import AdUnit from "../../components/ad-unit";
 import GradientBackground from "../../components/gradient-background";
+import AuthorBio from "../../../components/AuthorBio";
 
 export async function generateStaticParams() {
   const slugs = getArticleSlugs();
@@ -297,6 +298,8 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                 }}
               />
             </div>
+
+            <AuthorBio />
 
             {/* Feature CTA Component */}
             <div className="mt-16 bg-surface/40 border border-card-border p-8 sm:p-10 rounded-3xl text-center shadow-sm">
