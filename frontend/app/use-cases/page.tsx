@@ -22,7 +22,7 @@ const USE_CASES = [
     workflow: [
       "Upload MP3, WAV, or MP4 recordings of lectures (up to 100MB).",
       "Process audio using Whisper speech-to-text to capture technical terms.",
-      "Review Gemini AI executive summary for key lecture concepts.",
+      "Review the structured executive summary for key lecture concepts.",
       "Ask the AI Assistant direct questions about formulas, definitions, or exam topics."
     ],
     benefits: [

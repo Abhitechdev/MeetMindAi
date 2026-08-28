@@ -31,7 +31,7 @@ const HOMEPAGE_FAQ_SCHEMA = {
       name: "How does MeetMind AI process meeting audio?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "MeetMind AI uses Whisper models for speech-to-text transcription and Gemini AI to generate executive summaries, key decisions, and action items."
+        text: "MeetMind AI uses Whisper models for speech-to-text transcription and high-capacity language models to generate executive summaries, key decisions, and action items."
       }
     },
     {

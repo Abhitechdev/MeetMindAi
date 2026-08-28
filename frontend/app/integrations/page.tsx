@@ -20,40 +20,40 @@ export const metadata: Metadata = {
 
 const integrations = [
   {
-    name: "Slack",
-    description: "Instantly share meeting summaries and action items in your team's Slack channels.",
-    status: "Available",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/slack/slack-original.svg"
-  },
-  {
-    name: "Notion",
-    description: "Sync your meeting transcripts and executive summaries directly into your Notion workspace.",
-    status: "Available",
-    icon: "https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png"
-  },
-  {
-    name: "Zoom",
-    description: "Upload Zoom local and cloud recordings directly to MeetMind AI for instant processing.",
-    status: "Available",
+    name: "Zoom Recordings",
+    description: "Upload Zoom local and cloud audio/video recordings (.mp4, .m4a) directly for instant processing.",
+    status: "File Import",
     icon: "https://cdn.worldvectorlogo.com/logos/zoom-app.svg"
   },
   {
     name: "Google Meet",
-    description: "Process Google Meet recordings seamlessly through your Google Drive integration.",
-    status: "Available",
+    description: "Process Google Meet recording files (.mp4, .webm) downloaded from your Google Drive.",
+    status: "File Import",
     icon: "https://upload.wikimedia.org/wikipedia/commons/a/ab/Google_Meet_icon_%282020%29.svg"
   },
   {
-    name: "Jira",
-    description: "Turn action items from your engineering standups directly into Jira tickets.",
-    status: "Coming Soon",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jira/jira-original.svg"
+    name: "Microsoft Teams",
+    description: "Upload recordings and voice memos from Microsoft Teams calls (.mp4, .wav, .m4a).",
+    status: "File Import",
+    icon: "https://upload.wikimedia.org/wikipedia/commons/c/c9/Microsoft_Office_Teams_%282018%E2%80%93present%29.svg"
   },
   {
-    name: "HubSpot",
-    description: "Log discovery call transcripts and key decisions automatically into HubSpot CRM.",
-    status: "Coming Soon",
-    icon: "https://cdn.worldvectorlogo.com/logos/hubspot.svg"
+    name: "Slack",
+    description: "Easily copy structured executive summaries and next steps to paste directly into team channels.",
+    status: "Export Ready",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/slack/slack-original.svg"
+  },
+  {
+    name: "Notion",
+    description: "Export clean Markdown transcripts and formatted meeting minutes straight into your Notion workspace.",
+    status: "Export Ready",
+    icon: "https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png"
+  },
+  {
+    name: "Jira & Task Trackers",
+    description: "Turn extracted action item checklists and context into structured tasks for engineering backlogs.",
+    status: "Export Ready",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jira/jira-original.svg"
   }
 ];
 
@@ -97,15 +97,15 @@ export default function IntegrationsPage() {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={integration.icon} alt={`${integration.name} logo`} className="w-full h-full object-contain" />
                 </div>
-                <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${integration.status === 'Available' ? 'bg-green-500/10 text-green-500' : 'bg-purple-500/10 text-purple-400'}`}>
+                <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${integration.status === 'File Import' ? 'bg-accent-blue/10 text-accent-blue border border-accent-blue/20' : 'bg-accent-purple/10 text-accent-purple border border-accent-purple/20'}`}>
                   {integration.status}
                 </span>
               </div>
               <h3 className="text-xl font-bold text-foreground mb-2">{integration.name}</h3>
               <p className="text-sm text-muted mb-6 flex-1">{integration.description}</p>
               
-              <div className="flex items-center text-sm font-medium text-foreground opacity-0 group-hover:opacity-100 transition-opacity">
-                {integration.status === 'Available' ? 'View Guide' : 'Get Notified'} <ArrowRight className="ml-1 h-4 w-4" />
+              <div className="flex items-center text-sm font-medium text-accent-purple opacity-0 group-hover:opacity-100 transition-opacity">
+                Learn Workflow <ArrowRight className="ml-1 h-4 w-4" />
               </div>
             </div>
           ))}

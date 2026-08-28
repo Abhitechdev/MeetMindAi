@@ -145,8 +145,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "Home", "item": `${baseUrl}/` },
       { "@type": "ListItem", "position": 2, "name": "Blog", "item": `${baseUrl}/blog` },
-      { "@type": "ListItem", "position": 3, "name": article.metadata.category, "item": `${baseUrl}/blog/category/${article.metadata.category.toLowerCase().replace(/\s+/g, '-')}` },
-      { "@type": "ListItem", "position": 4, "name": article.metadata.title, "item": articleUrl }
+      { "@type": "ListItem", "position": 3, "name": article.metadata.title, "item": articleUrl }
     ]
   };
 
@@ -167,7 +166,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
       "name": "MeetMind AI",
       "logo": {
         "@type": "ImageObject",
-        "url": `${baseUrl}/logo.png`
+        "url": `${baseUrl}/logo.jpg`
       }
     },
     "mainEntityOfPage": {

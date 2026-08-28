@@ -24,7 +24,7 @@ const STATUS_MESSAGES: Record<string, { title: string; subtitle: string }> = {
   },
   summarizing: {
     title: "Generating insights...",
-    subtitle: "Analyzing transcript with Gemini AI",
+    subtitle: "Analyzing transcript with AI",
   },
 };
 

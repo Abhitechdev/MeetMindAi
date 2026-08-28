@@ -101,7 +101,7 @@ export default function AboutPage() {
             </div>
             <h2 className="text-2xl font-bold text-foreground mb-4 tracking-tight">Our Solution</h2>
             <p className="text-sm text-muted leading-relaxed mb-4">
-              MeetMind AI acts as an objective, instant memory for your workflow. By combining Faster Whisper speech recognition with Gemini AI models.
+              MeetMind AI acts as an objective, instant memory for your workflow by combining Whisper speech recognition with state-of-the-art language models.
             </p>
             <p className="text-sm text-muted leading-relaxed">
               We don&apos;t just generate raw text—we extract actionable intelligence: executive overviews, decision logs, and task assignments so you can focus on the meeting itself.
@@ -197,8 +197,8 @@ export default function AboutPage() {
               <p className="text-sm text-muted leading-relaxed">
                 We welcome feedback, corrections, and questions regarding our editorial content or privacy practices. You can reach our editorial team directly at:
               </p>
-              <a href="mailto:support@meetmindai.co.in" className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent-purple hover:text-accent-blue transition-colors mt-2">
-                support@meetmindai.co.in <ArrowRight className="w-3.5 h-3.5" />
+              <a href="mailto:meetmindai.help@zohomail.in" className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent-purple hover:text-accent-blue transition-colors mt-2">
+                meetmindai.help@zohomail.in <ArrowRight className="w-3.5 h-3.5" />
               </a>
             </div>
           </div>

@@ -4,7 +4,7 @@ import GradientBackground from "@/app/components/gradient-background";
 
 export const metadata = {
   title: "About the Author | Abhishek - Founder of MeetMind AI",
-  description: "Abhishek is the founder and developer of MeetMind AI and creator of AbhiTech Decoded. Learn how MeetMind AI uses Whisper and Gemini AI for automated meeting intelligence.",
+  description: "Abhishek is the founder and developer of MeetMind AI and creator of AbhiTech Decoded. Learn how MeetMind AI uses Whisper and high-capacity language models for automated meeting intelligence.",
   alternates: {
     canonical: "/authors/abhishek",
   },
@@ -28,7 +28,7 @@ export default function AbhishekAuthorPage() {
       "Artificial Intelligence",
       "Speech-to-Text Transcription",
       "Whisper Models",
-      "Gemini AI Integration",
+      "Large Language Models",
       "Next.js & Web Product Development",
       "Meeting Productivity Systems"
     ],
@@ -88,7 +88,7 @@ export default function AbhishekAuthorPage() {
               He created MeetMind AI to help users save time by automatically transcribing meeting recordings, generating AI-powered summaries, identifying action items, and organizing key decisions.
             </p>
             <p className="text-base leading-relaxed">
-              His work focuses on building practical AI-powered web applications that are simple to use and solve real productivity problems. MeetMind AI combines Whisper for speech transcription with Gemini AI to help users turn conversations into structured notes and insights.
+              His work focuses on building practical AI-powered web applications that are simple to use and solve real productivity problems. MeetMind AI combines Whisper for speech transcription with state-of-the-art language models to help users turn conversations into structured notes and insights.
             </p>
             <p className="text-base leading-relaxed">
               As the sole developer and maintainer of MeetMind AI, Abhishek writes and maintains the product documentation, help guides, and blog articles published on this website. Content is reviewed against the current functionality of the product and updated as features change to keep the information accurate and relevant.

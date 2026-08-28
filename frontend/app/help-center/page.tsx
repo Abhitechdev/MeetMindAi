@@ -56,7 +56,7 @@ export default function HelpCenterPage() {
             <FileText className="h-8 w-8 text-accent-blue mb-4" />
             <h2 className="text-lg font-bold text-foreground mb-2">Transcription Modes</h2>
             <p className="text-xs text-muted leading-relaxed">
-              Choose between <strong>Fast Mode</strong> (rapid speech-to-text + Gemini insights) and <strong>Speaker Detection Mode</strong> (diarization for multi-person calls).
+              Choose between <strong>Fast Mode</strong> (rapid speech-to-text + structured AI insights) and <strong>Speaker Detection Mode</strong> (diarization for multi-person calls).
             </p>
           </div>
 

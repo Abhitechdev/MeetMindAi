@@ -9,8 +9,8 @@ const STEPS = [
   },
   {
     step: "02",
-    title: "Whisper & Gemini Processing",
-    desc: "Open-weights Whisper transcribes spoken words with high accuracy. Gemini AI extracts summaries, action items, and decisions.",
+    title: "Whisper & AI Processing",
+    desc: "Whisper models transcribe spoken words with precise timestamps. Advanced language models extract summaries, action items, and decisions.",
     icon: "⚙️",
   },
   {

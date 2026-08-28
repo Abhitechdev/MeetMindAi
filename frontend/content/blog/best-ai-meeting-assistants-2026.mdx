@@ -175,7 +175,7 @@ The table below summarizes the core feature sets across the 7 leading platforms 
 
 | Platform | Best For | Recording Method | Speaker Diarization | Custom Vocabulary | Native CRM / Task Sync | Local / On-Device Mode | Free Tier |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **MeetMind AI** | Privacy & Structured Workflows | Async Upload / Native Stream | High (PyAnnote + Whisper) | Yes | Yes (Jira, Linear, Slack) | Yes (Zero-Data Egress) | 3 Meetings Free |
+| **MeetMind AI** | Privacy & Structured Workflows | Async Upload (MP3, WAV, MP4) | High (Whisper + Speaker Detection) | Auto-Detect | Structured Export (Markdown, TXT) | Hybrid Cloud (Zero Model Training) | 3 Meetings Free |
 | **Fireflies.ai** | Sales & CRM Pipeline Sync | Calendar Bot ("Fred") | High | Yes | Extensive (Salesforce, HubSpot) | No (Cloud Only) | Limited (Transcripts only) |
 | **Fathom** | Freelancers & Zoom Users | Native Zoom App / Bot | Medium-High | Yes | Yes (Pro Plans) | No (Cloud Only) | Unlimited Free Plan |
 | **Otter.ai** | Live Collaboration & Notes | Meeting Bot / Mobile App | Medium | Limited | Yes (Business Tier) | No (Cloud Only) | 300 mins/mo |
@@ -195,31 +195,31 @@ The table below summarizes the core feature sets across the 7 leading platforms 
 
 [MeetMind AI](/blog/how-meetmind-ai-works) is designed for technical, consulting, legal, and engineering organizations that require clear task extraction and robust data privacy.
 
-* **How It Works:** Rather than sending an intrusive third-party bot into client calls, MeetMind AI operates through direct audio ingestion and asynchronous streaming. It processes recordings through an optimized [Whisper-large-v3-turbo](/blog/faster-whisper-explained) pipeline combined with PyAnnote speaker diarization and reasoning models.
+* **How It Works:** Rather than sending an intrusive third-party bot into client calls, MeetMind AI operates through direct audio and video file uploads. It processes recordings through an optimized [Whisper-large-v3-turbo](/blog/faster-whisper-explained) pipeline combined with speaker detection and language reasoning models.
 * **Key Capabilities:**
   * **Bot-Free Processing:** Eliminates attendee apprehension by processing uploaded recordings asynchronously without participant bots joining the call.
-  * **Structured Action Item Extraction:** Formats high-priority tasks with assigned owners and deadlines, making it seamless to [Turn Meeting Transcripts into Action Items](/blog/turn-meeting-transcripts-into-action-items-using-ai) and export to Jira and Linear.
+  * **Structured Action Item Extraction:** Formats high-priority tasks with assigned owners and context, making it seamless to [Turn Meeting Transcripts into Action Items](/blog/turn-meeting-transcripts-into-action-items-using-ai) and export cleanly to task managers.
   * **Data Privacy:** Enterprise-grade encryption with a strict zero model-training policy. Learn more in our breakdown of [Local AI Transcription Privacy](/blog/local-ai-transcription-privacy).
   * **Interactive Context AI Chat:** Allows users to ask detailed questions against full meeting transcripts after the session ends.
 
 | Rating Dimension | Qualitative Assessment |
 | :--- | :--- |
-| **Transcription Accuracy** | ★★★★★ Excellent (Whisper-large-v3-turbo Large-v3) |
+| **Transcription Accuracy** | ★★★★★ Excellent (Whisper-large-v3-turbo) |
 | **Ease of Use** | ★★★★★ Excellent (Frictionless upload & clean UI) |
 | **Privacy & Security** | ★★★★★ Excellent (Zero model training, isolated storage) |
-| **Workflow Integrations** | ★★★★☆ Very Good (Jira, Linear, Slack, Notion) |
+| **Workflow Integrations** | ★★★★☆ Very Good (Structured Markdown, TXT & Task Checklist Export) |
 | **Value for Money** | ★★★★★ Excellent (₹299 one-time for 100 meetings) |
 | **Overall Assessment** | **★★★★★ Recommended for Privacy-First Teams** |
 
 #### Pros
 * **Bot-free asynchronous processing** eliminates attendee hesitation and compliance friction on sensitive client calls.
-* **Highly structured action items** with automatic owner and deadline extraction for Jira, Linear, and Slack.
+* **Structured action items and summaries** ready to export to Markdown, TXT, or task managers.
 * **Strict zero model-training guarantee** with encrypted data isolation.
 * **Competitive pricing with a one-time payment option** (₹299 one-time for 100 meetings with no recurring monthly lock-in).
 
 #### Cons
 * No live rolling caption display during the live active call.
-* Requires audio upload or streaming connection rather than an auto-joining calendar bot.
+* Requires file upload after the call rather than an auto-joining calendar bot.
 
 #### Not Ideal If
 * You need live real-time captions displayed on screen during an ongoing meeting.
@@ -486,7 +486,7 @@ In 2026, data governance is a primary consideration when adopting voice intellig
 
 | Platform | SOC 2 Type II | HIPAA Ready | Customer Data Used to Train Models? | Data Storage Location | Zero-Bot Architecture Option |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **MeetMind AI** | Compliant Architecture | Yes (BAA Available) | **Never** (Zero-Training Guarantee) | US / EU Isolated | **Yes** (Asynchronous Native) |
+| **MeetMind AI** | TLS 1.2+ & AES-256 Storage | Standard Security Controls | **Never** (Zero-Training Guarantee) | Supabase Cloud | **Yes** (Asynchronous Upload) |
 | **Fireflies.ai** | Certified | Yes (Enterprise tier) | No (on paid tiers) | US Cloud (AWS) | No (Bot Required) |
 | **Fathom** | Certified | Yes | No | US Cloud (AWS) | Yes (Zoom Native) / Bot (Meet) |
 | **Otter.ai** | Certified | No | Opt-out required on lower tiers | US Cloud (AWS) | No (Bot Required) |

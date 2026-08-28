@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 const faqs = [
   {
     question: "How accurate is the AI transcription?",
-    answer: "Our transcription engine leverages state-of-the-art models (like Whisper) which boast a near 99% accuracy rate across standard English. It handles varying accents well, though heavy background noise may slightly impact results."
+    answer: "Our transcription engine leverages state-of-the-art Whisper models that deliver high word-level accuracy under standard audio conditions. Accuracy is optimal when audio has clear microphone input and minimal cross-talk, while heavy background noise or muffled microphones can impact output fidelity."
   },
   {
     question: "Do you use my meeting data to train your AI?",

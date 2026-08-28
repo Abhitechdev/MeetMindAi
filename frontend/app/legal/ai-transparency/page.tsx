@@ -37,17 +37,20 @@ export default function AITransparencyPage() {
           </h2>
           <ul className="list-disc pl-6 space-y-2">
             <li>
-              <strong>Faster Whisper</strong> (self-hosted): an open-source
-              speech-to-text model used for audio transcription. This model
-              runs on our own servers. Your audio is not sent to any external
-              service for transcription.
+              <strong>Whisper-large-v3-turbo (via Groq):</strong> a high-speed,
+              open-weights speech-to-text model used for standard fast audio
+              transcription with precise timestamping.
             </li>
             <li>
-              <strong>Llama 3.3 70B via NVIDIA NIM API:</strong> a large
-              language model used for generating meeting summaries, extracting
-              key decisions and action items, and powering the chat feature.
-              Transcript text (not audio) is sent to NVIDIA&apos;s API for
-              processing.
+              <strong>Deepgram Nova-3:</strong> an advanced speech recognition model
+              used in Meeting Mode for multi-speaker identification and diarization.
+            </li>
+            <li>
+              <strong>Llama 3.3 70B (via Groq / NVIDIA NIM):</strong> an advanced
+              open-weights large language model used for generating executive meeting
+              summaries, extracting key decisions and action items, and powering the
+              interactive meeting chat assistant. Transcript text (not audio) is passed
+              to generate structured responses.
             </li>
           </ul>
         </section>
@@ -62,28 +65,28 @@ export default function AITransparencyPage() {
           <div className="glass-card p-6 font-mono text-sm space-y-2">
             <div className="flex items-center gap-3">
               <span className="inline-block w-2 h-2 rounded-full bg-accent-purple shrink-0" />
-              <span>You upload an audio file</span>
+              <span>You upload an audio or video file</span>
             </div>
             <div className="pl-4 border-l border-card-border ml-[3px] py-1">
-              <span className="text-muted text-xs">processed locally</span>
+              <span className="text-muted text-xs">audio compressed & preprocessed to 16kHz mono</span>
             </div>
             <div className="flex items-center gap-3">
               <span className="inline-block w-2 h-2 rounded-full bg-accent-purple shrink-0" />
-              <span>Faster Whisper transcribes audio to text on our servers</span>
+              <span>Speech recognition engine transcribes audio into timestamped text</span>
             </div>
             <div className="pl-4 border-l border-card-border ml-[3px] py-1">
-              <span className="text-muted text-xs">transcript text sent to NVIDIA NIM</span>
+              <span className="text-muted text-xs">transcript text sent to Llama 3.3 70B inference engine</span>
             </div>
             <div className="flex items-center gap-3">
               <span className="inline-block w-2 h-2 rounded-full bg-accent-purple shrink-0" />
-              <span>Llama 3.3 generates summary, decisions, and action items</span>
+              <span>Llama 3.3 extracts executive summary, decisions, and action items</span>
             </div>
             <div className="pl-4 border-l border-card-border ml-[3px] py-1">
-              <span className="text-muted text-xs">results stored in your account</span>
+              <span className="text-muted text-xs">structured results encrypted in your Supabase account</span>
             </div>
             <div className="flex items-center gap-3">
               <span className="inline-block w-2 h-2 rounded-full bg-accent-purple shrink-0" />
-              <span>Results displayed to you</span>
+              <span>Results displayed in dashboard for review, chat, and export</span>
             </div>
           </div>
         </section>

@@ -131,7 +131,7 @@ export default function ChangelogPage() {
             Experience MeetMind AI
           </h2>
           <p className="text-muted mb-8 max-w-xl mx-auto text-sm">
-            Try our Whisper transcription and Gemini AI executive summary generator with 3 free meetings today.
+            Try our Whisper transcription and AI executive summary generator with 3 free meetings today.
           </p>
           <Link
             href="/#upload-section"

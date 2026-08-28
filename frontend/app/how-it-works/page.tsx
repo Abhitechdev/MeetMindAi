@@ -7,38 +7,26 @@ import GradientBackground from "../components/gradient-background";
 const STEPS = [
   {
     number: "01",
-    title: "Record Meeting",
-    desc: "Record your meeting locally or to the cloud via Zoom, Teams, or Meet. Upload the raw audio or video file directly to MeetMind AI.",
+    title: "Upload Recording",
+    desc: "Record your meeting locally or from your video call platform (Zoom, Google Meet, Microsoft Teams, voice memos). Upload the audio or video file (up to 100MB) directly to MeetMind AI.",
     icon: "📤",
   },
   {
-    step: "02",
+    number: "02",
     title: "AI Transcription",
-    desc: "Our secure system utilizes Faster Whisper to convert your speech into a highly accurate, timestamped text transcript across multiple languages.",
+    desc: "Our transcription pipeline uses Whisper models (Fast Mode) and Deepgram (Speaker Detection Mode) to convert spoken words into an accurate, timestamped transcript.",
     icon: "🎙️",
   },
   {
     number: "03",
-    title: "Meeting Summary",
-    desc: "Advanced AI models (Gemini) process the full transcript to extract the core conversation, creating an executive-level summary in seconds.",
+    title: "Meeting Summary & Action Items",
+    desc: "Advanced language models digest the full transcript to extract the core discussion, creating an executive summary, key decisions, and a categorized action item checklist in seconds.",
     icon: "🧠",
   },
   {
     number: "04",
-    title: "Action Items",
-    desc: "The AI automatically detects promises, tasks, and follow-ups mentioned during the meeting and compiles them into a structured checklist.",
-    icon: "✅",
-  },
-  {
-    number: "05",
-    title: "Knowledge Search",
-    desc: "Ask the AI Chat Assistant specific questions about the meeting. It searches the semantic context to instantly answer questions like 'What was the budget decision?'.",
-    icon: "🔍",
-  },
-  {
-    step: "04",
-    title: "Export & Share",
-    desc: "Instantly copy the results or export your cleanly formatted notes to Markdown or TXT to share with your team via Slack or Email.",
+    title: "Query, Review & Export",
+    desc: "Ask the AI Chat Assistant specific questions grounded in the meeting context, and export cleanly formatted notes to Markdown or TXT to share with your team.",
     icon: "✨",
   },
 ];

@@ -37,7 +37,7 @@ export default function EditorialPolicyPage() {
               </p>
               <ul className="list-disc pl-6 space-y-2">
                 <li><strong>Drafting & Research:</strong> Content is outlined and drafted around real user challenges in meeting transcription, AI summarization, and productivity workflows.</li>
-                <li><strong>Technical Fact-Checking:</strong> Every technical claim regarding Whisper transcription, Gemini AI models, security protocols, or API behavior is vetted directly against our active codebase by Abhishek.</li>
+                <li><strong>Technical Fact-Checking:</strong> Every technical claim regarding Whisper transcription, language model inference, security protocols, or API behavior is vetted directly against our active codebase by Abhishek.</li>
                 <li><strong>Source Verification:</strong> Claims referencing third-party frameworks, academic papers, or industry benchmarks are cross-referenced with authoritative documentation before publishing.</li>
                 <li><strong>Maintenance Updates:</strong> When software features, upload limits, or UI workflows change, corresponding documentation and articles are updated to reflect active product reality.</li>
               </ul>
