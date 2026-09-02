@@ -82,7 +82,7 @@ export default function HelpCenterPage() {
 
               <div className="pt-4 border-t border-card-border">
                 <h3 className="font-semibold text-foreground text-base mb-1">How fast is processing?</h3>
-                <p>Processing time depends on audio duration and selected mode. Typically, a 30-minute recording is transcribed and summarized in 30 to 60 seconds.</p>
+                <p>Processing time depends on audio duration, network conditions, and the selected transcription mode.</p>
               </div>
 
               <div className="pt-4 border-t border-card-border">

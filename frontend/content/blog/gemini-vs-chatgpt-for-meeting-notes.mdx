@@ -105,9 +105,9 @@ Depending on your account settings, data entered into the free consumer interfac
 ### Enterprise API Security
 When you use a dedicated enterprise meeting platform (like MeetMind AI), the software does not use the public web interfaces. It communicates with leading AI providers via their secure Enterprise APIs.
 
-Both Google Cloud Vertex AI and OpenAI's Enterprise API offer strict privacy-focused controls. The data is heavily encrypted in transit. Once the model generates the summary and returns the payload to your software, the text is immediately deleted from their servers. It is explicitly excluded from their training datasets. 
+Major cloud providers like Google Cloud Vertex AI, OpenAI's Enterprise API, and Groq offer privacy-focused controls. The data is encrypted in transit and subject to strict data processing agreements. Crucially, data processed through these enterprise endpoints is generally excluded from their consumer training datasets. 
 
-If privacy is your primary concern, both models are equally secure—*provided* they are implemented correctly through an enterprise API architecture.
+If privacy is your primary concern, ensure that any platform you use relies on enterprise API architecture with documented data policies rather than consumer-facing endpoints.
 
 ## Speed, Cost, and The API Ecosystem
 

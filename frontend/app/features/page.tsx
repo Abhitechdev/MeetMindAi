@@ -94,7 +94,7 @@ export default function FeaturesPage() {
                   </tr>
                   <tr>
                     <td className="py-4 px-4">Time Spent</td>
-                    <td className="py-4 px-4 text-green-400">Under 1 minute processing time</td>
+                    <td className="py-4 px-4 text-green-400">Fast automated processing</td>
                     <td className="py-4 px-4 text-red-400">30-45 minutes of manual typing</td>
                   </tr>
                   <tr>

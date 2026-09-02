@@ -4,13 +4,13 @@ import { useState } from "react";
 
 const DEMO_DATA = {
   transcript: `[00:00:05] Abhishek: Welcome team to our Q3 product sync. Today we need to align on the Whisper transcription pipeline and API rate limit safeguards.
-[00:00:18] Sarah: I've benchmarked the Whisper processing speed on GPU workers. Transcribing a 30-minute meeting now takes less than 45 seconds.
+[00:00:18] Sarah: I've verified the Whisper processing pipeline on GPU workers. Processing time depends on audio duration, network conditions, and the selected transcription mode.
 [00:00:32] Abhishek: That's a huge speedup. What about user file size constraints?
 [00:00:41] Sarah: We capped client audio uploads at 100MB to prevent memory overhead on free tier instances. Supported formats are MP3, WAV, M4A, MP4, WEBM, MOV, and AVI.
 [00:00:58] Abhishek: Perfect. Let's make sure the executive summary highlights key decisions and action items cleanly. Meeting adjourned.`,
-  executiveSummary: "The team reviewed Q3 product benchmarks for the Whisper transcription pipeline. Performance optimization reduced 30-minute audio processing time to under 45 seconds on GPU workers. Upload safeguards were confirmed with a 100MB file limit supporting major audio/video formats.",
+  executiveSummary: "The team reviewed Q3 product benchmarks for the Whisper transcription pipeline. Processing time depends on audio duration, network conditions, and the selected transcription mode. Upload safeguards were confirmed with a 100MB file limit supporting major audio/video formats.",
   keyDecisions: [
-    "GPU worker optimizations finalized, reducing 30-minute transcription times to under 45 seconds.",
+    "GPU worker optimizations finalized for the transcription pipeline.",
     "File upload limit capped at 100MB for optimal server stability.",
     "Supported formats expanded to include MP3, WAV, M4A, MP4, WEBM, MOV, and AVI."
   ],

@@ -95,8 +95,11 @@ export default function PrivacyPolicyPage() {
               storage.
             </li>
             <li>
-              <strong>NVIDIA NIM API:</strong> transcript text (not audio) is
-              sent to NVIDIA&apos;s API for AI-powered summarization and chat.
+              <strong>Groq & Deepgram APIs:</strong> used for high-performance audio transcription.
+            </li>
+            <li>
+              <strong>Groq & NVIDIA NIM APIs:</strong> transcript text (not audio) is
+              sent to these APIs for AI-powered summarization and chat.
               See our{" "}
               <a
                 href="/legal/ai-transparency"
@@ -123,16 +126,15 @@ export default function PrivacyPolicyPage() {
           </h2>
           <ul className="list-disc pl-6 space-y-2">
             <li>
-              Audio transcription is performed using Faster Whisper, a
-              self-hosted model. Your audio files are processed on our servers
-              and are not sent to any third party.
+              Audio transcription relies on third-party providers (Groq and Deepgram). 
+              Your audio files are sent to these APIs for transcription. Data handling by those providers is subject to their applicable policies and contractual terms.
             </li>
             <li>
-              Transcript text is sent to NVIDIA NIM API (Llama 3.3 70B) for
-              summarization and chat responses.
+              Transcript text is sent to Groq or NVIDIA NIM APIs (using Llama 3.3 models) for
+              summarization and chat responses. Data handling by those providers is subject to their applicable policies and contractual terms.
             </li>
             <li>
-              Your data is not used to train or fine-tune any AI model.
+              Your data is not used to train or fine-tune any AI model by MeetMind AI.
             </li>
           </ul>
         </section>
@@ -144,9 +146,9 @@ export default function PrivacyPolicyPage() {
           <p className="mb-3">
             Your meeting data (transcripts, summaries, action items) is stored
             in our Supabase database and is associated with your account. Audio
-            files are processed and may be retained temporarily for
-            transcription. You can delete your meeting history at any time from
-            within the application.
+            files are written temporarily to our local storage and our application executes cleanup of these local files immediately 
+            after transcription is complete. You can delete your meeting history at any time from
+            within the application. Please note that deleting local temporary files or database records does not guarantee deletion of copies processed by third-party providers.
           </p>
           <p>
             If you delete your account, all associated data will be permanently

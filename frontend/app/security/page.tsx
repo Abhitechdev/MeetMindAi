@@ -75,9 +75,9 @@ export default function SecurityPage() {
             <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-purple-500/10 text-purple-400">
               <Database className="h-6 w-6" />
             </div>
-            <h3 className="text-xl font-bold text-foreground mb-3">Strict AI Processing Workflow</h3>
+            <h3 className="text-xl font-bold text-foreground mb-3">AI Processing Workflow</h3>
             <p className="text-muted leading-relaxed">
-              We pass your transcripts to secure APIs to generate summaries and extract action items. We enforce strict zero-retention policies with our AI partners. <strong>Your meeting data is never used to train public Large Language Models (LLMs).</strong>
+              MeetMind AI relies on third-party AI service providers (Groq, Deepgram, NVIDIA) for transcription and language-model processing. Data handling by those providers is subject to their applicable policies and contractual terms.
             </p>
           </div>
 
@@ -85,9 +85,9 @@ export default function SecurityPage() {
             <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-red-500/10 text-red-400">
               <FileX className="h-6 w-6" />
             </div>
-            <h3 className="text-xl font-bold text-foreground mb-3">Data Retention & Deletion</h3>
+            <h3 className="text-xl font-bold text-foreground mb-3">Data Deletion</h3>
             <p className="text-muted leading-relaxed">
-              You own your data. When you delete a meeting from your history, it triggers a hard delete across our databases and storage buckets. We do not retain hidden copies or soft-delete backups of your proprietary recordings.
+              You own the data stored in our databases. Audio files uploaded for processing are temporarily written to our local storage and our application executes cleanup of these local files immediately after transcription. When you delete a meeting from your history, it triggers a hard delete of your transcript and summary data in our database. Please note that deleting local temporary files or database records does not guarantee deletion of copies processed by third-party providers.
             </p>
           </div>
 
@@ -95,9 +95,9 @@ export default function SecurityPage() {
             <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-green-500/10 text-green-400">
               <Shield className="h-6 w-6" />
             </div>
-            <h3 className="text-xl font-bold text-foreground mb-3">GDPR-Ready & Compliance</h3>
+            <h3 className="text-xl font-bold text-foreground mb-3">Data Export & Compliance</h3>
             <p className="text-muted leading-relaxed">
-              Our infrastructure is built to support GDPR and CCPA requirements. We provide tooling for data export and complete account deletion. We are also actively building out our compliance framework with <strong>SOC 2 certification currently planned</strong> for our upcoming enterprise roadmap.
+              Our infrastructure is built with privacy in mind. We provide tooling for data export and complete account deletion, helping users meet their compliance requirements.
             </p>
           </div>
         </div>

@@ -35,7 +35,7 @@ const changelog = [
     version: "v2.0.0",
     title: "Whisper Pipeline Optimization & Speaker Diarization",
     changes: [
-      "Upgraded underlying transcription engine to Whisper GPU workers, reducing 30-minute recording processing times to under 45 seconds.",
+      "Upgraded underlying transcription engine to Whisper GPU workers. Processing time depends on audio duration, network conditions, and the selected transcription mode.",
       "Introduced Speaker Detection Mode for qualitative research interviews and multi-person calls.",
       "Fixed an issue where very short recordings (under 30 seconds) failed to generate complete summaries."
     ],

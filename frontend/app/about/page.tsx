@@ -188,7 +188,7 @@ export default function AboutPage() {
             <div>
               <h3 className="text-lg font-semibold text-foreground mb-3">Corrections Policy</h3>
               <p className="text-sm text-muted leading-relaxed">
-                The AI landscape moves rapidly. When new models are released or competitor features are updated, we actively revise our documentation. If a factual error is identified in our technical reviews or product guides, we correct it promptly and add a "Last Updated" timestamp to the article to reflect the change.
+                The AI landscape moves rapidly. When new models are released or competitor features are updated, we actively revise our documentation. If a factual error is identified in our technical reviews or product guides, we correct it promptly and add a &quot;Last Updated&quot; timestamp to the article to reflect the change.
               </p>
             </div>
 
