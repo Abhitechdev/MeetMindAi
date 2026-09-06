@@ -210,19 +210,19 @@ By dynamic chunking, Faster-Whisper only runs the heavy Transformer encoder-deco
 
 ## 5. Preventing Hallucinations & Infinite Decoding Loops
 
-In real-world meeting transcripts, acoustic degradation or cross-talk can cause autoregressive decoders to enter infinite repetition loops (e.g., repeating the same sentence 15 times). Faster-Whisper implements robust heuristics to guarantee transcript fidelity:
+In real-world meeting transcripts, acoustic degradation or cross-talk can cause autoregressive decoders to enter infinite repetition loops (e.g., repeating the same sentence 15 times). Faster-Whisper implements robust heuristics to maximize transcript fidelity:
 
 1. **Temperature Fallback:** The model initially samples at temperature T = 0.0 (greedy decoding). If the repetition penalty threshold or log-probability score fails a confidence check, the decoder falls back sequentially to T = [0.2, 0.4, 0.6, 0.8, 1.0].
 2. **Repetition Penalty:** Penalizes candidate tokens that have already appeared in the recent generation window.
 3. **No-Speech Threshold:** If the predicted probability P(no_speech) is high and average log-probability is low, the segment is immediately skipped rather than decoded.
 
-To learn more about keeping confidential meeting data safe and local, read our guide on [Local AI Transcription Privacy](/blog/local-ai-transcription-privacy).
+To learn more about keeping confidential meeting data safe and local, read our guide on [Local AI Transcription Privacy](/blog/local-ai-transcription-privacy) or follow our hands-on tutorial on [How to Transcribe MP3 Files to Text with Python](/blog/how-to-transcribe-mp3-to-text-2026).
 
 ---
 
 ## 6. Cloud APIs vs. Local Deployment
 
-While Faster-Whisper is exceptional for local, self-hosted processing, managing GPU infrastructure at scale can be complex. For high-volume production systems, many platforms opt for managed cloud APIs that offer high concurrency and specialized hardware.
+While Faster-Whisper is exceptional for local, self-hosted processing, managing GPU infrastructure at scale can be complex. For high-volume production systems, many platforms opt for managed cloud APIs that offer high concurrency and specialized hardware. To see practical code examples for both pipelines, check our complete [MP3 to Text Guide](/blog/how-to-transcribe-mp3-to-text-2026).
 
 At [MeetMind AI](/blog/how-meetmind-ai-works), we focus on delivering maximum speed and accuracy without requiring our users to manage hardware. Our production architecture utilizes secure, enterprise-grade cloud providers:
 

@@ -105,18 +105,58 @@ export default function CookiesPolicyPage() {
             <div className="rounded-xl border border-card-border bg-surface p-6">
               <h3 className="text-xl font-medium text-foreground flex items-center gap-2 mb-3">
                 <span className="h-2 w-2 rounded-full bg-purple-500"></span>
-                Advertising (Future)
+                Advertising & Third-Party Cookies (Google AdSense)
               </h3>
-              <p className="text-sm text-muted">
-                MeetMind AI may use advertising services such as Google AdSense in the future to support free educational content on our blog. If advertising is enabled, this Cookies Policy will be updated to explain what cookies are used and how users can manage their preferences. At present, MeetMind AI does not use advertising cookies.
-              </p>
+              <div className="text-sm text-muted space-y-2">
+                <p>
+                  MeetMind AI partners with Google AdSense to serve relevant advertisements on our public blog and educational pages to support free access to our content:
+                </p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>
+                    Third-party vendors, including Google, use cookies to serve ads based on a user&apos;s prior visits to MeetMind AI or other websites on the internet.
+                  </li>
+                  <li>
+                    Google&apos;s use of advertising cookies enables it and its partners to serve ads to users based on their visits to our site and/or other sites on the Internet.
+                  </li>
+                  <li>
+                    Users may opt out of personalized advertising by visiting{" "}
+                    <a
+                      href="https://adssettings.google.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-accent-blue underline hover:text-foreground transition-colors"
+                    >
+                      Google Ads Settings
+                    </a>
+                    . Alternatively, you can opt out of third-party vendor cookies for personalized advertising by visiting{" "}
+                    <a
+                      href="https://www.aboutads.info"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-accent-blue underline hover:text-foreground transition-colors"
+                    >
+                      www.aboutads.info
+                    </a>
+                    .
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
 
           <div className="mt-12 p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl flex items-start gap-3">
             <Info className="h-5 w-5 text-blue-400 flex-shrink-0 mt-0.5" />
             <p className="text-sm text-blue-200/80 m-0">
-              <strong>Managing Cookies:</strong> Most web browsers allow you to control cookies through their settings preferences. However, if you limit the ability of websites to set essential cookies, you will not be able to log in or use the MeetMind AI application.
+              <strong>Managing Cookies:</strong> Most web browsers allow you to control cookies through their settings preferences. However, if you limit the ability of websites to set essential cookies, you will not be able to log in or use the MeetMind AI application. For more information on managing third-party advertising cookies, visit{" "}
+              <a
+                href="https://www.aboutads.info/choices/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-foreground"
+              >
+                aboutads.info/choices
+              </a>
+              .
             </p>
           </div>
         </div>

@@ -56,6 +56,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={`h-full antialiased scroll-smooth ${inter.variable} ${poppins.variable}`}>
       <head>
+        <meta name="google-adsense-account" content="ca-pub-8627957484050006" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -114,9 +115,9 @@ export default function RootLayout({
       <body className={`min-h-full flex flex-col bg-background text-foreground ${inter.className}`}>
         <Script
           async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=pub-8627957484050006"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8627957484050006"
           crossOrigin="anonymous"
-          strategy="lazyOnload"
+          strategy="afterInteractive"
         />
         <Script src="https://www.googletagmanager.com/gtag/js?id=G-HS4WZF1K1M" strategy="lazyOnload" />
         <Script id="google-analytics" strategy="lazyOnload">

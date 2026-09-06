@@ -25,7 +25,7 @@ const faqs = [
   },
   {
     question: "Do you use my meeting data to train your AI?",
-    answer: "No. Privacy is our top priority. Your meeting data is processed solely to provide you with transcripts and summaries. We enforce zero-retention policies with our LLM partners, meaning your data is never used to train public models."
+    answer: "No. MeetMind AI does not use your meeting data, transcripts, or uploaded audio to train or fine-tune public AI models. Uploaded audio files are stored temporarily during transcription and deleted immediately after processing. Text transcripts are sent to third-party providers (such as Groq and NVIDIA NIM) under commercial API terms solely to generate your summaries and action items."
   },
   {
     question: "Which languages does MeetMind AI support?",

@@ -48,3 +48,7 @@ videoplayback.m4a
 # OS Files
 .DS_Store
 Thumbs.db
+
+# Scratch & Local Artifacts
+scratch/
+Digital product/

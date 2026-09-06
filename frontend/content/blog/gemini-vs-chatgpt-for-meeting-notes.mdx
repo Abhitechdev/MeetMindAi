@@ -28,6 +28,21 @@ These models fail in completely different ways. They excel at entirely different
 
 Here is the unfiltered, operational reality of how Gemini and ChatGPT compare when tasked with parsing the chaos of human conversation.
 
+---
+
+## How We Evaluated These Models
+
+### Evaluation Methodology & Criteria
+To provide an objective, reproducible comparison between Google Gemini and OpenAI's ChatGPT architectures for meeting summarization, we evaluated both model families across four core operational dimensions:
+1. **ASR Handoff & Error Tolerance:** How reliably each model interprets unpunctuated, rapid-fire, or acoustically imperfect Whisper transcripts without dropping critical context or inventing details.
+2. **Context Retention & Needle Retrieval:** The ability to accurately locate decisions and action items embedded within long-form multi-hour meeting transcripts without context degradation.
+3. **Structured Task Extraction:** Precision in identifying task owners, deliverables, and explicit deadlines formatted as structured JSON or Markdown checklists.
+4. **Data Privacy & API Terms:** Contractual data isolation guarantees, zero-training policies, and enterprise token pricing based on official API documentation as of July 2026.
+
+*Evaluation Basis & Limitations:* Observations reflect tests conducted using developer API endpoints (Google Gemini 1.5 Pro/Flash and OpenAI GPT-4o/GPT-4o mini) on benchmark transcript samples, combined with official API specifications as of July 2026. Because frontier models receive periodic weights updates from Google and OpenAI, latency and formatting nuances may vary over time.
+
+---
+
 ## Transcript Quality and the Handoff
 
 First, a crucial technical clarification: neither ChatGPT nor Gemini is typically responsible for *transcribing* your audio. That job belongs to an Automatic Speech Recognition (ASR) model, like Whisper. The LLM's job begins when it receives a massive wall of raw text from the ASR.

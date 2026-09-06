@@ -117,6 +117,9 @@ export default function PrivacyPolicyPage() {
               <strong>Google Analytics:</strong> anonymized usage analytics to
               understand how the service is used.
             </li>
+            <li>
+              <strong>Google AdSense:</strong> advertising service that delivers relevant ads on public blog pages. Third-party vendors, including Google, use advertising cookies to serve ads based on previous visits to this and other websites, and users may manage their preferences via Google Ads Settings.
+            </li>
           </ul>
         </section>
 

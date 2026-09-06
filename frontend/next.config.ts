@@ -32,6 +32,41 @@ const nextConfig: NextConfig = {
         destination: '/blog/ai-productivity-tips',
         permanent: true,
       },
+      {
+        source: '/privacy',
+        destination: '/legal/privacy',
+        permanent: true,
+      },
+      {
+        source: '/terms',
+        destination: '/legal/terms',
+        permanent: true,
+      },
+      {
+        source: '/cookie-policy',
+        destination: '/legal/cookies-policy',
+        permanent: true,
+      },
+      {
+        source: '/cookies',
+        destination: '/legal/cookies-policy',
+        permanent: true,
+      },
+      {
+        source: '/cookies-policy',
+        destination: '/legal/cookies-policy',
+        permanent: true,
+      },
+      {
+        source: '/ai-transparency',
+        destination: '/legal/ai-transparency',
+        permanent: true,
+      },
+      {
+        source: '/acceptable-use',
+        destination: '/legal/acceptable-use',
+        permanent: true,
+      },
     ];
   },
 

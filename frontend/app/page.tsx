@@ -4,6 +4,7 @@ import HeroSection from "./components/hero-section";
 import BentoFeatures from "./components/bento-features";
 import LanguageMarquee from "./components/language-marquee";
 import WorkflowSteps from "./components/workflow-steps";
+import HomepageFaq from "./components/homepage-faq";
 import dynamic from "next/dynamic";
 const InteractiveSampleViewer = dynamic(() => import("./components/interactive-sample-viewer"));
 const MeetingOrchestrator = dynamic(() => import("./components/meeting-orchestrator"));
@@ -78,6 +79,9 @@ export default function Home() {
         
         {/* Interactive Client-Side Upload & Orchestrator */}
         <MeetingOrchestrator />
+
+        {/* Visible FAQ Section matching FAQPage JSON-LD */}
+        <HomepageFaq />
       </div>
     </main>
   );

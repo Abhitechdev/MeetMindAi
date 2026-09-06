@@ -33,8 +33,7 @@ export async function updateSession(request: NextRequest) {
 
   const isProtectedRoute = request.nextUrl.pathname.startsWith('/history') || 
                            request.nextUrl.pathname.startsWith('/actions') || 
-                           request.nextUrl.pathname.startsWith('/decisions') ||
-                           request.nextUrl.pathname.startsWith('/contact')
+                           request.nextUrl.pathname.startsWith('/decisions')
 
   if (isProtectedRoute) {
     const {
