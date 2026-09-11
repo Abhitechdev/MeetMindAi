@@ -3,11 +3,11 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Integrations | MeetMind AI",
-  description: "Connect MeetMind AI with your favorite tools. Seamlessly export meeting notes and action items to Slack, Notion, Jira, and more.",
+  title: "Integrations & Export Workflows | MeetMind AI",
+  description: "Learn how to use MeetMind AI notes with Slack, Notion, Jira, and team tools using structured Markdown, TXT, and JSON exports.",
   openGraph: {
-    title: "Integrations | MeetMind AI",
-    description: "Connect MeetMind AI with your favorite tools.",
+    title: "Integrations & Export Workflows | MeetMind AI",
+    description: "Export and copy structured meeting notes into Slack, Notion, Jira, and your team tools.",
     url: "https://www.meetmindai.co.in/integrations",
     siteName: "MeetMind AI",
     locale: "en_US",
@@ -39,20 +39,20 @@ const integrations = [
   },
   {
     name: "Slack",
-    description: "Easily copy structured executive summaries and next steps to paste directly into team channels.",
-    status: "Export Ready",
+    description: "Copy cleanly formatted executive summaries and next steps to share directly in team channels.",
+    status: "Copy & Share",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/slack/slack-original.svg"
   },
   {
     name: "Notion",
-    description: "Export clean Markdown transcripts and formatted meeting minutes straight into your Notion workspace.",
-    status: "Export Ready",
+    description: "Export structured Markdown notes and meeting minutes straight into your Notion team documentation.",
+    status: "Markdown Export",
     icon: "https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png"
   },
   {
     name: "Jira & Task Trackers",
-    description: "Turn extracted action item checklists and context into structured tasks for engineering backlogs.",
-    status: "Export Ready",
+    description: "Copy extracted action item checklists and context to populate backlog tickets and sprint tasks.",
+    status: "Checklist Export",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jira/jira-original.svg"
   }
 ];
@@ -82,10 +82,10 @@ export default function IntegrationsPage() {
       <div className="mx-auto max-w-5xl px-6 py-16 sm:px-8 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl mb-4">
-            Works Where You Work
+            Works Alongside Your Existing Tools
           </h1>
           <p className="text-lg text-muted max-w-2xl mx-auto">
-            Connect MeetMind AI with your existing tools to automate your workflow completely. No more copying and pasting.
+            Upload recordings from any video conferencing platform and export structured notes, summaries, and action items directly into your workflow.
           </p>
         </div>
 
@@ -103,10 +103,6 @@ export default function IntegrationsPage() {
               </div>
               <h3 className="text-xl font-bold text-foreground mb-2">{integration.name}</h3>
               <p className="text-sm text-muted mb-6 flex-1">{integration.description}</p>
-              
-              <div className="flex items-center text-sm font-medium text-accent-purple opacity-0 group-hover:opacity-100 transition-opacity">
-                Learn Workflow <ArrowRight className="ml-1 h-4 w-4" />
-              </div>
             </div>
           ))}
         </div>
@@ -114,10 +110,10 @@ export default function IntegrationsPage() {
         {/* CTA Section */}
         <div className="text-center rounded-2xl border border-card-border bg-gradient-to-br from-surface to-surface/50 p-8 sm:p-12">
           <h2 className="text-2xl font-bold text-foreground mb-4">
-            Ready to save time in your meetings?
+            Ready to streamline your post-meeting follow-ups?
           </h2>
           <p className="text-muted mb-8 max-w-xl mx-auto">
-            Start pushing your automated notes directly into your favorite tools.
+            Upload your first meeting recording and export structured summaries and action items in seconds.
           </p>
           <Link
             href="/login"

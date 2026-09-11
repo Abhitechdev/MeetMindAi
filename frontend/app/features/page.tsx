@@ -89,13 +89,13 @@ export default function FeaturesPage() {
                 <tbody className="divide-y divide-card-border">
                   <tr>
                     <td className="py-4 px-4">Accuracy</td>
-                    <td className="py-4 px-4 text-green-400">Timestamped capture, objective records</td>
-                    <td className="py-4 px-4 text-red-400">Prone to human error & fatigue</td>
+                    <td className="py-4 px-4 text-green-400">High-fidelity audio capture (human review recommended)</td>
+                    <td className="py-4 px-4 text-muted">Subject to selective listening & typing fatigue</td>
                   </tr>
                   <tr>
-                    <td className="py-4 px-4">Time Spent</td>
-                    <td className="py-4 px-4 text-green-400">Fast automated processing</td>
-                    <td className="py-4 px-4 text-red-400">30-45 minutes of manual typing</td>
+                    <td className="py-4 px-4">Drafting Speed</td>
+                    <td className="py-4 px-4 text-green-400">Automated transcript & summary generation</td>
+                    <td className="py-4 px-4 text-muted">Requires 30+ minutes of manual writing</td>
                   </tr>
                   <tr>
                     <td className="py-4 px-4">Searchability</td>

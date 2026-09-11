@@ -22,7 +22,7 @@ export default async function ReviewsPage() {
   const totalReviews = validReviews.length
   const averageRating = totalReviews > 0 
     ? (validReviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews).toFixed(1)
-    : "0.0"
+    : "—"
 
   const distribution = {
     5: 0, 4: 0, 3: 0, 2: 0, 1: 0
@@ -52,8 +52,8 @@ export default async function ReviewsPage() {
             <div className="flex items-end gap-4 mb-8">
               <div className="text-5xl font-bold text-foreground">{averageRating}</div>
               <div className="pb-1">
-                <div className="text-sm text-muted font-medium mb-1">out of 5</div>
-                <div className="text-xs text-muted/80">Based on {totalReviews} approved reviews</div>
+                <div className="text-sm text-muted font-medium mb-1">{totalReviews > 0 ? "out of 5" : "No ratings yet"}</div>
+                <div className="text-xs text-muted/80">{totalReviews > 0 ? `Based on ${totalReviews} approved reviews` : "Awaiting first user review"}</div>
               </div>
             </div>
 

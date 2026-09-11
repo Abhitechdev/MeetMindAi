@@ -39,7 +39,7 @@ jsonLd:
         answer: "Review the vendor's data retention policy, whether audio is deleted after processing, whether data is used for model training, where servers are located, what encryption standards are used, and whether the tool provides audit logs. Also verify compliance with your industry's specific regulations."
 ---
 
-Every week, millions of professionals click "Record" on a meeting call. An [AI meeting assistant](/blog/what-is-an-ai-meeting-assistant) silently joins — or waits for the uploaded file — and within seconds, a transcript appears. Summaries follow. Action items materialize. It feels effortless.
+Every week, millions of professionals click "Record" on a meeting call. An [AI meeting assistant](/blog/how-meetmind-ai-works) silently joins — or waits for the uploaded file — and within seconds, a transcript appears. Summaries follow. Action items materialize. It feels effortless.
 
 But beneath that convenience is a question most users never ask: **where is that audio going, who can access it, and what happens to it afterward?**
 
@@ -74,7 +74,7 @@ Most AI meeting assistants follow a similar pipeline, though the specifics vary 
 
 1. **Audio capture:** The tool either joins the live call as a bot participant or accepts an uploaded recording file after the meeting ends.
 2. **Transmission:** The audio is sent to a server — either the vendor's cloud infrastructure or, in some cases, a local processing engine on your device.
-3. **Transcription:** A speech-to-text model (often based on OpenAI's Whisper or a proprietary ASR engine) converts the audio into text. For a deeper technical explanation, see our guide on [how AI transcription works](/blog/how-ai-transcription-works).
+3. **Transcription:** A speech-to-text model (often based on OpenAI's Whisper or a proprietary ASR engine) converts the audio into text. For a deeper technical explanation, see our guide on [how AI transcription works](/blog/faster-whisper-explained).
 4. **AI analysis:** A large language model processes the transcript to extract summaries, [action items](/blog/meeting-action-items), decisions, and key topics.
 5. **Storage:** The resulting transcript, summary, and extracted data are stored in the vendor's database. The original audio may or may not be retained.
 

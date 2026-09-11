@@ -16,7 +16,7 @@ featured: true
 draft: false
 ---
 
-In the early evolution of [AI meeting assistants](/blog/what-is-an-ai-meeting-assistant), generating a passive summary of a one-hour call represented a significant breakthrough in workplace productivity. You could skip a meeting, read the generated executive summary, glance at the action items, and move on.
+In the early evolution of [AI meeting assistants](/blog/how-meetmind-ai-works), generating a passive summary of a one-hour call represented a significant breakthrough in workplace productivity. You could skip a meeting, read the generated executive summary, glance at the action items, and move on.
 
 However, as organizations scale their reliance on AI-generated documentation, passive summaries reveal their limitations. Users increasingly want to query their meeting data interactively. While standard LLMs (Large Language Models) excel at generating conversational responses, using a generic chat interface on top of a raw transcript introduces severe reliability risks—most notably, hallucinations.
 
@@ -75,6 +75,25 @@ While hybrid architectures and structured metadata significantly improve reliabi
 *   **Missing Meeting Context:** The chatbot only knows what was explicitly spoken. It cannot factor in pre-meeting emails, shared documents not read aloud, or non-verbal visual cues (like a nod of agreement).
 *   **LLM Hallucinations:** While deterministic routing handles factual data, complex semantic questions routed to the LLM still carry a non-zero risk of hallucination. Edge cases in prompting can occasionally cause the model to infer incorrect motivations.
 *   **Human Verification Required:** Because of these inherent risks, AI outputs should be treated as highly capable drafts. Critical business, legal, or medical decisions must always be verified by a human against the source audio or transcript.
+
+---
+
+## Architectural Deep Dive: RAG Chunking vs. Full-Transcript Context Windows
+
+When building context-aware meeting chatbots, engineering teams face a fundamental architectural choice: should you feed the entire transcript into an expanded context window (e.g. Gemini 1.5/2.0 with 1M tokens or Llama 3.3 70B with 128k tokens), or should you implement a Retrieval-Augmented Generation (RAG) vector search pipeline?
+
+| Dimension | Full-Transcript Direct Window Injection | Vector RAG Pipeline (Chunk + Embedding) |
+| :--- | :--- | :--- |
+| **Architectural Complexity** | Low (Single stateless API call) | High (Vector database, chunking, embeddings, re-ranking) |
+| **Query Latency** | 2 to 5 seconds (dependent on token volume) | Sub-second vector retrieval + faster token generation |
+| **"Lost in the Middle" Effect** | Documented attention dip on tokens in the middle third | High semantic precision for isolated facts |
+| **Cost per Interaction** | Scales linearly with entire meeting length | Constant cost based on retrieved top-k chunks |
+| **Cross-Meeting Synthesis** | Impractical across dozens of meetings | Natively supports querying across 100+ team meetings |
+
+### The Hybrid Compromise
+In MeetMind AI, for single-meeting Q&A, full-transcript injection with structured JSON metadata provides the highest coherence because conversational references frequently span the entire call. For cross-meeting portfolio search, vector embeddings (chunked by speaker turn with 50-token overlap) allow users to ask questions like: *"Which client raised concerns about SSO pricing last month?"*
+
+---
 
 ## The Shift Toward Interactive Knowledge
 

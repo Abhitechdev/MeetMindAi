@@ -118,7 +118,45 @@ export default function PrivacyPolicyPage() {
               understand how the service is used.
             </li>
             <li>
-              <strong>Google AdSense:</strong> advertising service that delivers relevant ads on public blog pages. Third-party vendors, including Google, use advertising cookies to serve ads based on previous visits to this and other websites, and users may manage their preferences via Google Ads Settings.
+              <strong>Google AdSense & Advertising Cookies:</strong> We use Google AdSense to serve contextual and interest-based advertisements on our public blog and educational pages. 
+              <div className="mt-2 pl-4 border-l-2 border-white/10 space-y-2 text-sm text-foreground/80">
+                <p>
+                  Third-party vendors, including Google, use cookies to serve ads based on a user&apos;s prior visits to this website or other websites across the Internet.
+                </p>
+                <p>
+                  Google&apos;s use of advertising cookies (such as the DoubleClick cookie) enables it and its partners to serve ads to our visitors based on their visit to MeetMind AI and/or other sites on the Internet.
+                </p>
+                <p>
+                  Users may opt out of personalized advertising at any time by visiting{" "}
+                  <a
+                    href="https://www.google.com/settings/ads"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline underline-offset-2 hover:text-foreground transition-colors font-medium"
+                  >
+                    Google Ads Settings
+                  </a>
+                  . Alternatively, users can opt out of a third-party vendor&apos;s use of cookies for personalized advertising by visiting{" "}
+                  <a
+                    href="https://www.aboutads.info/choices/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline underline-offset-2 hover:text-foreground transition-colors font-medium"
+                  >
+                    www.aboutads.info
+                  </a>{" "}
+                  or{" "}
+                  <a
+                    href="https://youradchoices.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline underline-offset-2 hover:text-foreground transition-colors font-medium"
+                  >
+                    YourAdChoices
+                  </a>
+                  .
+                </p>
+              </div>
             </li>
           </ul>
         </section>

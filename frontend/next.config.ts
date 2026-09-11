@@ -27,11 +27,109 @@ const nextConfig: NextConfig = {
   productionBrowserSourceMaps: true,
   async redirects() {
     return [
+      // Retired / Consolidated blog articles (301 Permanent Redirects)
       {
-        source: '/blog/how-to-improve-meeting-productivity-with-ai',
-        destination: '/blog/ai-productivity-tips',
+        source: '/blog/best-ai-note-taking-apps-2026',
+        destination: '/blog/best-ai-meeting-assistants-2026',
         permanent: true,
       },
+      {
+        source: '/blog/ai-for-students',
+        destination: '/use-cases',
+        permanent: true,
+      },
+      {
+        source: '/blog/remote-team-meeting-best-practices',
+        destination: '/features',
+        permanent: true,
+      },
+      {
+        source: '/blog/ai-in-business-communication',
+        destination: '/about',
+        permanent: true,
+      },
+      {
+        source: '/blog/ai-agents-vs-assistants',
+        destination: '/how-it-works',
+        permanent: true,
+      },
+      {
+        source: '/blog/ai-productivity-tips',
+        destination: '/how-it-works',
+        permanent: true,
+      },
+      {
+        source: '/blog/how-to-improve-meeting-productivity-with-ai',
+        destination: '/how-it-works',
+        permanent: true,
+      },
+      {
+        source: '/blog/ai-tools-for-professionals',
+        destination: '/features',
+        permanent: true,
+      },
+      {
+        source: '/blog/future-of-ai-meetings',
+        destination: '/how-it-works',
+        permanent: true,
+      },
+      {
+        source: '/blog/common-meeting-mistakes',
+        destination: '/how-it-works',
+        permanent: true,
+      },
+      {
+        source: '/blog/voice-ai-explained',
+        destination: '/blog/faster-whisper-explained',
+        permanent: true,
+      },
+      {
+        source: '/blog/how-ai-transcription-works',
+        destination: '/blog/faster-whisper-explained',
+        permanent: true,
+      },
+      {
+        source: '/blog/how-to-write-better-meeting-minutes',
+        destination: '/blog/meeting-summary-templates',
+        permanent: true,
+      },
+      {
+        source: '/blog/how-ai-saves-time-during-meetings',
+        destination: '/features',
+        permanent: true,
+      },
+      {
+        source: '/blog/turn-meeting-transcripts-into-action-items-using-ai',
+        destination: '/blog/meeting-action-items',
+        permanent: true,
+      },
+      {
+        source: '/blog/ai-workflow-automation',
+        destination: '/blog/automated-meeting-workflows-jira-linear',
+        permanent: true,
+      },
+      {
+        source: '/blog/how-ai-meeting-summaries-work',
+        destination: '/blog/how-meetmind-ai-works',
+        permanent: true,
+      },
+      {
+        source: '/blog/what-is-an-ai-meeting-assistant',
+        destination: '/blog/how-meetmind-ai-works',
+        permanent: true,
+      },
+      {
+        source: '/blog/how-to-transcribe-mp3-to-text-2026',
+        destination: '/blog/speech-to-text-audio-preprocessing-guide',
+        permanent: true,
+      },
+      {
+        source: '/blog/best-practices-leveraging-ai-summaries',
+        destination: '/blog/meeting-summary-templates',
+        permanent: true,
+      },
+
+      // Legacy legal / utility redirects
       {
         source: '/privacy',
         destination: '/legal/privacy',

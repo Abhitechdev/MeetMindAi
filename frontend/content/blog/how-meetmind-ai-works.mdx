@@ -20,7 +20,7 @@ Most AI meeting tools won't tell you what happens to your audio after you click 
 
 MeetMind AI is not a thin wrapper around a single API. It is a multi-stage processing pipeline that compresses your audio, transcribes it with a production-grade ASR engine, routes the transcript through a large language model for structured extraction, and stores the results in a privacy-first database — all without a single bot joining your call.
 
-This article is a transparent technical walkthrough of every step. If you've read our deep dive on [how AI [meeting summaries](/blog/how-ai-meeting-summaries-work) work under the hood](/blog/how-ai-meeting-summaries-work), consider this the MeetMind-specific companion piece. We're going to show you the exact architecture, explain the engineering trade-offs we made, and be honest about the limitations.
+This article is a transparent technical walkthrough of every step. If you've read our deep dive on [how AI [meeting summaries](/blog/how-meetmind-ai-works) work under the hood](/blog/how-meetmind-ai-works), consider this the MeetMind-specific companion piece. We're going to show you the exact architecture, explain the engineering trade-offs we made, and be honest about the limitations.
 
 ## The Core Design Decision: No Bots
 
@@ -168,11 +168,11 @@ These limits are generous enough for any reasonable workflow but strict enough t
 Transparency requires being explicit about what we don't offer:
 
 - **No live bot.** We do not join your calls in real-time. You must upload a recording.
-- **No speaker diarization (yet).** Our current pipeline does not identify individual speakers by name within the transcript. We process the audio as a single stream. This is a known limitation, and it is on our roadmap. For a deeper discussion of why diarization is hard, see our [technical deep dive](/blog/how-ai-meeting-summaries-work#the-hardest-problem-in-audio-speaker-diarization).
+- **No speaker diarization (yet).** Our current pipeline does not identify individual speakers by name within the transcript. We process the audio as a single stream. This is a known limitation, and it is on our roadmap. For a deeper discussion of why diarization is hard, see our [technical deep dive](/blog/how-meetmind-ai-works#the-hardest-problem-in-audio-speaker-diarization).
 - **No video analysis.** We extract the audio track and discard the video. We do not perform visual sentiment analysis or facial recognition.
 - **No on-device processing.** All processing happens on our cloud infrastructure. We do not offer an on-premise deployment option at this time.
 
-Being honest about these limitations matters. If your primary requirement is real-time, in-call transcription with a visible bot, a tool like [Fathom or Fireflies](/blog/best-ai-note-taking-apps-2026) may be a better fit. MeetMind AI is purpose-built for teams that prioritize privacy, extraction accuracy, and post-meeting workflow integration over live automation.
+Being honest about these limitations matters. If your primary requirement is real-time, in-call transcription with a visible bot, a tool like [Fathom or Fireflies](/blog/best-ai-meeting-assistants-2026) may be a better fit. MeetMind AI is purpose-built for teams that prioritize privacy, extraction accuracy, and post-meeting workflow integration over live automation.
 
 ## Frequently Asked Questions
 
