@@ -8,16 +8,18 @@ load_dotenv()
 _client = None
 
 
-def _get_client() -> tuple[OpenAI, str]:
-    """Lazy-load the best available OpenAI-compatible client and model name."""
+def _get_client() -> tuple[OpenAI, list[str]]:
+    """Lazy-load the best available OpenAI-compatible client and candidate model names."""
     global _client
     # ponytail: if we have Groq, use it for everything. It's faster and avoids NIM timeouts.
     groq_api_key = os.getenv("GROQ_API_KEY")
     if groq_api_key:
-        if _client is None or getattr(_client, "base_url", None) != "https://api.groq.com/openai/v1":
+        if _client is None or str(getattr(_client, "base_url", "")).rstrip("/") != "https://api.groq.com/openai/v1":
             _client = OpenAI(base_url="https://api.groq.com/openai/v1", api_key=groq_api_key)
-        # using latest llama-3.3-70b-versatile as llama3-70b-8192 is decommissioned
-        return _client, "llama-3.3-70b-versatile"
+        # ponytail: Groq decommissioned llama-3.3-70b-versatile. Primary successor is openai/gpt-oss-120b, with qwen fallback.
+        configured = os.getenv("GROQ_MODEL")
+        candidates = [m for m in [configured, "openai/gpt-oss-120b", "qwen/qwen3.6-27b", "openai/gpt-oss-20b"] if m]
+        return _client, candidates
 
     if _client is None:
         api_key = os.getenv("NVIDIA_API_KEY")
@@ -27,7 +29,25 @@ def _get_client() -> tuple[OpenAI, str]:
             base_url="https://integrate.api.nvidia.com/v1",
             api_key=api_key,
         )
-    return _client, "meta/llama-3.3-70b-instruct"
+    # ponytail: NVIDIA NIM deprecated llama-3.3-70b-instruct; use active vision/large models
+    configured = os.getenv("NVIDIA_MODEL")
+    candidates = [m for m in [configured, "meta/llama-3.2-90b-vision-instruct", "mistralai/mistral-large-2-instruct", "nvidia/llama-3.1-nemotron-70b-instruct"] if m]
+    return _client, candidates
+
+
+def _create_completion(client: OpenAI, models: list[str], **kwargs):
+    """Execute chat completion with automatic fallback if a model is deprecated, 404, or decommissioned."""
+    last_err = None
+    for model in models:
+        try:
+            return client.chat.completions.create(model=model, **kwargs)
+        except Exception as e:
+            err_str = str(e).lower()
+            if any(k in err_str for k in ["404", "410", "not found", "does not exist", "decommissioned", "model_not_found"]):
+                last_err = e
+                continue
+            raise
+    raise last_err
 
 
 PROMPT = """You are a meeting analysis assistant. Analyze the following meeting transcript and return a JSON object with exactly these fields:
@@ -54,15 +74,16 @@ def summarize(transcript: str, detected_language: str = "en", output_language: s
     """
     Send transcript to Gemini and return structured summary.
     """
-    client, model_name = _get_client()
+    client, models = _get_client()
 
     prompt_formatted = PROMPT.format(
         detected_language=detected_language,
         output_language=output_language
     )
     
-    response = client.chat.completions.create(
-        model=model_name,
+    response = _create_completion(
+        client,
+        models,
         messages=[{"role": "user", "content": prompt_formatted + transcript}],
         temperature=0.2,
         max_tokens=2048,
@@ -105,7 +126,7 @@ CRITICAL RULES:
 
 def chat(question: str, transcript: str, summary: str, history: list = None) -> str:
     """Answer a question using only the transcript and summary as context."""
-    client, model_name = _get_client()
+    client, models = _get_client()
     
     # ponytail: if the frontend sends stringified JSON, format it nicely so the LLM doesn't mimic JSON output
     try:
@@ -138,8 +159,9 @@ def chat(question: str, transcript: str, summary: str, history: list = None) -> 
     # Add current question with context
     messages.append({"role": "user", "content": f"{context}\n\nUser Question: {question}"})
     
-    response = client.chat.completions.create(
-        model=model_name,
+    response = _create_completion(
+        client,
+        models,
         messages=messages,
         temperature=0.2,
         max_tokens=512,
@@ -162,10 +184,11 @@ Translate only."""
 
 def translate_transcript(transcript: str, target_language: str = "English") -> str:
     """Translate a transcript to a target language."""
-    client = _get_client()
+    client, models = _get_client()
     system_prompt = TRANSLATE_SYSTEM.format(target_language=target_language)
-    response = client.chat.completions.create(
-        model="meta/llama-3.3-70b-instruct",
+    response = _create_completion(
+        client,
+        models,
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": transcript},
