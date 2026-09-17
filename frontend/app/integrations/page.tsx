@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Integrations & Export Workflows | MeetMind AI",
-  description: "Learn how to use MeetMind AI notes with Slack, Notion, Jira, and team tools using structured Markdown, TXT, and JSON exports.",
+  description: "Learn how to use MeetMind AI notes with Slack, Notion, Jira, and team tools using structured Markdown and TXT exports.",
   openGraph: {
     title: "Integrations & Export Workflows | MeetMind AI",
     description: "Export and copy structured meeting notes into Slack, Notion, Jira, and your team tools.",
