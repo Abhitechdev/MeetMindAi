@@ -186,7 +186,7 @@ export default function UseCasesPage() {
             <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3 tracking-tight">Ready to transform your meeting workflow?</h2>
             <p className="text-sm text-muted mb-8 leading-relaxed">Start free today with 3 complimentary meeting credits. No credit card required.</p>
             <Link
-              href="/#upload-section"
+              href="/meeting/new"
               className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-accent-purple to-accent-blue px-8 py-3.5 text-sm font-semibold text-white shadow-lg hover:scale-[1.02] transition-transform"
             >
               <span>Try MeetMind AI Free</span>

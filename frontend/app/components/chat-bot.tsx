@@ -34,8 +34,14 @@ const ChatIcon = () => (
 );
 
 const CloseIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+  </svg>
+);
+
+const MinimizeIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15" />
   </svg>
 );
 
@@ -53,6 +59,7 @@ const TrashIcon = () => (
 
 export default function ChatBot({ meetingId, transcript, summary, segments = [], diarizationUnavailable = false }: ChatBotProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -60,6 +67,16 @@ export default function ChatBot({ meetingId, transcript, summary, segments = [],
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
 
   // Parse structured data safely
   const summaryData = useMemo(() => {
@@ -243,65 +260,138 @@ export default function ChatBot({ meetingId, transcript, summary, segments = [],
 
   return (
     <>
-      {/* Floating Button */}
+      {/* Floating Trigger Button (when closed) */}
       <AnimatePresence>
         {!isOpen && (
           <motion.button
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
-            onClick={() => setIsOpen(true)}
+            onClick={() => {
+              setIsOpen(true);
+              setIsMinimized(false);
+            }}
             aria-label="Open MeetMind AI Chat"
-            className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-background shadow-lg hover:shadow-xl transition-all font-semibold hover:bg-foreground/90 hover:scale-[1.05] active:scale-[0.95]"
+            className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-background shadow-xl hover:shadow-2xl transition-all font-semibold hover:bg-foreground/90 hover:scale-[1.04] active:scale-[0.96]"
           >
             <ChatIcon />
-            Ask MeetMind AI
+            <span>Ask MeetMind AI</span>
           </motion.button>
         )}
       </AnimatePresence>
 
-      {/* Chat Window */}
+      {/* Minimized Floating Pill (when minimized so user can scroll meeting content) */}
       <AnimatePresence>
-        {isOpen && (
+        {isOpen && isMinimized && (
           <motion.div
-            initial={{ opacity: 0, y: 50, scale: 0.95 }}
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 50, scale: 0.95 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="fixed inset-0 sm:inset-auto sm:bottom-6 sm:right-6 z-50 w-full sm:w-[420px] h-full sm:h-[650px] glass-card flex flex-col shadow-2xl overflow-hidden border border-glass-border sm:rounded-2xl rounded-none bg-surface"
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-2xl bg-surface border border-card-border p-2 pr-3 shadow-2xl backdrop-blur-xl"
           >
-            {/* Header */}
-            <div className="flex items-center justify-between px-5 py-4 border-b border-glass-border bg-background/50 backdrop-blur-md shrink-0">
-              <div className="flex items-center gap-3">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-foreground text-background shadow-sm">
-                  <ChatIcon />
+            <button
+              onClick={() => setIsMinimized(false)}
+              className="flex items-center gap-2.5 text-xs font-semibold text-foreground px-2 py-1.5 hover:text-accent-purple transition-colors cursor-pointer"
+            >
+              <div className="h-7 w-7 rounded-xl bg-foreground text-background flex items-center justify-center shadow-sm">
+                <ChatIcon />
+              </div>
+              <div className="text-left">
+                <div className="flex items-center gap-1.5">
+                  <span>MeetMind Assistant</span>
+                  {messages.length > 0 && (
+                    <span className="px-1.5 py-0.5 rounded-full bg-accent-purple/20 text-accent-purple text-[10px] font-bold">
+                      {messages.length}
+                    </span>
+                  )}
                 </div>
-                <div>
-                  <h3 className="font-semibold text-sm text-foreground">MeetMind Assistant</h3>
-                  <p className="text-xs text-muted flex items-center gap-1">
-                    <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
-                    Meeting context active
-                  </p>
+                <div className="text-[10px] text-muted font-normal flex items-center gap-1">
+                  <span className="h-1 w-1 rounded-full bg-green-500" />
+                  Click to expand ↗
                 </div>
               </div>
-              <div className="flex items-center gap-1">
-                <button
-                  onClick={clearChat}
-                  aria-label="Clear chat history"
-                  title="Clear Chat"
-                  className="rounded-lg p-2 text-muted hover:bg-surface hover:text-foreground transition-colors border border-transparent hover:border-card-border"
-                >
-                  <TrashIcon />
-                </button>
-                <button
-                  onClick={() => setIsOpen(false)}
-                  aria-label="Close chat"
-                  className="rounded-lg p-2 text-muted hover:bg-surface hover:text-foreground transition-colors border border-transparent hover:border-card-border"
-                >
-                  <CloseIcon />
-                </button>
+            </button>
+            <div className="w-[1px] h-6 bg-card-border mx-1" />
+            <button
+              onClick={() => {
+                setIsOpen(false);
+                setIsMinimized(false);
+              }}
+              aria-label="Close chat"
+              title="Close chat"
+              className="p-1.5 rounded-lg text-muted hover:text-foreground hover:bg-muted/10 transition-colors cursor-pointer"
+            >
+              <CloseIcon />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Chat Window & Backdrop */}
+      <AnimatePresence>
+        {isOpen && !isMinimized && (
+          <>
+            {/* Backdrop overlay — clicking outside anywhere immediately closes chat */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-40 bg-black/30 backdrop-blur-[2px] transition-opacity"
+              onClick={() => setIsOpen(false)}
+              aria-label="Close chat overlay"
+            />
+
+            <motion.div
+              initial={{ opacity: 0, y: 30, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 30, scale: 0.96 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              className="fixed inset-0 sm:inset-auto sm:bottom-6 sm:right-6 z-50 w-full sm:w-[430px] h-full sm:h-[620px] max-h-full sm:max-h-[85vh] glass-card flex flex-col shadow-2xl overflow-hidden border border-glass-border sm:rounded-2xl rounded-none bg-surface"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between px-4 sm:px-5 py-3.5 border-b border-glass-border bg-background/60 backdrop-blur-md shrink-0">
+                <div className="flex items-center gap-2.5">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-foreground text-background shadow-sm">
+                    <ChatIcon />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-sm text-foreground">MeetMind Assistant</h3>
+                    <p className="text-[11px] text-muted flex items-center gap-1">
+                      <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
+                      Meeting context active
+                    </p>
+                  </div>
+                </div>
+
+                {/* Header Action Controls */}
+                <div className="flex items-center gap-1.5">
+                  <button
+                    onClick={clearChat}
+                    aria-label="Clear chat history"
+                    title="Clear chat history"
+                    className="rounded-lg p-2 text-muted hover:bg-surface hover:text-foreground transition-colors border border-transparent hover:border-card-border cursor-pointer"
+                  >
+                    <TrashIcon />
+                  </button>
+                  <button
+                    onClick={() => setIsMinimized(true)}
+                    aria-label="Minimize chat"
+                    title="Minimize chat (keep conversation while reading meeting)"
+                    className="rounded-lg p-2 text-muted hover:bg-surface hover:text-foreground transition-colors border border-transparent hover:border-card-border cursor-pointer"
+                  >
+                    <MinimizeIcon />
+                  </button>
+                  <button
+                    onClick={() => setIsOpen(false)}
+                    aria-label="Close chat"
+                    title="Close chat (Esc)"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-surface hover:bg-muted/20 text-foreground border border-card-border hover:border-foreground/30 transition-all shadow-sm active:scale-95 ml-1 cursor-pointer"
+                  >
+                    <CloseIcon />
+                    <span>Close</span>
+                  </button>
+                </div>
               </div>
-            </div>
 
             {/* Messages Area */}
             <div className="flex-1 overflow-y-auto p-5 scroll-smooth bg-surface/30">
@@ -426,8 +516,9 @@ export default function ChatBot({ meetingId, transcript, summary, segments = [],
               </div>
             </div>
           </motion.div>
-        )}
-      </AnimatePresence>
-    </>
-  );
+        </>
+      )}
+    </AnimatePresence>
+  </>
+);
 }

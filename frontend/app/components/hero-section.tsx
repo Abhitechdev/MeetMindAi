@@ -1,6 +1,7 @@
 // ponytail: no "use client", no framer-motion — hero <h1> is the LCP element,
 // must be server-rendered HTML so it arrives in the first response
 import React from "react";
+import Link from "next/link";
 
 const HeroSection = function HeroSection() {
   return (
@@ -27,8 +28,8 @@ const HeroSection = function HeroSection() {
         </p>
 
         <div className="flex justify-center animate-fade-in-up animation-delay-300">
-          <a
-            href="#upload-section"
+          <Link
+            href="/meeting/new"
             className="group relative inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-accent-purple to-accent-blue px-10 py-4 text-base font-semibold text-white shadow-lg shadow-accent-purple/30 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-accent-purple/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-purple overflow-hidden"
           >
             {/* Shimmer effect on hover */}
@@ -38,7 +39,7 @@ const HeroSection = function HeroSection() {
             <svg className="relative w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
-          </a>
+          </Link>
         </div>
 
       </div>

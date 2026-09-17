@@ -191,8 +191,14 @@ export default function HistoryPage() {
         {loading ? (
           <div className="text-center py-12 text-muted animate-pulse">Loading meetings...</div>
         ) : filteredMeetings.length === 0 ? (
-          <div className="text-center py-12 glass-card">
-            <p className="text-muted">No meetings found.</p>
+          <div className="text-center py-16 glass-card">
+            <p className="text-muted mb-4">No meetings found.</p>
+            <Link
+              href="/meeting/new"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-foreground text-background text-sm font-semibold hover:bg-foreground/90 transition-colors"
+            >
+              + Start a New Meeting
+            </Link>
           </div>
         ) : (
           <div className="grid gap-4">
@@ -238,7 +244,7 @@ export default function HistoryPage() {
                   </div>
                   <div className="flex items-center gap-3 w-full sm:w-auto">
                     <Link 
-                      href={`/history/${meeting.id}`}
+                      href={`/meeting/${meeting.id}`}
                       className="flex-1 sm:flex-none px-4 py-2 rounded-md bg-foreground text-background text-sm font-medium shadow-sm hover:bg-foreground/90 transition-colors text-center"
                     >
                       Open

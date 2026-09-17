@@ -22,7 +22,7 @@ const publicLinks = [
 ]
 
 const authLinks = [
-  { href: "/", label: "+ New Meeting" },
+  { href: "/meeting/new", label: "+ New Meeting" },
   { href: "/history", label: "History" },
   { href: "/actions", label: "Actions" },
   { href: "/decisions", label: "Decisions" },

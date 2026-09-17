@@ -134,7 +134,7 @@ export default function ChangelogPage() {
             Try our Whisper transcription and AI executive summary generator with 3 free meetings today.
           </p>
           <Link
-            href="/#upload-section"
+            href="/meeting/new"
             className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-accent-purple to-accent-blue px-8 py-4 text-base font-semibold text-white shadow-sm hover:scale-[1.03] transition-all"
           >
             Try MeetMind AI Free
