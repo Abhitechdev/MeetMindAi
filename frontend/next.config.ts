@@ -30,7 +30,37 @@ const nextConfig: NextConfig = {
       // Retired / Consolidated blog articles (301 Permanent Redirects)
       {
         source: '/blog/best-ai-note-taking-apps-2026',
-        destination: '/blog/best-ai-meeting-assistants-2026',
+        destination: '/features',
+        permanent: true,
+      },
+      {
+        source: '/blog/best-ai-meeting-assistants-2026',
+        destination: '/features',
+        permanent: true,
+      },
+      {
+        source: '/blog/meeting-action-items',
+        destination: '/features',
+        permanent: true,
+      },
+      {
+        source: '/blog/meeting-summary-templates',
+        destination: '/features',
+        permanent: true,
+      },
+      {
+        source: '/blog/local-ai-transcription-privacy',
+        destination: '/blog/ai-meeting-assistant-privacy-recording-guide',
+        permanent: true,
+      },
+      {
+        source: '/blog/meeting-recording-compliance-gdpr-dpdp-hipaa',
+        destination: '/blog/ai-meeting-assistant-privacy-recording-guide',
+        permanent: true,
+      },
+      {
+        source: '/blog/integrating-meeting-notes-slack-notion-zapier',
+        destination: '/blog/automated-meeting-workflows-jira-linear',
         permanent: true,
       },
       {
@@ -90,7 +120,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/blog/how-to-write-better-meeting-minutes',
-        destination: '/blog/meeting-summary-templates',
+        destination: '/features',
         permanent: true,
       },
       {
@@ -100,7 +130,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/blog/turn-meeting-transcripts-into-action-items-using-ai',
-        destination: '/blog/meeting-action-items',
+        destination: '/features',
         permanent: true,
       },
       {
@@ -125,7 +155,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/blog/best-practices-leveraging-ai-summaries',
-        destination: '/blog/meeting-summary-templates',
+        destination: '/features',
         permanent: true,
       },
 

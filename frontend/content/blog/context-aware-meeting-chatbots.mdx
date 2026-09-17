@@ -78,20 +78,20 @@ While hybrid architectures and structured metadata significantly improve reliabi
 
 ---
 
-## Architectural Deep Dive: RAG Chunking vs. Full-Transcript Context Windows
+## Architectural Deep Dive: Direct Context Injection vs. Vector Chunking
 
-When building context-aware meeting chatbots, engineering teams face a fundamental architectural choice: should you feed the entire transcript into an expanded context window (e.g. Gemini 1.5/2.0 with 1M tokens or Llama 3.3 70B with 128k tokens), or should you implement a Retrieval-Augmented Generation (RAG) vector search pipeline?
+When building context-aware meeting chatbots, engineering teams face a fundamental architectural choice: should you feed the entire transcript and structured summary into a direct context window, or should you implement an external Retrieval-Augmented Generation (RAG) vector search pipeline?
 
 | Dimension | Full-Transcript Direct Window Injection | Vector RAG Pipeline (Chunk + Embedding) |
 | :--- | :--- | :--- |
-| **Architectural Complexity** | Low (Single stateless API call) | High (Vector database, chunking, embeddings, re-ranking) |
-| **Query Latency** | 2 to 5 seconds (dependent on token volume) | Sub-second vector retrieval + faster token generation |
-| **"Lost in the Middle" Effect** | Documented attention dip on tokens in the middle third | High semantic precision for isolated facts |
-| **Cost per Interaction** | Scales linearly with entire meeting length | Constant cost based on retrieved top-k chunks |
-| **Cross-Meeting Synthesis** | Impractical across dozens of meetings | Natively supports querying across 100+ team meetings |
+| **Architectural Complexity** | Low (Stateless prompt injection without vector infrastructure) | High (Vector database, chunking, embeddings, re-ranking) |
+| **Conversational Coherence** | Complete context retained; no lost conversational threads | Dependent on chunk boundary quality and top-k retrieval |
+| **"Lost in the Middle" Risk** | Requires concise prompt boundaries and clear system instructions | High semantic precision for isolated facts, but fragments dialogue |
+| **Operational Overhead** | Zero embedding latency or database synchronization drift | Ongoing vector indexing and chunk maintenance costs |
+| **Single-Meeting Scope** | Optimal for 30- to 90-minute business and engineering syncs | Overkill for individual meeting Q&A |
 
-### The Hybrid Compromise
-In MeetMind AI, for single-meeting Q&A, full-transcript injection with structured JSON metadata provides the highest coherence because conversational references frequently span the entire call. For cross-meeting portfolio search, vector embeddings (chunked by speaker turn with 50-token overlap) allow users to ask questions like: *"Which client raised concerns about SSO pricing last month?"*
+### MeetMind AI's Production Approach: Direct Transcript Context Injection
+MeetMind AI deliberately chooses full-transcript and structured summary injection into the conversation prompt rather than a multi-stage vector database. For single-meeting Q&A, conversational nuances (e.g. an agreement in minute 45 referencing an objection in minute 5) require holistic context that chunk-based embeddings often fragment. By packing the complete transcript and structured metadata directly into the model's context window, the chatbot answers questions with comprehensive conversational awareness while eliminating vector database latency and failure points.
 
 ---
 
@@ -101,4 +101,4 @@ The transition from passive, auto-generated documents to interactive, context-aw
 
 As you evaluate tools for your own team, look beyond the basic summary interface and consider how the underlying architecture handles structured data, speaker context, and verifiability. 
 
-*If you are interested in testing a hybrid deterministic and semantic meeting assistant, [explore how MeetMind AI handles intelligent meeting workflows](/how-it-works).*
+*If you are interested in testing a context-aware meeting assistant, [explore how MeetMind AI handles intelligent meeting workflows](/how-it-works).*

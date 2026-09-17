@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import BentoFeatures from "../components/bento-features";
 import GradientBackground from "../components/gradient-background";
+import UIPreviewShowcase from "../components/ui-preview-showcase";
 
 export const metadata: Metadata = {
   alternates: {
@@ -25,6 +26,15 @@ export default function FeaturesPage() {
           </p>
         </div>
         
+        {/* Real Production UI Showcase */}
+        <div className="mb-20">
+          <div className="text-center mb-6">
+            <h2 className="text-xl font-bold text-foreground">Actual Meeting Intelligence Interface</h2>
+            <p className="text-xs text-muted mt-1">Interactive preview of the MeetMind AI post-processing dashboard.</p>
+          </div>
+          <UIPreviewShowcase />
+        </div>
+
         <BentoFeatures />
 
         <div className="mt-24 space-y-20 text-muted max-w-4xl mx-auto">

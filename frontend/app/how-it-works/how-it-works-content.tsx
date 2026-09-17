@@ -3,6 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import GradientBackground from "../components/gradient-background";
+import UIPreviewShowcase from "../components/ui-preview-showcase";
 
 const STEPS = [
   {
@@ -94,6 +95,15 @@ export default function HowItWorksContent() {
               );
             })}
           </div>
+        </div>
+
+        {/* Live Interface Preview Section */}
+        <div className="mt-24 max-w-4xl mx-auto">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold text-foreground mb-2">Real Interface Walkthrough</h2>
+            <p className="text-sm text-muted">See how transcripts, executive summaries, decisions, and action items render in the actual production interface.</p>
+          </div>
+          <UIPreviewShowcase />
         </div>
       </div>
     </main>

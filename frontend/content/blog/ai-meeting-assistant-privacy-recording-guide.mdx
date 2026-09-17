@@ -72,10 +72,10 @@ The core tension is straightforward: the more data an AI meeting assistant inges
 
 Most AI meeting assistants follow a similar pipeline, though the specifics vary significantly between vendors. Here is what typically happens:
 
-1. **Audio capture:** The tool either joins the live call as a bot participant or accepts an uploaded recording file after the meeting ends.
+- **Audio capture:** The tool either joins the live call as a bot participant or accepts an uploaded recording file after the meeting ends.
 2. **Transmission:** The audio is sent to a server — either the vendor's cloud infrastructure or, in some cases, a local processing engine on your device.
 3. **Transcription:** A speech-to-text model (often based on OpenAI's Whisper or a proprietary ASR engine) converts the audio into text. For a deeper technical explanation, see our guide on [how AI transcription works](/blog/faster-whisper-explained).
-4. **AI analysis:** A large language model processes the transcript to extract summaries, [action items](/blog/meeting-action-items), decisions, and key topics.
+4. **AI analysis:** A large language model processes the transcript to extract summaries, actionable commitments, decisions, and key topics.
 5. **Storage:** The resulting transcript, summary, and extracted data are stored in the vendor's database. The original audio may or may not be retained.
 
 Each of these steps involves a privacy decision — and the answer varies dramatically between providers.
@@ -135,22 +135,18 @@ Each of these data categories has different sensitivity levels and different imp
 
 This is one of the most consequential architectural decisions an AI meeting tool can make, and it directly affects your privacy posture.
 
-| Feature | Cloud Transcription | Local Transcription |
+| Architectural Dimension | Local On-Device Transcription (e.g., Faster-Whisper, whisper.cpp) | Commercial Cloud API Transcription |
 | :--- | :--- | :--- |
-| Audio leaves your device | Yes | No |
-| Requires internet | Yes | No |
-| Processing speed | Fast (dedicated inference hardware) | Depends on local hardware |
-| Model accuracy | Typically higher (larger models) | Good, but may be lower with smaller models |
-| Vendor access to audio | Possible, depends on policy | None |
-| Scalability | High | Limited by device resources |
+| **Audio Traversal** | Stays strictly on local host machine / private network | Transmitted over encrypted TLS 1.2+ to provider API |
+| **Hardware Requirement** | High (Requires dedicated GPU / 6–10GB VRAM for large models) | Minimal (Standard browser, mobile device, or lightweight laptop) |
+| **Model Size Feasible** | Often restricted to `tiny` or `base` models on typical laptops | Full Whisper Large v3 or multi-billion parameter architectures |
+| **Speaker Diarization** | High local compute overhead; complex speaker clustering | Server-side neural diarization (e.g. Deepgram Nova-3) |
+| **Offline Capability** | Fully offline / air-gapped capability | Requires active internet connectivity |
+| **Data Retention Risk** | Zero remote retention risk | Depends on vendor terms (must enforce ephemeral deletion) |
 
-**Cloud-based transcription** sends your audio to remote servers where powerful models process it quickly. The trade-off is that your data must travel over the internet and reside, however briefly, on infrastructure you do not control.
+**Cloud-based transcription** sends audio over secure TLS to remote servers where dedicated accelerators (like Groq LPUs or cloud GPUs) process it in seconds. The trade-off is that data traverses external infrastructure, requiring strict contractual zero-training agreements and rapid unlinking.
 
-**Local transcription** keeps the audio on your device or private network. No third party ever touches your audio. The trade-off is that you need sufficient local compute, and smaller on-device models may sacrifice some accuracy.
-
-For organizations handling particularly sensitive conversations — legal strategy sessions, healthcare discussions, executive compensation reviews — local transcription offers a meaningful privacy advantage. For a detailed analysis, see our guide on [why local AI transcription is essential for business data privacy](/blog/local-ai-transcription-privacy).
-
-Some tools offer a **hybrid approach:** transcribe locally, then send only the text transcript (not the audio) to a cloud LLM for summarization. This reduces audio exposure while still leveraging powerful language models for extraction.
+**Local transcription** keeps audio entirely on the physical machine. The trade-off is that high-fidelity models (like Whisper Large v3 with 1.5B parameters) require dedicated GPU hardware. Running lightweight quantized models locally reduces memory, but introduces significantly higher Word Error Rates (WER) on accents and cross-talk.
 
 ## 7 Questions to Ask Before Choosing an AI Meeting Assistant
 
@@ -218,13 +214,13 @@ We built [MeetMind AI](/blog/how-meetmind-ai-works) with a specific architectura
 
 Here is how our pipeline works in practice:
 
-- **No bot joins your meeting.** MeetMind AI does not inject a participant into your live call. You record using your native platform (Zoom, Google Meet, Teams) and upload the file afterward. This means no real-time audio streaming to external servers during your meeting.
-- **Audio is compressed and transcribed, then the temporary file is deleted.** Your uploaded audio is compressed via FFmpeg, sent to a Whisper Large v3 Turbo model hosted on Groq's inference infrastructure, and the temporary compressed file is removed after transcription completes.
-- **Transcription data is not used for model training.** We use Groq's API for both Whisper transcription and Llama 3.3 summarization. Under Groq's API terms, your data is not used to train or improve their models.
-- **Summaries and action items are extracted from the transcript, not the raw audio.** The LLM never receives your audio — only the text transcript.
-- **You control your data.** Your transcripts, summaries, and action items remain in your account. You can delete any meeting record at any time.
+- **No bot joins your meeting.** MeetMind AI does not inject a participant into your live call. You record using your native platform (Zoom, Google Meet, Teams) and upload the file afterward. This eliminates third-party bot presence and gives you full control over recording consent within your native video conferencing tool.
+- **Ephemeral Audio Lifecycle:** Audio files are streamed to a temporary directory in 1MB chunks to prevent memory spikes. Immediately after the transcription API call finishes, our backend executes a cleanup routine that unlinks and permanently deletes the local audio file from the host server. We do not maintain long-term audio storage.
+- **Zero Model Training on Customer Data:** We utilize commercial API endpoints (Groq Whisper Large v3 Turbo and Deepgram Nova-3 for speech-to-text; high-capacity language models for summarization). Under commercial developer terms, private audio payloads and transcripts are not used to train public foundation models.
+- **Database Isolation via Row-Level Security:** Transcripts, summaries, action items, and decisions are stored in a managed PostgreSQL database with Row-Level Security (RLS) strictly enforced. Each user's data is only queryable by their authenticated user session.
+- **Permanent User Deletion:** Users retain complete control. Deleting a meeting from the history dashboard executes a permanent hard delete of the transcript, summary, action items, and decisions from the active database.
 
-What we do not claim: we are not a local-only solution. Our processing currently happens on cloud infrastructure. If your requirements demand that audio never leaves your own hardware, a fully local deployment on your own servers may be more appropriate.
+What we do not claim: we do not execute on-device local transcription on the user's laptop. Processing runs on high-speed cloud infrastructure to ensure rapid transcription without exhausting client hardware.
 
 Transparency about limitations matters more than marketing absolutes.
 

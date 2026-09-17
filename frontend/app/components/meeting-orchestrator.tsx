@@ -52,10 +52,53 @@ export default function MeetingOrchestrator() {
     error,
     limitReached,
     handleUpload,
+    handleSetSample,
     handleReset,
   } = useMeetingProcessor();
 
   const [copiedSummary, setCopiedSummary] = useState(false);
+  const [isSampleData, setIsSampleData] = useState(false);
+
+  const handleLoadSample = useCallback(() => {
+    setIsSampleData(true);
+    handleSetSample({
+      id: "demo_sample_meeting_01",
+      title: "Sprint Planning & Whisper Pipeline Architecture Sync",
+      transcript: "[00:00:05] Abhishek: Welcome team to our sprint planning session. Today we need to align on our Whisper transcription pipeline and file size constraints.\n[00:00:18] Sarah: The GPU transcription worker achieves sub-minute transcription for typical hour-long files. I recommend keeping client uploads capped at 100MB to avoid memory overhead.\n[00:00:32] Abhishek: Agreed on the 100MB limit. What formats are enabled right now?\n[00:00:41] Sarah: MP3, WAV, M4A, MP4, WEBM, MOV, and AVI are all tested and supported.\n[00:00:54] Abhishek: Great. Let's make sure the action items and key decisions are exported in Markdown and TXT for our issue tracker. Let's get to work.",
+      segments: [
+        { start: 5, end: 17, text: "Welcome team to our sprint planning session. Today we need to align on our Whisper transcription pipeline and file size constraints." },
+        { start: 18, end: 31, text: "The GPU transcription worker achieves sub-minute transcription for typical hour-long files. I recommend keeping client uploads capped at 100MB to avoid memory overhead." },
+        { start: 32, end: 40, text: "Agreed on the 100MB limit. What formats are enabled right now?" },
+        { start: 41, end: 53, text: "MP3, WAV, M4A, MP4, WEBM, MOV, and AVI are all tested and supported." },
+        { start: 54, end: 68, text: "Great. Let's make sure the action items and key decisions are exported in Markdown and TXT for our issue tracker. Let's get to work." }
+      ],
+      executiveSummary: "The engineering team reviewed the Whisper transcription pipeline performance and confirmed a 100MB upload ceiling supporting MP3, WAV, M4A, MP4, WEBM, MOV, and AVI formats. Tasks and decisions will be exported in Markdown and plain text.",
+      decisions: [
+        "Cap file uploads at 100MB to maintain server stability on free tier instances.",
+        "Support MP3, WAV, M4A, MP4, WEBM, MOV, and AVI formats for meeting recordings.",
+        "Standardize client-side meeting note exports on Markdown (.md) and plain text (.txt)."
+      ],
+      actionItems: [
+        "Sarah to monitor GPU memory utilization during peak traffic hours.",
+        "Abhishek to publish updated audio format guidelines in the Help Center.",
+        "DevOps team to verify row-level security policies on Supabase database tables."
+      ],
+      nextSteps: [
+        "1. Deploy updated Whisper processing worker image to production cluster.",
+        "2. Run automated validation checks on multi-language transcript accuracy.",
+        "3. Monitor free-tier meeting credit usage spikes."
+      ],
+      tags: ["Engineering", "Architecture", "Sprint Planning"],
+      language: "English",
+      sentiment: "Positive",
+      priority: "High"
+    });
+  }, [handleSetSample]);
+
+  const onReset = useCallback(() => {
+    setIsSampleData(false);
+    handleReset();
+  }, [handleReset]);
 
   // ponytail: computed from existing data, no new API fields needed
   const insights = useMemo(() => {
@@ -118,7 +161,12 @@ export default function MeetingOrchestrator() {
         <div className="animate-fade-in-up">
           {/* Upload */}
           <div id="upload-section">
-            <AudioUpload onUpload={handleUpload} disabled={false} limitReached={limitReached} />
+            <AudioUpload
+              onUpload={handleUpload}
+              disabled={false}
+              limitReached={limitReached}
+              onLoadSample={handleLoadSample}
+            />
           </div>
 
           {/* Error */}
@@ -161,15 +209,38 @@ export default function MeetingOrchestrator() {
           key="results"
           className="animate-in fade-in duration-300"
         >
+          {/* Sample Data Banner */}
+          {isSampleData && (
+            <div className="mb-6 p-4 rounded-xl bg-purple-500/10 border border-purple-500/30 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+              <div className="flex items-center gap-2.5">
+                <span className="flex h-2.5 w-2.5 rounded-full bg-purple-400 animate-pulse shrink-0" />
+                <p className="text-sm font-semibold text-purple-200">
+                  Example meeting — sample data.
+                  <span className="font-normal text-muted ml-1.5 hidden md:inline">Demonstrating actual transcript, summary, decisions, and action item structures.</span>
+                </p>
+              </div>
+              <button
+                onClick={onReset}
+                className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-surface border border-card-border hover:bg-muted/20 text-foreground transition-all shrink-0"
+              >
+                Upload Your Own Meeting
+              </button>
+            </div>
+          )}
+
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-2xl font-bold text-foreground">Meeting Results</h2>
-              <p className="text-sm text-muted mt-1">AI-powered analysis complete</p>
+              <h2 className="text-2xl font-bold text-foreground">
+                {isSampleData ? "Sample Meeting Results" : "Meeting Results"}
+              </h2>
+              <p className="text-sm text-muted mt-1">
+                {isSampleData ? "Example output structure from MeetMind AI processing" : "AI-powered analysis complete"}
+              </p>
             </div>
             <button
               id="new-meeting-btn"
-              onClick={handleReset}
+              onClick={onReset}
               className="glass-card glass-card-hover flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-muted hover:text-foreground transition-all hover:scale-[1.03] active:scale-[0.97]"
             >
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>

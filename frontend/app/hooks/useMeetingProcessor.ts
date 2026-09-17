@@ -60,6 +60,12 @@ export function useMeetingProcessor() {
     }
   }, [router]);
 
+  const handleSetSample = useCallback((sampleData: ProcessingResponse) => {
+    setError(null);
+    setResult(sampleData);
+    setStatus("complete");
+  }, []);
+
   const handleReset = useCallback(() => {
     setStatus("idle");
     setResult(null);
@@ -72,6 +78,7 @@ export function useMeetingProcessor() {
     error,
     limitReached,
     handleUpload,
+    handleSetSample,
     handleReset,
   };
 }

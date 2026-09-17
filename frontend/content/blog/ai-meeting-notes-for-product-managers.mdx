@@ -77,14 +77,15 @@ By structuring meeting notes with strict entity extraction, PMs can convert a 45
 | **Out of Scope** | Features intentionally postponed or rejected during debate | Identify negations ("Let's not build that for V1") |
 | **Success Metrics** | Targets proposed by commercial or operational stakeholders | Extract quantitative KPIs discussed during the session |
 
-### The "Out of Scope" Protection Protocol
-One of the most dangerous points of failure in product delivery is scope creep. During planning calls, ideas are frequently discussed and subsequently deferred. 
+### Guarding Against Scope Creep
+One of the most dangerous points of failure in product delivery is scope creep. During planning calls, ideas are frequently brainstormed and subsequently deferred.
 
-A standard generic note-taker often mistakenly includes deferred ideas as deliverables. In MeetMind AI, defensive system prompts cross-check early suggestions against concluding decisions:
+A standard generic note-taker often mistakenly includes deferred ideas as immediate deliverables. When configuring custom AI extraction prompts or reviewing meeting intelligence outputs, engineering teams should enforce negative constraints:
 
 ```
-Rule: If a feature proposal was contested or deferred later in the transcript, 
-explicitly record it under "Out of Scope for V1" with the stated technical justification.
+Prompt Directive: If a feature proposal was contested or deferred later in the discussion,
+categorize it under Next Steps or Key Decisions with the explicit consensus reached,
+rather than creating an active action item.
 ```
 
 ---
@@ -111,7 +112,7 @@ By maintaining structured meeting logs across daily standups and sprint reviews,
 | :--- | :--- | :--- | :--- |
 | **Customer Interview Analysis** | 45 min listening + 30 min note consolidation | 45 min active listening + 3 min review | **~27 minutes per call** |
 | **PRD Draft Generation** | 2 to 3 hours drafting from scratch | 20 minutes refining structured transcript output | **~1.5 to 2 hours per feature** |
-| **Sprint Backlog Ticket Creation** | 45 minutes copying tasks to Jira | 5 minutes exporting JSON action items | **~40 minutes per sprint** |
+| **Sprint Backlog Ticket Creation** | 45 minutes copying tasks to Jira | 5 minutes exporting and reviewing Markdown action items | **~40 minutes per sprint** |
 | **Stakeholder Alignment Updates** | 30 minutes drafting recap emails | 2 minutes editing executive summary | **~28 minutes per update** |
 
 ---

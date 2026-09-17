@@ -7,6 +7,7 @@ interface AudioUploadProps {
   onUpload: (file: File, outputLanguage: string, mode: string) => void;
   disabled: boolean;
   limitReached?: boolean;
+  onLoadSample?: () => void;
 }
 
 const ALLOWED_TYPES = [".mp3", ".wav", ".m4a", ".mp4", ".webm", ".mov", ".avi"];
@@ -17,7 +18,7 @@ function formatFileSize(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-export default function AudioUpload({ onUpload, disabled, limitReached }: AudioUploadProps) {
+export default function AudioUpload({ onUpload, disabled, limitReached, onLoadSample }: AudioUploadProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [outputLanguage, setOutputLanguage] = useState("English");
@@ -103,9 +104,31 @@ export default function AudioUpload({ onUpload, disabled, limitReached }: AudioU
         <p className="text-lg font-semibold text-foreground mb-1">
           {isDragging ? "Drop your audio/video file" : "Upload meeting audio/video"}
         </p>
-        <p className="text-sm text-muted">
+        <p className="text-sm text-muted mb-4">
           Drag & drop or click to browse · MP3, WAV, M4A, MP4, WEBM, MOV, AVI · Max 100MB
         </p>
+        
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+          <span className="inline-flex items-center gap-1.5 text-xs text-muted/90 bg-surface px-3 py-1.5 rounded-lg border border-card-border">
+            <svg className="w-3.5 h-3.5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Sign in with Google to transcribe your first 3 meetings free
+          </span>
+
+          {onLoadSample && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onLoadSample();
+              }}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-foreground bg-surface hover:bg-muted/10 border border-card-border px-3.5 py-1.5 rounded-lg transition-all hover:scale-[1.03] active:scale-[0.97]"
+            >
+              <span>👁️</span> View Sample Meeting
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Error */}

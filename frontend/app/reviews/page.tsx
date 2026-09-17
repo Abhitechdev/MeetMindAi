@@ -4,8 +4,8 @@ import { ReviewForm } from "./review-form"
 import { ReviewsList } from "./reviews-list"
 
 export const metadata: Metadata = {
-  title: "MeetMindAI Reviews — Real User Experiences",
-  description: "Read genuine MeetMindAI user experiences and share your own feedback."
+  title: "Early User Feedback & Reviews — MeetMindAI",
+  description: "Read transparent early user feedback and share your experience testing MeetMind AI."
 }
 
 export default async function ReviewsPage() {
@@ -37,10 +37,10 @@ export default async function ReviewsPage() {
     <div className="flex-1 py-16 lg:py-24 max-w-7xl mx-auto px-6 w-full">
       <div className="mb-16 text-center max-w-3xl mx-auto">
         <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground mb-6">
-          Share Your MeetMindAI Experience
+          Early User Feedback
         </h1>
         <p className="text-lg text-muted">
-          Your honest feedback helps us improve MeetMindAI and helps other users understand what to expect.
+          MeetMind AI is in active early access. We collect genuine feedback from engineers, researchers, and product teams to guide our product roadmap.
         </p>
       </div>
 

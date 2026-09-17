@@ -10,10 +10,10 @@ const paths = [
     '/legal/privacy',
     '/legal/terms',
     '/legal/cookies-policy',
-    '/blog/ai-in-business-communication',
-    '/blog/local-ai-transcription-privacy',
-    '/blog/meeting-action-items',
-    '/blog/turn-meeting-transcripts-into-action-items-using-ai'
+    '/blog/faster-whisper-explained',
+    '/blog/how-meetmind-ai-works',
+    '/blog/automated-meeting-workflows-jira-linear',
+    '/blog/ai-meeting-assistant-privacy-recording-guide'
 ];
 
 async function fetchUrl(url, method = 'GET') {
