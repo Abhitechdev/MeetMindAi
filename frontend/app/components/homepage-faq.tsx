@@ -1,6 +1,8 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import Link from "next/link";
-import { HelpCircle, ChevronRight } from "lucide-react";
+import { HelpCircle, ChevronRight, ChevronDown } from "lucide-react";
 
 export const HOMEPAGE_FAQS = [
   {
@@ -26,6 +28,15 @@ export const HOMEPAGE_FAQS = [
 ];
 
 export default function HomepageFaq() {
+  // Open first item by default for immediate context, others collapsible
+  const [openIndices, setOpenIndices] = useState<number[]>([0, 1, 2, 3]);
+
+  const toggleIndex = (idx: number) => {
+    setOpenIndices((prev) =>
+      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx]
+    );
+  };
+
   return (
     <section className="relative my-20 max-w-4xl mx-auto px-4 sm:px-6">
       <div className="text-center mb-12">
@@ -42,20 +53,42 @@ export default function HomepageFaq() {
       </div>
 
       <div className="space-y-4">
-        {HOMEPAGE_FAQS.map((faq, idx) => (
-          <div
-            key={idx}
-            className="glass-card p-6 rounded-2xl border border-card-border bg-surface/50 transition-colors hover:border-card-border/80"
-          >
-            <h3 className="text-base sm:text-lg font-semibold text-foreground mb-2 flex items-start gap-2">
-              <span className="text-accent-purple font-mono text-xs mt-1">0{idx + 1}.</span>
-              <span>{faq.question}</span>
-            </h3>
-            <p className="text-sm text-muted leading-relaxed pl-6">
-              {faq.answer}
-            </p>
-          </div>
-        ))}
+        {HOMEPAGE_FAQS.map((faq, idx) => {
+          const isOpen = openIndices.includes(idx);
+          return (
+            <div
+              key={idx}
+              className="glass-card rounded-2xl border border-card-border bg-surface/50 overflow-hidden transition-all duration-200 hover:border-card-border/80"
+            >
+              <button
+                onClick={() => toggleIndex(idx)}
+                aria-expanded={isOpen}
+                className="w-full p-6 text-left flex items-center justify-between gap-4 transition-colors hover:bg-surface/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-purple"
+              >
+                <h3 className="text-base sm:text-lg font-semibold text-foreground flex items-center gap-3">
+                  <span className="text-accent-purple font-mono text-xs font-semibold px-2 py-0.5 rounded-md bg-accent-purple/10">
+                    0{idx + 1}.
+                  </span>
+                  <span>{faq.question}</span>
+                </h3>
+                <div
+                  className={`p-1.5 rounded-full bg-surface border border-card-border text-muted transition-transform duration-200 shrink-0 ${
+                    isOpen ? "rotate-180 text-foreground bg-surface/80" : ""
+                  }`}
+                  aria-hidden="true"
+                >
+                  <ChevronDown className="w-4 h-4" />
+                </div>
+              </button>
+
+              {isOpen && (
+                <div className="px-6 pb-6 pt-1 text-sm text-muted leading-relaxed pl-6 sm:pl-16 animate-fade-in-up">
+                  <p>{faq.answer}</p>
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
 
       <div className="mt-8 text-center">

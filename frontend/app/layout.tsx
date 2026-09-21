@@ -136,10 +136,10 @@ export default function RootLayout({
           <Analytics />
           <SpeedInsights />
           <footer className="mt-auto border-t border-card-border bg-surface/30 pt-16 pb-8">
-            <div className="mx-auto max-w-5xl px-6 sm:px-8 lg:px-8">
+            <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
                 <div>
-                  <h3 className="font-semibold text-foreground mb-4 text-sm tracking-wider uppercase">Product</h3>
+                  <h3 className="font-semibold text-foreground mb-4 text-xs tracking-wider uppercase">Product</h3>
                   <ul className="space-y-3 text-sm text-muted">
                     <li><Link href="/features" className="hover:text-foreground transition-colors">Features</Link></li>
                     <li><Link href="/use-cases" className="hover:text-foreground transition-colors">Use Cases</Link></li>
@@ -149,39 +149,39 @@ export default function RootLayout({
                   </ul>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-foreground mb-4 text-sm tracking-wider uppercase">Resources</h3>
+                  <h3 className="font-semibold text-foreground mb-4 text-xs tracking-wider uppercase">Resources</h3>
                   <ul className="space-y-3 text-sm text-muted">
                     <li><Link href="/blog" className="hover:text-foreground transition-colors">Blog</Link></li>
                     <li><Link href="/help-center" className="hover:text-foreground transition-colors">Help Center</Link></li>
                     <li><Link href="/faq" className="hover:text-foreground transition-colors">FAQ</Link></li>
-                    <li><a href="https://www.instagram.com/meetmindai.app/" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Instagram</a></li>
-                    <li><a href="https://www.facebook.com/people/Meetmindai/61591537005949/?rdid=GfeN5LHv6wJRasp7&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1GeR76utG5%2F" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Facebook Page</a></li>
+                    <li><Link href="/integrations" className="hover:text-foreground transition-colors">Integrations</Link></li>
+                    <li><Link href="/api-docs" className="hover:text-foreground transition-colors">API Reference</Link></li>
                   </ul>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-foreground mb-4 text-sm tracking-wider uppercase">Company</h3>
+                  <h3 className="font-semibold text-foreground mb-4 text-xs tracking-wider uppercase">Company</h3>
                   <ul className="space-y-3 text-sm text-muted">
                     <li><Link href="/about" className="hover:text-foreground transition-colors">About</Link></li>
                     <li><Link href="/authors/abhishek" className="hover:text-foreground transition-colors">Founder Bio</Link></li>
                     <li><Link href="/contact" className="hover:text-foreground transition-colors">Contact</Link></li>
-                    <li><Link href="/legal/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link></li>
-                    <li><Link href="/legal/terms" className="hover:text-foreground transition-colors">Terms of Service</Link></li>
+                    <li><Link href="/editorial-policy" className="hover:text-foreground transition-colors">Editorial Policy</Link></li>
+                    <li><Link href="/accessibility" className="hover:text-foreground transition-colors">Accessibility</Link></li>
                   </ul>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-foreground mb-4 text-sm tracking-wider uppercase">Trust & Standards</h3>
+                  <h3 className="font-semibold text-foreground mb-4 text-xs tracking-wider uppercase">Trust & Legal</h3>
                   <ul className="space-y-3 text-sm text-muted">
-                    <li><Link href="/security" className="hover:text-foreground transition-colors">Security</Link></li>
-                    <li><Link href="/editorial-policy" className="hover:text-foreground transition-colors">Editorial Policy</Link></li>
-                    <li><Link href="/accessibility" className="hover:text-foreground transition-colors">Accessibility Statement</Link></li>
-                    <li><Link href="/legal/ai-transparency" className="hover:text-foreground transition-colors">AI Transparency</Link></li>
+                    <li><Link href="/legal/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link></li>
+                    <li><Link href="/legal/terms" className="hover:text-foreground transition-colors">Terms of Service</Link></li>
                     <li><Link href="/legal/cookies-policy" className="hover:text-foreground transition-colors">Cookies Policy</Link></li>
+                    <li><Link href="/security" className="hover:text-foreground transition-colors">Security</Link></li>
+                    <li><Link href="/legal/ai-transparency" className="hover:text-foreground transition-colors">AI Transparency</Link></li>
                   </ul>
                 </div>
               </div>
-              <div className="border-t border-card-border pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted">
-                <p>&copy; 2026 MeetMind AI. All rights reserved.</p>
-                <div className="flex items-center gap-3">
+              <div className="border-t border-card-border pt-8 grid grid-cols-1 md:grid-cols-3 items-center gap-4 text-sm text-muted">
+                <p className="text-center md:text-left">&copy; 2026 MeetMind AI. All rights reserved.</p>
+                <div className="flex items-center justify-center gap-3">
                   <a
                     href="https://www.instagram.com/meetmindai.app/"
                     target="_blank"
@@ -209,7 +209,7 @@ export default function RootLayout({
                     <span>Facebook</span>
                   </a>
                 </div>
-                <p>Developed by <Link href="/authors/abhishek" className="font-semibold text-foreground/80 hover:text-foreground transition-colors">Abhishek</Link></p>
+                <p className="text-center md:text-right">Developed by <Link href="/authors/abhishek" className="font-semibold text-foreground/80 hover:text-foreground transition-colors">Abhishek</Link></p>
               </div>
             </div>
           </footer>
