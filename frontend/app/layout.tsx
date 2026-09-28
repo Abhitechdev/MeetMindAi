@@ -58,6 +58,11 @@ export default function RootLayout({
       <head>
         <meta name="google-adsense-account" content="ca-pub-8627957484050006" />
         <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8627957484050006"
+          crossOrigin="anonymous"
+        />
+        <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify([
@@ -113,12 +118,6 @@ export default function RootLayout({
         />
       </head>
       <body className={`min-h-full flex flex-col bg-background text-foreground ${inter.className}`}>
-        <Script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8627957484050006"
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
         <Script src="https://www.googletagmanager.com/gtag/js?id=G-HS4WZF1K1M" strategy="lazyOnload" />
         <Script id="google-analytics" strategy="lazyOnload">
           {`

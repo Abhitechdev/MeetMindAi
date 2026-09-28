@@ -12,15 +12,15 @@ const backendDomain = apiBase ? (apiBase.startsWith('http') ? apiBase : `https:/
 
 const cspHeader = `
   default-src 'self';
-  script-src 'self' 'unsafe-eval' 'unsafe-inline' https://pagead2.googlesyndication.com https://www.googletagmanager.com https://unpkg.com https://checkout.razorpay.com;
+  script-src 'self' 'unsafe-eval' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://*.googleadservices.com https://adservice.google.com https://tpc.googlesyndication.com https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google https://www.googletagmanager.com https://unpkg.com https://checkout.razorpay.com;
   style-src 'self' 'unsafe-inline';
-  img-src 'self' blob: data: https://pagead2.googlesyndication.com https://*.google-analytics.com https://www.googletagmanager.com;
+  img-src 'self' blob: data: https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google-analytics.com https://www.googletagmanager.com https://*.doubleclick.net https://*.google.com https://*.googleadservices.com;
   font-src 'self' data:;
   object-src 'none';
   base-uri 'self';
   form-action 'self' https://api.web3forms.com;
-  frame-src 'self' https://*.razorpay.com https://*.google.com https://*.doubleclick.net;
-  connect-src 'self' ${backendDomain} https://*.supabase.co wss://*.supabase.co https://*.razorpay.com https://api.web3forms.com https://*.google-analytics.com https://pagead2.googlesyndication.com https://*.doubleclick.net https://*.lottie.host https://lottie.host https://unpkg.com;
+  frame-src 'self' https://*.razorpay.com https://*.google.com https://*.doubleclick.net https://*.googlesyndication.com https://googleads.g.doubleclick.net;
+  connect-src 'self' ${backendDomain} https://*.supabase.co wss://*.supabase.co https://*.razorpay.com https://api.web3forms.com https://*.google-analytics.com https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://*.googleadservices.com https://*.adtrafficquality.google https://*.lottie.host https://lottie.host https://unpkg.com;
 `.replace(/\s{2,}/g, ' ').trim()
 
 const nextConfig: NextConfig = {
