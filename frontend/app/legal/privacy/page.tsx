@@ -124,7 +124,7 @@ export default function PrivacyPolicyPage() {
                   Third-party vendors, including Google, use cookies to serve ads based on a user&apos;s prior visits to this website or other websites across the Internet.
                 </p>
                 <p>
-                  Google&apos;s use of advertising cookies (such as the DoubleClick cookie) enables it and its partners to serve ads to our visitors based on their visit to MeetMind AI and/or other sites on the Internet.
+                  Google&apos;s use of advertising cookies (such as the DoubleClick DART cookie) enables it and its partners to serve ads to our visitors based on their visit to MeetMind AI and/or other sites on the Internet.
                 </p>
                 <p>
                   Users may opt out of personalized advertising at any time by visiting{" "}

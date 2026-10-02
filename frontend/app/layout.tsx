@@ -5,6 +5,7 @@ import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./components/theme-provider";
 import { Navigation } from "./components/nav";
+import { Adsense } from "./components/Adsense";
 
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -56,12 +57,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={`h-full antialiased scroll-smooth ${inter.variable} ${poppins.variable}`}>
       <head>
-        <meta name="google-adsense-account" content="ca-pub-8627957484050006" />
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8627957484050006"
-          crossOrigin="anonymous"
-        />
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -118,6 +114,7 @@ export default function RootLayout({
         />
       </head>
       <body className={`min-h-full flex flex-col bg-background text-foreground ${inter.className}`}>
+        <Adsense />
         <Script src="https://www.googletagmanager.com/gtag/js?id=G-HS4WZF1K1M" strategy="lazyOnload" />
         <Script id="google-analytics" strategy="lazyOnload">
           {`
