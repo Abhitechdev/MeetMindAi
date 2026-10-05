@@ -88,6 +88,28 @@ export async function askQuestion(
   return response.json();
 }
 
+export async function askCrossMeetingQuestion(
+  question: string,
+  history: { role: string; content: string }[] = []
+): Promise<{ answer: string }> {
+  const headers = await getAuthHeaders();
+  const response = await fetch(`${API_BASE}/meeting-memory/query`, {
+    method: "POST",
+    headers: {
+      ...headers,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ question, history }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: "Cross-meeting query failed" }));
+    throw new Error(error.detail || `Server error: ${response.status}`);
+  }
+
+  return response.json();
+}
+
 export async function translateTranscript(
   transcript: string,
   sourceLanguage: string,

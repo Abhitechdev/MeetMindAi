@@ -57,9 +57,16 @@ PROMPT = """You are a meeting analysis assistant. Analyze the following meeting 
 - "tags": An array of strings, 2-4 tags summarizing the topics.
 - "sentiment": A string, e.g., "Positive", "Neutral", "Negative".
 - "priority": A string, e.g., "High", "Medium", "Low".
-- "decisions": An array of strings, each a key decision made during the meeting.
-- "actionItems": An array of strings, each an action item assigned during the meeting.
+- "decisions": An array of objects. Each object must have "text" (the decision), "confidence" (number 0-1), "status" (must be 'CURRENT', 'SUPERSEDED', or 'UNCERTAIN'), "participants" (array of names involved), and an optional "source_reference" object.
+- "actionItems": An array of objects. Each object must have "text" (the action item), "owner" (name of person if assigned), "status" (must be 'pending', 'in_progress', or 'completed'), and an optional "source_reference" object.
+- "commitments": An array of objects. Each object must have "person" (who committed), "text" (the commitment), "due_date" (string, only if explicitly stated), "status" (must be 'OPEN', 'COMPLETED', 'OVERDUE', 'CANCELLED', or 'UNCERTAIN'), "confidence" (number 0-1), and an optional "source_reference" object.
 - "nextSteps": An array of strings, each a next step discussed.
+- "entities": An array of objects extracting important entities from the meeting. Each object must have "name" (the entity name), "entity_type" (must be one of: 'person', 'topic', 'project', 'risk'), and an optional "source_reference" object.
+
+A "source_reference" object must contain these string fields, extracted exactly from the transcript if available:
+- "timestamp": The timestamp in the transcript.
+- "speaker": The speaker's name or label.
+- "segment_text": A short exact quote from the transcript providing evidence.
 
 Detected Language: {detected_language}
 Instruction: Ensure the final JSON values (title, summary, tags, etc.) are written in {output_language}.
@@ -68,7 +75,6 @@ Return ONLY valid JSON. No markdown. No explanations. No code fences.
 
 Transcript:
 """
-
 
 def summarize(transcript: str, detected_language: str = "en", output_language: str = "English") -> dict:
     """

@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { createClient } from "@/lib/supabase"
 import { getMeetings } from "@/lib/api"
 import GradientBackground from "../components/gradient-background"
+import GlobalChatBot from "../components/global-chat-bot"
 
 type Meeting = {
   id: string
@@ -345,6 +346,8 @@ export default function HistoryPage() {
           </div>
         )}
       </AnimatePresence>
+      {/* Global Chat Bot */}
+      <GlobalChatBot />
     </main>
   )
 }

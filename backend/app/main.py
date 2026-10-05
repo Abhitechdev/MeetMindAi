@@ -7,7 +7,7 @@ from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Header, Depe
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.models.schemas import ProcessingResponse, ChatRequest, ChatResponse, TranslateRequest, TranslateResponse
+from app.models.schemas import ProcessingResponse, ChatRequest, ChatResponse, TranslateRequest, TranslateResponse, ChatMessage
 from app.services import whisper_service, gemini_service
 from supabase.client import create_client, Client
 import razorpay
@@ -325,12 +325,21 @@ async def process_meeting(
         meeting_id = meeting_res.data[0]["id"]
 
         if summary.get("actionItems"):
-            actions = [{"meeting_id": meeting_id, "action_text": a} for a in summary["actionItems"]]
+            actions = [{"meeting_id": meeting_id, "action_text": a.get("text", a) if isinstance(a, dict) else a, "owner": a.get("owner") if isinstance(a, dict) else None, "status": a.get("status", "pending") if isinstance(a, dict) else "pending", "source_reference": a.get("source_reference") if isinstance(a, dict) else None} for a in summary["actionItems"]]
             client.table("action_items").insert(actions).execute()
 
         if summary.get("decisions"):
-            decisions = [{"meeting_id": meeting_id, "decision_text": d} for d in summary["decisions"]]
+            decisions = [{"meeting_id": meeting_id, "decision_text": d.get("text", d) if isinstance(d, dict) else d, "confidence": d.get("confidence") if isinstance(d, dict) else None, "status": d.get("status", "CURRENT") if isinstance(d, dict) else "CURRENT", "participants": d.get("participants") if isinstance(d, dict) else None, "source_reference": d.get("source_reference") if isinstance(d, dict) else None} for d in summary["decisions"]]
             client.table("decisions").insert(decisions).execute()
+            
+        if summary.get("commitments"):
+            commitments = [{"meeting_id": meeting_id, "person": c.get("person", "Unknown") if isinstance(c, dict) else "Unknown", "commitment_text": c.get("text", c) if isinstance(c, dict) else c, "due_date": c.get("due_date") if isinstance(c, dict) else None, "status": c.get("status", "OPEN") if isinstance(c, dict) else "OPEN", "confidence": c.get("confidence") if isinstance(c, dict) else None, "source_reference": c.get("source_reference") if isinstance(c, dict) else None} for c in summary["commitments"]]
+            client.table("commitments").insert(commitments).execute()
+            
+        if summary.get("entities"):
+            entities = [{"meeting_id": meeting_id, "entity_name": e.get("name"), "entity_type": e.get("entity_type"), "source_reference": e.get("source_reference")} for e in summary["entities"]]
+            if entities:
+                client.table("meeting_entities").insert(entities).execute()
         
         t_total = time.time() - t_start
         logger.info(f"[PERFORMANCE] Total pipeline time: {t_total:.2f}s")
@@ -393,6 +402,140 @@ async def chat(req: ChatRequest, client: Client = Depends(get_user_supabase)):
         logger.error(f"Chat failed: {str(e)} for user {client.user.id}, meeting {req.meeting_id}")
         raise HTTPException(status_code=500, detail=str(e))
 
+
+class CrossMeetingQueryRequest(BaseModel):
+    question: str
+    history: list[ChatMessage] | None = None
+
+@app.post("/meeting-memory/query", response_model=ChatResponse)
+async def cross_meeting_query(req: CrossMeetingQueryRequest, client: Client = Depends(get_user_supabase)):
+    """Answer a question across all meetings using the extracted structured intelligence."""
+    rate_limit_key = f"cross_query_{client.user.id}"
+    if not check_rate_limit(rate_limit_key, 20, 60):
+        raise HTTPException(status_code=429, detail="Too many requests.")
+        
+    try:
+        # Bounded Retrieval Layer: Expand keywords using LLM for semantic overlap
+        expansion_prompt = f"Generate a comma-separated list of 5-10 synonyms, related terms, and likely specific answers for the core concepts in this question. Return ONLY the words, no explanation. Question: {req.question}"
+        gemini_client, models = gemini_service._get_client()
+        
+        try:
+            expansion_response = gemini_service._create_completion(
+                gemini_client,
+                models,
+                messages=[{"role": "user", "content": expansion_prompt}],
+                temperature=0.2,
+                max_tokens=50,
+                timeout=3.0
+            )
+            expanded_text = expansion_response.choices[0].message.content.strip()
+        except Exception:
+            expanded_text = ""
+            
+        import re
+        stopwords = {"what", "when", "where", "which", "who", "whom", "whose", "why", "how", "this", "that", "these", "those", "have", "with", "from", "about", "could", "would", "should", "does", "did", "their", "there", "is", "are", "was", "were", "the", "and", "our", "for", "any", "all"}
+        all_words_text = req.question + " " + expanded_text
+        words = re.findall(r'\b[a-zA-Z]{3,}\b', all_words_text.lower())
+        keywords = set(w for w in words if w not in stopwords)
+        
+        # Fetch all meetings for the user (metadata only)
+        meetings = client.table("meetings").select("id, title, created_at, executive_summary, tags").eq("user_id", client.user.id).execute().data
+        if not meetings:
+            return ChatResponse(answer="I couldn't find any meetings in your history.")
+            
+        meeting_ids = [m["id"] for m in meetings]
+        
+        # Fetch structured data
+        decisions = client.table("decisions").select("meeting_id, decision_text, status, confidence, participants, source_reference").in_("meeting_id", meeting_ids).execute().data
+        actions = client.table("action_items").select("meeting_id, action_text, status, owner, source_reference").in_("meeting_id", meeting_ids).execute().data
+        commitments = client.table("commitments").select("meeting_id, person, commitment_text, due_date, status, confidence, source_reference").in_("meeting_id", meeting_ids).execute().data
+        entities = client.table("meeting_entities").select("meeting_id, entity_name, entity_type, source_reference").in_("meeting_id", meeting_ids).execute().data
+        
+        # Filter meetings based on keyword overlap (Bounded Retrieval)
+        # ponytail: simple local scoring avoids heavy DB text search setup or pgvector
+        scored_meetings = []
+        for m in meetings:
+            mid = m["id"]
+            m_decisions = [d for d in decisions if d["meeting_id"] == mid]
+            m_actions = [a for a in actions if a["meeting_id"] == mid]
+            m_commitments = [c for c in commitments if c["meeting_id"] == mid]
+            m_entities = [e for e in entities if e["meeting_id"] == mid]
+            
+            content_text = f"{m['title']} {m['executive_summary']} "
+            content_text += " ".join([d['decision_text'] for d in m_decisions]) + " "
+            content_text += " ".join([a['action_text'] for a in m_actions]) + " "
+            content_text += " ".join([c['commitment_text'] for c in m_commitments]) + " "
+            content_text += " ".join([e['entity_name'] for e in m_entities])
+            content_text = content_text.lower()
+            
+            score = sum(1 for kw in keywords if kw in content_text)
+            # Boost score if question has no keywords (e.g. just want general info), just include recent ones
+            if not keywords:
+                score = 1 
+                
+            if score > 0:
+                scored_meetings.append((score, m, m_decisions, m_actions, m_commitments, m_entities))
+                
+        # Sort by score desc, then date desc. Keep top 5 most relevant to fit context window.
+        scored_meetings.sort(key=lambda x: (x[0], x[1]["created_at"]), reverse=True)
+        top_meetings = scored_meetings[:5]
+        
+        # Build memory context
+        context_parts = []
+        for _, m, m_decisions, m_actions, m_commitments, m_entities in top_meetings:
+            part = f"Meeting: {m['title']} ({m['created_at']})\n"
+            part += f"Summary: {m['executive_summary']}\n"
+            if m_decisions:
+                part += "Decisions:\n" + "\n".join([f"- [{d.get('status', 'CURRENT')}] {d['decision_text']} (Source: {d.get('source_reference')})" for d in m_decisions]) + "\n"
+            if m_actions:
+                part += "Actions:\n" + "\n".join([f"- [{d.get('status', 'pending')}] {d.get('owner', 'Unassigned')}: {d['action_text']} (Source: {d.get('source_reference')})" for d in m_actions]) + "\n"
+            if m_commitments:
+                part += "Commitments:\n" + "\n".join([f"- [{c.get('status', 'OPEN')}] {c.get('person', 'Unknown')}: {c['commitment_text']} | Due: {c.get('due_date', 'None')} (Source: {c.get('source_reference')})" for c in m_commitments]) + "\n"
+            if m_entities:
+                part += "Entities:\n" + "\n".join([f"- {e['entity_type']}: {e['entity_name']} (Source: {e.get('source_reference')})" for e in m_entities]) + "\n"
+            context_parts.append(part)
+            
+        memory_context = "\n\n".join(context_parts)
+        
+        system_prompt = """You are MeetMind AI's cross-meeting intelligence assistant.
+Answer the user's question using ONLY the provided meeting memory context.
+
+CRITICAL RULES:
+- Evidence Integrity: Every factual claim you make MUST cite the exact meeting title and source reference if available. If no source reference is present, cite the meeting title.
+- Rejection/Hallucination: If the exact answer to the question is not explicitly supported by the context, respond EXACTLY with: "I couldn't find that information in your past meetings." Do NOT guess or use outside knowledge.
+- Conflict Handling: If different meetings have conflicting decisions or information, you MUST explicitly point out the conflict, state that opinions or decisions have evolved, and list all versions with their respective meeting dates.
+- Structured Formatting: Format your response using these markdown headings if they are relevant to the user's query:
+  ### ANSWER
+  ### CURRENT DECISION (only if querying decisions, note if CURRENT or SUPERSEDED)
+  ### HISTORY (only if tracking what changed between meetings)
+  ### OPEN COMMITMENTS (only if querying commitments)
+  ### PENDING ACTIONS (only if querying action items)
+  ### EVIDENCE (always include if citing specific transcripts or meetings)
+- Keep answers concise, factual, and scannable."""
+
+        messages = [{"role": "system", "content": system_prompt}]
+        if req.history:
+            for msg in req.history[-6:]:
+                messages.append({"role": msg.role, "content": msg.content})
+        
+        messages.append({"role": "user", "content": f"Meeting Memory:\n{memory_context}\n\nQuestion: {req.question}"})
+        
+        gemini_client, models = gemini_service._get_client()
+        response = gemini_service._create_completion(
+            gemini_client,
+            models,
+            messages=messages,
+            temperature=0.1,  # Lower temperature for less hallucination
+            max_tokens=1024,
+        )
+        
+        return ChatResponse(answer=response.choices[0].message.content.strip())
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Cross-meeting query failed: {str(e)} for user {client.user.id}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/translate-transcript", response_model=TranslateResponse)
 async def translate_transcript_endpoint(req: TranslateRequest, client: Client = Depends(get_user_supabase)):

@@ -8,15 +8,30 @@ class TranscriptionSegment(BaseModel):
     text: str
 
 
+class SourceReference(BaseModel):
+    timestamp: str | None = None
+    speaker: str | None = None
+    segment_text: str | None = None
+
+class SourcedItem(BaseModel):
+    text: str
+    source_reference: SourceReference | None = None
+
+class EntityItem(BaseModel):
+    name: str
+    entity_type: str
+    source_reference: SourceReference | None = None
+
 class SummaryData(BaseModel):
     title: str
     executiveSummary: str
-    decisions: list[str]
-    actionItems: list[str]
+    decisions: list[SourcedItem]
+    actionItems: list[SourcedItem]
     nextSteps: list[str]
     tags: list[str]
     sentiment: str | None = None
     priority: str | None = None
+    entities: list[EntityItem] = Field(default_factory=list)
 
 
 class ProcessingResponse(BaseModel):
