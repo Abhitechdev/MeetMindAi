@@ -31,7 +31,7 @@ def _get_client() -> tuple[OpenAI, list[str]]:
         )
     # ponytail: NVIDIA NIM deprecated llama-3.3-70b-instruct; use active vision/large models
     configured = os.getenv("NVIDIA_MODEL")
-    candidates = [m for m in [configured, "meta/llama-3.2-90b-vision-instruct", "mistralai/mistral-large-2-instruct", "nvidia/llama-3.1-nemotron-70b-instruct"] if m]
+    candidates = [m for m in [configured, "nvidia/nemotron-3-ultra-550b-a55b", "nvidia/nemotron-3-super-120b-a12b", "meta/llama-3.2-11b-vision-instruct"] if m]
     return _client, candidates
 
 
@@ -42,11 +42,8 @@ def _create_completion(client: OpenAI, models: list[str], **kwargs):
         try:
             return client.chat.completions.create(model=model, **kwargs)
         except Exception as e:
-            err_str = str(e).lower()
-            if any(k in err_str for k in ["404", "410", "not found", "does not exist", "decommissioned", "model_not_found"]):
-                last_err = e
-                continue
-            raise
+            last_err = e
+            continue
     raise last_err
 
 
@@ -61,7 +58,8 @@ PROMPT = """You are a meeting analysis assistant. Analyze the following meeting 
 - "actionItems": An array of objects. Each object must have "text" (the action item), "owner" (name of person if assigned), "status" (must be 'pending', 'in_progress', or 'completed'), and an optional "source_reference" object.
 - "commitments": An array of objects. Each object must have "person" (who committed), "text" (the commitment), "due_date" (string, only if explicitly stated), "status" (must be 'OPEN', 'COMPLETED', 'OVERDUE', 'CANCELLED', or 'UNCERTAIN'), "confidence" (number 0-1), and an optional "source_reference" object.
 - "nextSteps": An array of strings, each a next step discussed.
-- "entities": An array of objects extracting important entities from the meeting. Each object must have "name" (the entity name), "entity_type" (must be one of: 'person', 'topic', 'project', 'risk'), and an optional "source_reference" object.
+- "entities": An array of objects extracting important entities from the meeting. Each object must have "name" (the entity name), "entity_type" (must be one of: 'person', 'topic', 'project', 'risk', 'issue'), and an optional "source_reference" object.
+- "relationships": An array of objects explicitly connecting entities, decisions, issues, projects, and actions. Each object must have "source" (string name), "source_type" (e.g. 'person', 'decision', 'issue', 'project'), "target" (string name), "target_type", "type" (the relationship, e.g. 'owns', 'affects', 'blocks', 'resolves', 'depends_on'), and an optional "source_reference" object.
 
 A "source_reference" object must contain these string fields, extracted exactly from the transcript if available:
 - "timestamp": The timestamp in the transcript.
@@ -109,10 +107,10 @@ def summarize(transcript: str, detected_language: str = "en", output_language: s
         result = {}
 
     # Validate expected keys exist
-    required = ["title", "executiveSummary", "tags", "sentiment", "priority", "decisions", "actionItems", "nextSteps"]
+    required = ["title", "executiveSummary", "tags", "sentiment", "priority", "decisions", "actionItems", "nextSteps", "relationships"]
     for key in required:
         if key not in result:
-            result[key] = [] if key in ["tags", "decisions", "actionItems", "nextSteps"] else ""
+            result[key] = [] if key in ["tags", "decisions", "actionItems", "nextSteps", "relationships"] else ""
 
     return result
 

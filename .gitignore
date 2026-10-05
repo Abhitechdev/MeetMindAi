@@ -52,3 +52,28 @@ Thumbs.db
 # Scratch & Local Artifacts
 scratch/
 Digital product/
+
+# Log files & large traces
+*.log
+lighthouse-report-0.devtoolslog.json
+lighthouse-report-0.trace.json
+lighthouse-report.json
+previous-trace.json
+frontend/lighthouse-report*.json
+frontend/*-trace.json
+
+# Agent / task artifacts (not for source control)
+.agents/
+.kilo/
+
+# Large test artifacts and diagnostic scripts
+backend/test_all_models.py
+backend/test_all_models2.py
+backend/test_all_errors.py
+backend/test_models.py
+backend/test_llm_conn.py
+backend/test_extraction.py
+backend/call_gemini.py
+backend/list_meetings.py
+backend/list_nvidia_models.py
+

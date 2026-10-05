@@ -340,6 +340,11 @@ async def process_meeting(
             entities = [{"meeting_id": meeting_id, "entity_name": e.get("name"), "entity_type": e.get("entity_type"), "source_reference": e.get("source_reference")} for e in summary["entities"]]
             if entities:
                 client.table("meeting_entities").insert(entities).execute()
+                
+        if summary.get("relationships"):
+            relationships = [{"meeting_id": meeting_id, "source_name": r.get("source"), "source_type": r.get("source_type"), "relationship_type": r.get("type"), "target_name": r.get("target"), "target_type": r.get("target_type"), "source_reference": r.get("source_reference")} for r in summary["relationships"]]
+            if relationships:
+                client.table("meeting_relationships").insert(relationships).execute()
         
         t_total = time.time() - t_start
         logger.info(f"[PERFORMANCE] Total pipeline time: {t_total:.2f}s")
@@ -415,26 +420,35 @@ async def cross_meeting_query(req: CrossMeetingQueryRequest, client: Client = De
         raise HTTPException(status_code=429, detail="Too many requests.")
         
     try:
-        # Bounded Retrieval Layer: Expand keywords using LLM for semantic overlap
-        expansion_prompt = f"Generate a comma-separated list of 5-10 synonyms, related terms, and likely specific answers for the core concepts in this question. Return ONLY the words, no explanation. Question: {req.question}"
+        # Intent-Aware Retrieval Layer
+        expansion_prompt = f"Analyze the intent of this question. Output a JSON object with 'intents': list of strings from [DECISION, ACTION_ITEM, COMMITMENT, UNRESOLVED, CHANGE, HISTORY, PERSON, TOPIC], and 'keywords': list of strings (synonyms, related terms, excluding intent words like 'pending' or 'decide'). Return ONLY valid JSON, no markdown fences. Question: {req.question}"
         gemini_client, models = gemini_service._get_client()
         
+        intents = []
+        expanded_keywords = []
         try:
             expansion_response = gemini_service._create_completion(
                 gemini_client,
                 models,
                 messages=[{"role": "user", "content": expansion_prompt}],
-                temperature=0.2,
-                max_tokens=50,
+                temperature=0.1,
+                max_tokens=150,
                 timeout=3.0
             )
-            expanded_text = expansion_response.choices[0].message.content.strip()
-        except Exception:
-            expanded_text = ""
+            resp_text = expansion_response.choices[0].message.content.strip()
+            import json
+            if resp_text.startswith("```json"): resp_text = resp_text[7:]
+            if resp_text.startswith("```"): resp_text = resp_text[3:]
+            if resp_text.endswith("```"): resp_text = resp_text[:-3]
+            parsed = json.loads(resp_text.strip())
+            intents = parsed.get("intents", [])
+            expanded_keywords = parsed.get("keywords", [])
+        except Exception as e:
+            logger.warning(f"Intent parsing failed: {e}")
             
         import re
         stopwords = {"what", "when", "where", "which", "who", "whom", "whose", "why", "how", "this", "that", "these", "those", "have", "with", "from", "about", "could", "would", "should", "does", "did", "their", "there", "is", "are", "was", "were", "the", "and", "our", "for", "any", "all"}
-        all_words_text = req.question + " " + expanded_text
+        all_words_text = req.question + " " + " ".join(expanded_keywords)
         words = re.findall(r'\b[a-zA-Z]{3,}\b', all_words_text.lower())
         keywords = set(w for w in words if w not in stopwords)
         
@@ -446,13 +460,26 @@ async def cross_meeting_query(req: CrossMeetingQueryRequest, client: Client = De
         meeting_ids = [m["id"] for m in meetings]
         
         # Fetch structured data
-        decisions = client.table("decisions").select("meeting_id, decision_text, status, confidence, participants, source_reference").in_("meeting_id", meeting_ids).execute().data
-        actions = client.table("action_items").select("meeting_id, action_text, status, owner, source_reference").in_("meeting_id", meeting_ids).execute().data
-        commitments = client.table("commitments").select("meeting_id, person, commitment_text, due_date, status, confidence, source_reference").in_("meeting_id", meeting_ids).execute().data
-        entities = client.table("meeting_entities").select("meeting_id, entity_name, entity_type, source_reference").in_("meeting_id", meeting_ids).execute().data
+        decisions = client.table("decisions").select("*").in_("meeting_id", meeting_ids).execute().data
+        actions = client.table("action_items").select("*").in_("meeting_id", meeting_ids).execute().data
         
-        # Filter meetings based on keyword overlap (Bounded Retrieval)
-        # ponytail: simple local scoring avoids heavy DB text search setup or pgvector
+        try:
+            commitments = client.table("commitments").select("*").in_("meeting_id", meeting_ids).execute().data
+        except Exception:
+            commitments = []
+            
+            
+        try:
+            entities = client.table("meeting_entities").select("*").in_("meeting_id", meeting_ids).execute().data
+        except Exception:
+            entities = []
+            
+        try:
+            relationships = client.table("meeting_relationships").select("*").in_("meeting_id", meeting_ids).execute().data
+        except Exception:
+            relationships = []
+        
+        # Filter meetings based on keyword overlap and intent (Phase 2.5)
         scored_meetings = []
         for m in meetings:
             mid = m["id"]
@@ -460,29 +487,65 @@ async def cross_meeting_query(req: CrossMeetingQueryRequest, client: Client = De
             m_actions = [a for a in actions if a["meeting_id"] == mid]
             m_commitments = [c for c in commitments if c["meeting_id"] == mid]
             m_entities = [e for e in entities if e["meeting_id"] == mid]
+            m_relationships = [r for r in relationships if r["meeting_id"] == mid]
             
             content_text = f"{m['title']} {m['executive_summary']} "
             content_text += " ".join([d['decision_text'] for d in m_decisions]) + " "
             content_text += " ".join([a['action_text'] for a in m_actions]) + " "
             content_text += " ".join([c['commitment_text'] for c in m_commitments]) + " "
-            content_text += " ".join([e['entity_name'] for e in m_entities])
+            content_text += " ".join([e['entity_name'] for e in m_entities]) + " "
+            content_text += " ".join([f"{r.get('source_name')} {r.get('target_name')}" for r in m_relationships])
             content_text = content_text.lower()
             
             score = sum(1 for kw in keywords if kw in content_text)
-            # Boost score if question has no keywords (e.g. just want general info), just include recent ones
-            if not keywords:
+            
+            # Intent-based scoring boosts
+            if "DECISION" in intents and m_decisions:
+                score += 5
+                
+            if "ACTION_ITEM" in intents and m_actions:
+                has_pending = any(a.get("status", "").lower() in ["pending", "open", "in progress", "overdue"] for a in m_actions)
+                score += 10 if has_pending else 2
+                
+            if "COMMITMENT" in intents and m_commitments:
+                has_pending = any(c.get("status", "").lower() in ["open", "pending", "overdue"] for c in m_commitments)
+                score += 10 if has_pending else 2
+                
+            if "UNRESOLVED" in intents:
+                has_unresolved = False
+                if any(a.get("status", "").lower() in ["pending", "open", "in progress", "overdue"] for a in m_actions): has_unresolved = True
+                if any(c.get("status", "").lower() in ["open", "pending", "overdue"] for c in m_commitments): has_unresolved = True
+                if has_unresolved:
+                    score += 10
+                    
+            if "CHANGE" in intents or "HISTORY" in intents:
+                score += 2
+                
+            if "PERSON" in intents:
+                has_person = False
+                for a in m_actions:
+                    if a.get("owner") and any(kw in str(a.get("owner")).lower() for kw in keywords): has_person = True
+                for c in m_commitments:
+                    if c.get("person") and any(kw in str(c.get("person")).lower() for kw in keywords): has_person = True
+                if has_person:
+                    score += 10
+                    
+            if not keywords and not intents:
                 score = 1 
                 
             if score > 0:
-                scored_meetings.append((score, m, m_decisions, m_actions, m_commitments, m_entities))
+                scored_meetings.append((score, m, m_decisions, m_actions, m_commitments, m_entities, m_relationships))
                 
         # Sort by score desc, then date desc. Keep top 5 most relevant to fit context window.
         scored_meetings.sort(key=lambda x: (x[0], x[1]["created_at"]), reverse=True)
         top_meetings = scored_meetings[:5]
         
+        # Sort chronologically for the LLM to understand timeline properly (Phase 4)
+        top_meetings.sort(key=lambda x: x[1]["created_at"])
+        
         # Build memory context
         context_parts = []
-        for _, m, m_decisions, m_actions, m_commitments, m_entities in top_meetings:
+        for _, m, m_decisions, m_actions, m_commitments, m_entities, m_relationships in top_meetings:
             part = f"Meeting: {m['title']} ({m['created_at']})\n"
             part += f"Summary: {m['executive_summary']}\n"
             if m_decisions:
@@ -493,25 +556,48 @@ async def cross_meeting_query(req: CrossMeetingQueryRequest, client: Client = De
                 part += "Commitments:\n" + "\n".join([f"- [{c.get('status', 'OPEN')}] {c.get('person', 'Unknown')}: {c['commitment_text']} | Due: {c.get('due_date', 'None')} (Source: {c.get('source_reference')})" for c in m_commitments]) + "\n"
             if m_entities:
                 part += "Entities:\n" + "\n".join([f"- {e['entity_type']}: {e['entity_name']} (Source: {e.get('source_reference')})" for e in m_entities]) + "\n"
+            if m_relationships:
+                part += "Relationships:\n" + "\n".join([f"- {r.get('source_name')} ({r.get('source_type')}) -> {r.get('relationship_type')} -> {r.get('target_name')} ({r.get('target_type')}) (Source: {r.get('source_reference')})" for r in m_relationships]) + "\n"
             context_parts.append(part)
             
         memory_context = "\n\n".join(context_parts)
         
         system_prompt = """You are MeetMind AI's cross-meeting intelligence assistant.
+Your goal is to provide evidence-grounded organizational reasoning over the provided meeting context.
 Answer the user's question using ONLY the provided meeting memory context.
 
-CRITICAL RULES:
-- Evidence Integrity: Every factual claim you make MUST cite the exact meeting title and source reference if available. If no source reference is present, cite the meeting title.
-- Rejection/Hallucination: If the exact answer to the question is not explicitly supported by the context, respond EXACTLY with: "I couldn't find that information in your past meetings." Do NOT guess or use outside knowledge.
-- Conflict Handling: If different meetings have conflicting decisions or information, you MUST explicitly point out the conflict, state that opinions or decisions have evolved, and list all versions with their respective meeting dates.
-- Structured Formatting: Format your response using these markdown headings if they are relevant to the user's query:
-  ### ANSWER
-  ### CURRENT DECISION (only if querying decisions, note if CURRENT or SUPERSEDED)
-  ### HISTORY (only if tracking what changed between meetings)
-  ### OPEN COMMITMENTS (only if querying commitments)
-  ### PENDING ACTIONS (only if querying action items)
-  ### EVIDENCE (always include if citing specific transcripts or meetings)
-- Keep answers concise, factual, and scannable."""
+CRITICAL REASONING RULES:
+1. EVIDENCE-FIRST REASONING: Every conclusion must be traceable. For every major conclusion provide the source meeting and date. If evidence is insufficient, say EXACTLY: "I couldn't find that information in your past meetings." Do NOT use outside knowledge.
+2. CURRENT STATE DERIVATION: Combine latest decisions, open commitments, action items, unresolved issues, and relationships to determine the current state.
+3. DECISION EVOLUTION: Trace how decisions evolved over time. If they changed, state what it was initially, what happened, and what the current state is. Say "The change followed discussion of..." if causality is not explicitly stated.
+4. BLOCKER CHAINS & DEPENDENCIES: Trace explicit relationships. If A blocks B and B affects C, explain the chain. Do not infer relationships without evidence.
+5. CONFLICT HANDLING: DO NOT silently resolve conflicting evidence. If Meeting 1 says X and Meeting 2 says Y, explicitly state the chronological evolution or the conflict. If current state is ambiguous, say: "The meeting records contain conflicting information, and the current state cannot be determined with confidence."
+6. COMMITMENT RISK: Identify commitments that appear at risk (e.g. overdue, repeatedly discussed, blocked). Use cautious language: "Potentially at risk because..." or "Repeatedly carried forward...". Do not invent deadlines.
+7. HALLUCINATION DEFENSE: Distinguish between facts directly supported, derived conclusions, and unknowns. Never convert an unknown into a guess. Do not give generic business advice.
+
+STRUCTURED FORMATTING (Use only the headings relevant to the query):
+## ANSWER
+(Short direct answer)
+
+## CURRENT STATE
+(What is true now, derived from the latest data)
+
+## WHAT CHANGED
+(Important historical changes and decision evolution)
+
+## WHY
+(Evidence-supported explanation or causal context)
+
+## OPEN ITEMS
+(Unresolved actions/commitments/issues)
+
+## IMPACTED AREAS
+(Related projects/people/items via relationships)
+
+## EVIDENCE
+(Meetings and source references backing your claims)
+
+Keep answers concise, factual, and scannable. Do not fabricate dates or status."""
 
         messages = [{"role": "system", "content": system_prompt}]
         if req.history:

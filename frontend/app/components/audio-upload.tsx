@@ -70,13 +70,23 @@ export default function AudioUpload({ onUpload, disabled, limitReached, onLoadSa
       {/* Drop zone */}
       <div
         id="audio-drop-zone"
+        role="button"
+        tabIndex={disabled ? -1 : 0}
+        aria-label="Upload meeting audio or video file. Press Enter or Space to browse."
         onDrop={handleDrop}
         onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
         onDragLeave={(e) => { e.preventDefault(); setIsDragging(false); }}
         onClick={() => inputRef.current?.click()}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            inputRef.current?.click();
+          }
+        }}
         className={`
           relative cursor-pointer rounded-2xl border-2 border-dashed bg-surface/50 p-12 text-center transition-all duration-300
           hover:scale-[1.005] active:scale-[0.995]
+          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40 focus-visible:ring-offset-2
           ${isDragging
             ? "border-foreground/50 bg-muted/10 shadow-sm"
             : "border-card-border hover:border-foreground/30 hover:bg-muted/5"
