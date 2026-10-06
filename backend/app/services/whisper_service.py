@@ -23,12 +23,12 @@ def compress_if_needed(file_path: str) -> str:
         
     compressed_path = file_path + "_compressed.mp3"
     try:
-        import subprocess
+        import subprocess  # nosec B404
         import imageio_ffmpeg
         ffmpeg_exe = imageio_ffmpeg.get_ffmpeg_exe()
         logger.info(f"Extracting 16k mono audio via FFmpeg for {file_path}...")
         t_ffmpeg_start = time.time()
-        subprocess.run(
+        subprocess.run(  # nosec B603
             [ffmpeg_exe, "-y", "-i", file_path, "-vn", "-ac", "1", "-b:a", "16k", compressed_path], 
             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True
         )
@@ -179,6 +179,6 @@ def transcribe(file_path: str, mode: str = "fast") -> dict:
         if file_to_process != file_path and os.path.exists(file_to_process):
             try:
                 os.remove(file_to_process)
-            except Exception:
-                pass
+            except OSError as e:
+                logger.warning(f"Failed to remove {file_to_process}: {e}")
 
