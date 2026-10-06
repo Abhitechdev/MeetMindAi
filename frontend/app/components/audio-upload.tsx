@@ -71,7 +71,7 @@ export default function AudioUpload({ onUpload, disabled, limitReached, onLoadSa
       <div
         id="audio-drop-zone"
         role="button"
-        tabIndex={disabled ? -1 : 0}
+        tabIndex={0}
         aria-label="Upload meeting audio or video file. Press Enter or Space to browse."
         onDrop={handleDrop}
         onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}

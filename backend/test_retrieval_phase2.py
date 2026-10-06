@@ -67,19 +67,20 @@ def fake_completion(*args, **kwargs):
     ret.choices = [MagicMock()]
     
     # 1. Expansion call
-    if "Generate a comma-separated list of 5-10 synonyms" in content:
+    if "Analyze the intent of this question" in content:
+        import json
         if "ui library" in content.lower() or "client-side" in content.lower():
-            ret.choices[0].message.content = "frontend, framework, react, svelte, vue, interface, components"
+            ret.choices[0].message.content = json.dumps({"intents": ["TOPIC"], "keywords": ["frontend", "framework", "react", "svelte", "vue", "interface", "components"]})
         elif "payment provider" in content.lower() or "gateway" in content.lower() or "payments" in content.lower():
-            ret.choices[0].message.content = "stripe, paypal, processor, gateway, billing"
+            ret.choices[0].message.content = json.dumps({"intents": ["TOPIC"], "keywords": ["stripe", "paypal", "processor", "gateway", "billing"]})
         elif "database" in content.lower() or "postgres" in content.lower():
-            ret.choices[0].message.content = "postgresql, sql, relational, storage"
+            ret.choices[0].message.content = json.dumps({"intents": ["TOPIC"], "keywords": ["postgresql", "sql", "relational", "storage"]})
         elif "initializing the codebase" in content.lower():
-            ret.choices[0].message.content = "setup, repo, initialize, repository, project"
+            ret.choices[0].message.content = json.dumps({"intents": ["TOPIC"], "keywords": ["setup", "repo", "initialize", "repository", "project"]})
         elif "kubernetes" in content.lower():
-            ret.choices[0].message.content = "k8s, containers, orchestration, deployment, pods"
+            ret.choices[0].message.content = json.dumps({"intents": ["TOPIC"], "keywords": ["k8s", "containers", "orchestration", "deployment", "pods"]})
         else:
-            ret.choices[0].message.content = ""
+            ret.choices[0].message.content = json.dumps({"intents": [], "keywords": []})
         return ret
         
     # 2. Synthesis call

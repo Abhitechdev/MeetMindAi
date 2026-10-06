@@ -66,9 +66,9 @@ def fake_completion(*args, **kwargs):
     ret = MagicMock()
     ret.choices = [MagicMock()]
     
-    # 1. Expansion call (always return something generic or the words themselves)
-    if "Generate a comma-separated list of 5-10 synonyms" in content:
-        ret.choices[0].message.content = "decision, commitment, action, frontend, react, svelte, pipeline, marketing"
+    # 1. Expansion call
+    if "Analyze the intent of this question" in content:
+        ret.choices[0].message.content = '{"intents": ["DECISION", "COMMITMENT", "ACTION_ITEM", "UNRESOLVED", "CHANGE"], "keywords": ["frontend", "react", "svelte", "pipeline", "marketing"]}'
         return ret
         
     # 2. Synthesis call
